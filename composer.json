@@ -1,4 +1,6 @@
-{
+{   
+    "name": "lugark/calendar-generator",
+    "description": "to generate pdf calendars with custom events & holidays",
     "type": "project",
     "license": "proprietary",
     "require": {
