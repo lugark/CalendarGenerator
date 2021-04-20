@@ -20,7 +20,7 @@ install:
   - composer install
 
 script:
-  - bin/phpunit  --coverage-clover coverage.xml --coverage-text
+  - XDEBUG_MODE=coverage bin/phpunit  --coverage-clover coverage.xml --coverage-text
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
