@@ -17,3 +17,4 @@
 .devcontainer/
 .vscode/
 coverage.xml
+/coverage/
