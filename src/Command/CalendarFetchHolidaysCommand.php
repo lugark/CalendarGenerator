@@ -52,9 +52,9 @@ class CalendarFetchHolidaysCommand extends Command
         if (in_array('public', $holidayTypes)) {
             $result = [];
             foreach ($years as $year) {
-                $result = array_merge($this->apiCrawler->fetchFromDFAPI($years), $result);
+                $result = array_merge($this->apiCrawler->fetchFromDFAPI($year), $result);
             }
-            $this->holidayRepo->savePublicHolidaysToPacked($result);
+            $this->holidayRepo->savePublicHolidays($result);
 
             $io->success('Successfully loaded data from https://deutsche-feiertage-api.de');
         }
@@ -65,7 +65,7 @@ class CalendarFetchHolidaysCommand extends Command
                 $result = array_merge($this->apiCrawler->fetchDataFromSF($year), $result);
             }
             if (!empty($result)) {
-                $this->holidayRepo->saveSchoolHolidaysToPacked($result);
+                $this->holidayRepo->saveSchoolHolidays($result);
                 $io->success('Successfully loaded data from https://schulferien.org');
             } else {
                 $io->error('Returned data is empty - something went wrong!');

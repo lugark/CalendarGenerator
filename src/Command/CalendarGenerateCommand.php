@@ -19,6 +19,9 @@ class CalendarGenerateCommand extends Command
 {
     protected static $defaultName = 'calendar:generate';
 
+    /** @var HolidaysRepository */
+    protected $holidayRepo;
+
     public function __construct(HolidaysRepository $holidaysRepository, Environment $twig)
     {
         $this->holidayRepo = $holidaysRepository;
@@ -43,8 +46,8 @@ class CalendarGenerateCommand extends Command
 
         $io = new SymfonyStyle($input, $output);
         $arg1 = $input->getArgument('startdate');
-        $publicHolidaysFor = $input->getOption('publicholidays');
-        $schoolHolidaysFor = $input->getOption('schoolholidays');
+        $publicHolidaysFor = strtoupper($input->getOption('publicholidays'));
+        $schoolHolidaysFor = strtoupper($input->getOption('schoolholidays'));
 
         $startDate = new \DateTime($arg1);
         $calendar = new Calendar($startDate);
@@ -52,13 +55,13 @@ class CalendarGenerateCommand extends Command
 
         if (!empty($publicHolidaysFor)) {
             $io->text('* loading holidays for ' . $publicHolidaysFor);
-            $holidays = $this->holidayRepo->getPackedPublicHolidays($publicHolidaysFor);
+            $holidays = $this->holidayRepo->getPublicHolidays($publicHolidaysFor);
             $calendar->addEvents($holidays);
         }
 
         if (!empty($schoolHolidaysFor)) {
             $io->text('* loading school vacations for ' . $schoolHolidaysFor);
-            $vacations = $this->holidayRepo->getPackedSchoolHolidays($schoolHolidaysFor);
+            $vacations = $this->holidayRepo->getSchoolHolidays($schoolHolidaysFor);
             $calendar->addEvents($vacations);
         }
 
