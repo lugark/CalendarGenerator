@@ -7,7 +7,6 @@ use App\Service\ApiCrawler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -55,7 +54,6 @@ class CalendarFetchHolidaysCommand extends Command
                 $result = array_merge($this->apiCrawler->fetchFromDFAPI($year), $result);
             }
             $this->holidayRepo->savePublicHolidays($result);
-
             $io->success('Successfully loaded data from https://deutsche-feiertage-api.de');
         }
 

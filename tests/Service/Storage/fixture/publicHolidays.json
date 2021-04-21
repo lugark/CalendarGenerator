@@ -1,0 +1,41 @@
+[
+  {
+    "holiday": {
+      "date": "2021-01-01",
+      "name": "Neujahr",
+      "regions": [
+        "BW",
+        "BY",
+        "BE",
+        "BB",
+        "HB",
+        "HH",
+        "HE",
+        "MV",
+        "NI",
+        "NW",
+        "RP",
+        "SL",
+        "SN",
+        "ST",
+        "SH",
+        "TH"
+      ],
+      "all_states": true
+    }
+  },
+  {
+    "holiday": {
+      "date": "2021-11-01",
+      "name": "Allerheiligen",
+      "regions": [
+        "BW",
+        "BY",
+        "NW",
+        "RP",
+        "SL"
+      ],
+      "all_states": false
+    }
+  }
+]
