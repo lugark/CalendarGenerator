@@ -34,7 +34,7 @@ class CalendarTest extends TestCase
         $calendar->setEvents(['event1', 'event2']);
 
         $this->expectExceptionMessage('Call to a member function');
-        $events = $calendar->getActiveCalendarEvents();
+        $calendar->getActiveCalendarEvents();
     }
 
     public function getEventTestData()
@@ -54,7 +54,6 @@ class CalendarTest extends TestCase
         $pastEvent->setEnd(new \DateTime(strftime('-1 day')));
         $pastEvent->setText('FutureEvent');
 
-        $eventWithoutEnd = new Event(Types::EVENT_TYPE_CUSTOM);
         return [
             [
                 [],

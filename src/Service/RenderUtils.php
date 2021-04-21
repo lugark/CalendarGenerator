@@ -17,8 +17,7 @@ class RenderUtils
             $g = hexdec(substr($hex,2,2));
             $b = hexdec(substr($hex,4,2));
         }
-        $rgb = array($r, $g, $b);
 
-        return $rgb; // returns an array with the rgb values
+        return array($r, $g, $b);; // returns an array with the rgb values
     }
 }

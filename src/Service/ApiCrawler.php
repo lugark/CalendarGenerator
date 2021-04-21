@@ -29,7 +29,7 @@ class ApiCrawler
 
         $result = curl_exec($ch);
         $data = json_decode($result, true);
-        if ($data['result'] == true) {
+        if ($data['result']) {
             foreach ($data['holidays'] as $key => $holiday) {
                 $regions = [];
                 foreach ($holiday['holiday']['regions'] as $region => $hasHoliday) {
@@ -66,7 +66,7 @@ class ApiCrawler
         if (preg_match('/^(?<start>(?:\d{2}.){2})(?:.*(?<end>(?:\d{2}.){2}))?/', $date, $matches)) {
             $parsedDate['start'] = $matches['start'] . $year;
             $parsedDate['end'] = isset($matches['end']) ? $matches['end'] : $matches['start'];
-            if ((strpos($parsedDate['start'],'.01.') == 0) && ((strpos($parsedDate['end'],'.01.') != 0) )){
+            if ((strpos($parsedDate['start'],'.01.') == 0) && (strpos($parsedDate['end'],'.01.') != 0)){
                 $parsedDate['end'] .= ($year+1);
             } else {
                 $parsedDate['end'] .= $year;
@@ -77,7 +77,6 @@ class ApiCrawler
 
     private function crawlSFWebsite(string $crawlYear): array
     {
-        #$htmlContent = file_get_contents(realpath(__DIR__ . '/../../') . '/data/Schulferien Deutschland 2020.html');
         $ch = curl_init(self::SCHULFERIEN_ORG_URL . $crawlYear);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
@@ -90,7 +89,7 @@ class ApiCrawler
             });
 
         $values = $crawler->filterXPath('//table/tbody/*')
-            ->each(function (Crawler $c, $i) {
+            ->each(function (Crawler $c) {
                 $vacation = array_map(function($content) {
                     return trim(str_replace('*', '', $content));
                 }, $c->filterXPath('tr/td//div')->extract(['_text']));

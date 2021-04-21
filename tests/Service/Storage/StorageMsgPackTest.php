@@ -105,11 +105,11 @@ class StorageMsgPackTest extends TestCase
 
     public function testWriteSchoolHolidays()
     {
-        $this->markTestIncomplete();
+        $this->markTestIncomplete('need to figure out how to test writing school-holidays');
     }
 
     public function testWritePublicHolidays()
     {
-        $this->markTestIncomplete();
+        $this->markTestIncomplete('need to figure out how to test writing public-holidays');
     }
 }
