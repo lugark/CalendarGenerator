@@ -30,6 +30,7 @@ class StorageMsgPackTest extends TestCase
     public function setUp()
     {
         parent::setUp();
+        array_map('unlink', glob("/tmp/*" . MsgPackWriter::FILE_ENDING));
         $this->sut = new Storage(new MsgPackWriter(), new MsgPackReader());
         $this->sut->setDataPath(realpath(__DIR__ . '/fixture/'));
     }
@@ -105,11 +106,27 @@ class StorageMsgPackTest extends TestCase
 
     public function testWriteSchoolHolidays()
     {
-        $this->markTestIncomplete('need to figure out how to test writing school-holidays');
+        $testData = ['test'=>true];
+        $testFilename = '/tmp/' . Storage::STORAGE_TYPE_SCHOOL_HOLIDAY . MsgPackWriter::FILE_ENDING;
+        $this->sut->setDataPath('/tmp');
+        $this->sut->writeSchoolHolidays($testData);
+        $this->assertFileExists($testFilename);
+        $this->assertEquals(strlen(MessagePack::pack($testData)), filesize($testFilename));
     }
 
     public function testWritePublicHolidays()
     {
-        $this->markTestIncomplete('need to figure out how to test writing public-holidays');
+        $testData = ['test'=>true];
+        $testFilename = '/tmp/' . Storage::STORAGE_TYPE_PUBLIC_HOLIDAY . MsgPackWriter::FILE_ENDING;
+        $this->sut->setDataPath('/tmp');
+        $this->sut->writePublicHolidays($testData);
+        $this->assertFileExists($testFilename);
+        $this->assertEquals(strlen(MessagePack::pack($testData)), filesize($testFilename));
+    }
+
+    public function testFailSetPath()
+    {
+        $this->expectExceptionMessage('could not read path: /I-Dont-Exisstsss');
+        $this->sut->setDataPath('/I-Dont-Exisstsss');
     }
 }
