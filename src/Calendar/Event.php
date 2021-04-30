@@ -30,9 +30,10 @@ class Event
         return $this->start;
     }
 
-    public function setStart(\DateTime $start): void
+    public function setStart(\DateTime $start): Event
     {
         $this->start = $start;
+        return $this;
     }
 
     public function getEnd(): ?\DateTime
@@ -40,9 +41,10 @@ class Event
         return $this->end;
     }
 
-    public function setEnd(\DateTime $end): void
+    public function setEnd(\DateTime $end): Event
     {
         $this->end = $end;
+        return $this;
     }
 
     public function getText(): string
@@ -50,9 +52,10 @@ class Event
         return $this->text;
     }
 
-    public function setText($text): void
+    public function setText($text): Event
     {
         $this->text = $text;
+        return $this;
     }
 
     public function getAdditionalInformation(): array
@@ -60,9 +63,10 @@ class Event
         return $this->additionalInformation;
     }
 
-    public function setAdditionalInformation(array $info): void
+    public function setAdditionalInformation(array $info): Event
     {
         $this->additionalInformation = $info;
+        return $this;
     }
 
     public function isInRange(\DateTime $start, \DateTime $end): bool
