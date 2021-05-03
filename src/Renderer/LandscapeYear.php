@@ -99,7 +99,7 @@ class LandscapeYear extends MpdfRendererAbstract
         $this->mpdf->SetTextColor($textColor[0], $textColor[1], $textColor[2]);
 
         /** @var Month $month */
-        foreach ($this->calendarData as $key => $month) {
+        foreach ($this->calendarData as $month) {
             $text = !$this->crossYears ? $month->getName() : $month->getName() . ' `' .$month->getYear(true);
             $this->mpdf->WriteCell(
                 $this->calenderRenderInformation->getColumnWidth() ,
@@ -122,7 +122,6 @@ class LandscapeYear extends MpdfRendererAbstract
         foreach ($this->calendarData as $key => $month) {
             /** @var Day $day */
             foreach ($month->getDays() as $dom => $day) {
-                $fill = 0;
                 $this->mpdf->SetXY(
                     $this->mpdf->lMargin + ($key * $this->calenderRenderInformation->getColumnWidth() ),
                     $startHeight + (($dom-1) * $this->calenderRenderInformation->getRowHeight() )
