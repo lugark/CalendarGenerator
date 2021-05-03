@@ -9,7 +9,7 @@ The goal is to have a printable PDF with customized calendar including german sc
 
 ## Dependencies
 - PHP 7.4 or higher
-
+- "Feiertage" can be fetched from https://deutsche-feiertage-api.de/
 ## Installaion
 ```
 composer install

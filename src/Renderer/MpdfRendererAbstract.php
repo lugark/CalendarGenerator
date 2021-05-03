@@ -1,30 +1,12 @@
 <?php
 
-namespace App\Renderer\Pdf;
+namespace App\Renderer;
 
 use App\Calendar\Calendar;
 use Mpdf\Mpdf;
 
 abstract class MpdfRendererAbstract implements RendererInterface
 {
-    /**
-     * @var int
-     */
-    protected $colWidth = 0;
-
-    /**
-     * @var int
-     */
-    protected $rowHeight = 0;
-
-    /**
-     * @var int
-     */
-    protected $marginTop = 8;
-    /**
-     * @var int
-     */
-    protected $marginBottom = 7;
     /**
      * @var int
      */
@@ -50,6 +32,9 @@ abstract class MpdfRendererAbstract implements RendererInterface
     /** @var Calendar */
     protected $calendar;
 
+    /** @var CalendarRenderInformation */
+    protected $calenderRenderInformation;
+
     protected function initMpdf(array $options=[], string $displaymode='fullpage' ): void
     {
         $this->mpdf = new Mpdf($options);
@@ -65,7 +50,7 @@ abstract class MpdfRendererAbstract implements RendererInterface
         $this->mpdf->SetFontSize(6);
     }
 
-    protected function calculateTableDimentions(int $months=12, int $maxRows=31): void
+    protected function calculateTableDimensions(int $months=12, int $maxRows=31): void
     {
         if (empty($this->mpdf)) {
             return;
@@ -73,14 +58,20 @@ abstract class MpdfRendererAbstract implements RendererInterface
 
         $canvasSizeX = $this->mpdf->w;
         $canvasSizeY = $this->mpdf->h;
-        $this->colWidth = round(
-            ($canvasSizeX-($this->marginLeft+$this->marginRight))/$months,
-            3
-        );
-        $this->rowHeight = round(
-            ($canvasSizeY-($this->calenderStartY+$this->headerHeight))/$maxRows,
-            3
-        );
+        $this->calenderRenderInformation = new CalendarRenderInformation();
+        $this->calenderRenderInformation
+           ->setHeaderHeight($this->headerHeight)
+            ->setColumnWidth(round(
+                ($canvasSizeX-($this->marginLeft+$this->marginRight))/$months,
+                3
+            ))
+            ->setRowHeight(
+                round(
+                    ($canvasSizeY-($this->calenderStartY+$this->headerHeight))/$maxRows,
+                    3
+            ))
+            ->setLeft($this->mpdf->lMargin)
+            ->setTop($this->mpdf->tMargin);
     }
 
     public function setCalendar(Calendar $calendar): void

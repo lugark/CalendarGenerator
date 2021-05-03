@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Renderer\Pdf;
+namespace App\Renderer;
 
 interface RendererInterface
 {

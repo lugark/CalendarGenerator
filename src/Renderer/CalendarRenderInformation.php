@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Renderer\Pdf;
+namespace App\Renderer;
 
-class CalendarDimension
+class CalendarRenderInformation
 {
     /** @var float */
     private $top;
@@ -29,9 +29,9 @@ class CalendarDimension
 
     /**
      * @param float $top
-     * @return CalendarDimension
+     * @return CalendarRenderInformation
      */
-    public function setTop(float $top): CalendarDimension
+    public function setTop(float $top): CalendarRenderInformation
     {
         $this->top = $top;
         return $this;
@@ -47,9 +47,9 @@ class CalendarDimension
 
     /**
      * @param float $left
-     * @return CalendarDimension
+     * @return CalendarRenderInformation
      */
-    public function setLeft(float $left): CalendarDimension
+    public function setLeft(float $left): CalendarRenderInformation
     {
         $this->left = $left;
         return $this;
@@ -65,9 +65,9 @@ class CalendarDimension
 
     /**
      * @param float $headerHeight
-     * @return CalendarDimension
+     * @return CalendarRenderInformation
      */
-    public function setHeaderHeight(float $headerHeight): CalendarDimension
+    public function setHeaderHeight(float $headerHeight): CalendarRenderInformation
     {
         $this->headerHeight = $headerHeight;
         return $this;
@@ -83,9 +83,9 @@ class CalendarDimension
 
     /**
      * @param float $columnWidth
-     * @return CalendarDimension
+     * @return CalendarRenderInformation
      */
-    public function setColumnWidth(float $columnWidth): CalendarDimension
+    public function setColumnWidth(float $columnWidth): CalendarRenderInformation
     {
         $this->columnWidth = $columnWidth;
         return $this;
@@ -101,9 +101,9 @@ class CalendarDimension
 
     /**
      * @param float $rowHeight
-     * @return CalendarDimension
+     * @return CalendarRenderInformation
      */
-    public function setRowHeight(float $rowHeight): CalendarDimension
+    public function setRowHeight(float $rowHeight): CalendarRenderInformation
     {
         $this->rowHeight = $rowHeight;
         return $this;

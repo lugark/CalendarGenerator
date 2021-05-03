@@ -1,258 +1,194 @@
 <?php
+
 namespace App\Renderer;
 
-use App\Renderer\Pdf\Calender;
-use App\Renderer\Pdf\CalenderAbstract;
-use App\Renderer\Pdf\CalenderInterface;
+use App\Calendar\Event;
+use App\Calendar\Unit\Day;
+use App\Calendar\Unit\Month;
+use App\Renderer\EventTypeRenderer\LandscapeYear\PublicHolidayRenderer;
+use App\Renderer\EventTypeRenderer\LandscapeYear\SchoolHolidayRenderer;
+use App\Service\RenderUtils;
+use Mpdf\Output\Destination;
 
-class LandscapeYear extends CalenderAbstract implements CalenderInterface
+class LandscapeYear extends MpdfRendererAbstract
 {
-    const COLOR_SA = 'FFDBDB';
-    const COLOR_SO = 'FFA3B2';
-    const COLOR_HOLIDAY = 'FFA3B2';
+    CONST FONT_SIZE_HEADER = 8;
+    CONST FONT_SIZE_CELL = 6;
+    CONST COLOR_TEXT_HEADER = '#c63131';
+    const COLOR_BORDER_TABLE = '#c63131';
+    CONST COLOR_BORDER_HEADER = '#DEDEDE';
+    const COLOR_FILL_SA = '#F8E6E6';
+    const COLOR_FILL_SO = '#F3D5D5';
 
-    /**
-     * @var int
-     */
-    protected $_colWidth = 0;
+    /** @var Month[] */
+    private $calendarData;
 
-    /**
-     * @var int
-     */
-    protected $_rowHeight = 0;
-    
-    /**
-     * @var int
-     */
-    protected $_marginTop = 8;
-    /**
-     * @var int
-     */
-    protected $_marginBottom = 7;
-    /**
-     * @var int
-     */
-    protected $_marginLeft = 5;
-    /**
-     * @var int
-     */
-    protected $_marginRight = 5;
-    
-    /**
-     * @var float
-     */
-    protected $_calenderStartY = 20;
-    
-    /**
-     * @var int
-     */
-    protected $_headerHeight = 4;
+    /** @var array<Event> */
+    private $calendarEvents;
 
+    private $monthCount = 12;
 
-    public function initPdf($size='a4')
+    private $crossYears = false;
+
+    private $fillColorWeekday = [
+        6 => self::COLOR_FILL_SA,
+        7 => self::COLOR_FILL_SO
+    ];
+
+    protected EventRenderer $eventRenderer;
+
+    public function __construct(EventRenderer $eventRenderer)
     {
-        $this->setSize($size);
-        $this->getPdfClass()->SetLeftMargin($this->_marginLeft);
-        $this->getPdfClass()->SetRightMargin($this->_marginRight);
-        $this->getPdfClass()->SetTopMargin($this->_marginTop);
-        $this->getPdfClass()->SetAutoPageBreak(true, $this->_marginBottom);
-        $this->getPdfClass()->initPdf(Calender::FPDF_ORIANTATION_LANDSCAPE, $this->getSize());
+        $this->eventRenderer = $eventRenderer;
     }
-    
-    public function postRender()
-    {
-        $this->getPdfClass()->SetFont('','B');
-        $this->getPdfClass()->SetFontSize(13);
-        $this->getPdfClass()->Text($this->_marginLeft, $this->_marginTop, 'Jahreskalender ' . $this->headline);
-    }
-    
-    protected function _drawHeader($startMonth, $startYear)
-    {
-        $this->headline = strval($startYear);
-        $this->getPdfClass()->SetFontSize(9);        
-        for($col=1; $col<=12; $col++) {
-            if (($startMonth+$col)>12) {
-                $calcMonth = ($col-12)+$startMonth;
-                $calcYear = $startYear+1;
-            } else {
-                $calcMonth = ($startMonth+$col);
-                $calcYear = $startYear;
-            }
-            
-            $montTimestamp = mktime(0,0,0, ($calcMonth), 1, $calcYear); 
-            $this->getPdfClass()->Cell($this->_colWidth, $this->_headerHeight , strftime('%B \'%y', $montTimestamp), 1, 0, 'C');
-        }
-        $this->getPdfClass()->Ln();
-        
-        if ($startYear<$calcYear) {
-            $this->headline .= '/' . strval($calcYear);
-        }
-    }
-    
-    protected function _generateCalenderData($startMonth, $startYear, array $additionalData)
-    {
-        $calenderData = array();
-        for ($month=1; $month<=12; $month++) {
-            if (($startMonth+$month)>12) {
-                $calcMonth = ($month-12)+$startMonth;
-                $calcYear = $startYear+1;
-            } else {
-                $calcMonth = $month+$startMonth;
-                $calcYear = $startYear;
-            }
-            
-            for ($day=1; $day<=31; $day++) {
-                $dayTimestamp = mktime(0,0,0, $calcMonth, $day, $calcYear);
-                
-                if ($day > (date("t", mktime(0,0,0, $calcMonth)))) {
-                    $calenderData[$month][$day] = array();
-                } else {
-                    // DAY values
-                    $dayName = strftime('%a', $dayTimestamp);
-                    $calenderData[$month][$day]['date'] = sprintf('%02d ',$day) . $dayName;
 
-                    // KW values
-                    if ($this->showCalenderWeeks()) {
-                        $weekNumber = strftime('%V', $dayTimestamp);
-                        if ((strtoupper($dayName)==='MO') || ($day==1 && $month==1)) {
-                            $calenderData[$month][$day]['kw'] = $weekNumber;
-                        } else {
-                            $calenderData[$month][$day]['kw'] = '';
-                        }
-                    }
-
-                    // Weekend??
-                    $isWeekend = false;
-                    switch (strtoupper($dayName)) {
-                        case 'SA':
-                                $calenderData[$month][$day]['color'] = self::COLOR_SA;
-                                $calenderData[$month][$day]['fontwidth'] = 'B';
-                                $isWeekend = true;
-                            break;
-                        case 'SO':
-                                $calenderData[$month][$day]['color'] = self::COLOR_SO;
-                                $calenderData[$month][$day]['fontwidth'] = 'B';
-                                $isWeekend = true;
-                            break;
-                        default:
-                                $calenderData[$month][$day]['color'] = '';
-                                $calenderData[$month][$day]['fontwidth'] = '';
-                            break;
-                    }
-                    
-                    // Holidays?
-                    $isHoliday = false;
-                    if ($this->showHolidays()) {
-                        if (isset($this->_holidays[$calcYear][$calcMonth][$day])) {
-                            $calenderData[$month][$day]['color'] = self::COLOR_SO;
-                            $calenderData[$month][$day]['info'] = $this->_holidays[$calcYear][$calcMonth][$day];
-                            $isHoliday = true;
-                        }                        
-                    }
-                    
-                    // Special Events?
-                    if ($this->showSpecialEvents() && isset($this->_events[$calcYear][$calcMonth][$day])) {
-                        if ($month==2 and $day==8) {
-                            file_put_contents('/tmp/calender.log', $this->_events[$calcYear][$calcMonth][$day]['event'] . PHP_EOL);
-                        }
-//                        $calenderData[$month][$day]['date'].= '    ' . $this->_events[$calcYear][$calcMonth][$day]['event'];
-                        $calenderData[$month][$day]['event'] = $this->_events[$calcYear][$calcMonth][$day]['event'];
-                        if (!($isHoliday) && !($isWeekend) && isset($this->_events[$calcYear][$calcMonth][$day]['color'])) {
-                            $calenderData[$month][$day]['color'] = $this->_events[$calcYear][$calcMonth][$day]['color'];
-                        }
-                    }
-                }
-            }
-        }
-
-        return $calenderData;
-    }
-    
-    protected function _drawAdditionalData($cellData) 
+    public function initRenderer()
     {
-        if (isset($cellData['event']) && !empty($cellData['event'])) {
-            $eventTextExploded = explode("\n", $cellData['event']);
-            $y = $this->getPdfClass()->GetY() + $this->_rowHeight*0.6;
-            $x = $this->getPdfClass()->GetX() - $this->_colWidth*0.96+7;
-            foreach ($eventTextExploded as $text) { 
-                $this->getPdfClass()->Text($x, $y, $text);
-                $y = $y+2;
-            } 
-        }
-        
-        if (isset($cellData['kw']) && !empty($cellData['kw'])) {
-            $this->getPdfClass()->SetFontSize(5);        
-            $this->getPdfClass()->Text($this->getPdfClass()->GetX() + $this->getPdfClass()->getCellMargin()-7.3, 
-                                          $this->getPdfClass()->GetY() + ($this->getPdfClass()->getCellMargin())*1.9, 'KW ' . $cellData['kw']);
-        }      
-        
-        if (isset($cellData['info']) && !empty($cellData['info'])) {
-            $this->getPdfClass()->SetFontSize(5);
-            $this->getPdfClass()->SetFont('', '');
-            $this->getPdfClass()->Text($this->getPdfClass()->GetX() - $this->_colWidth*0.98, 
-                                          $this->getPdfClass()->GetY() + $this->_rowHeight*0.95, $cellData['info']);
-        }
-    }
-    
-    protected function _drawCalenderData($data)
-    {
-        //Data
-        for($row=1; $row<=31; $row++)
-        {
-            for($col=1; $col<=12; $col++) {
-                
-                $dateText = '';
-                if (isset($data[$col][$row]['date'])) {
-                    $dateText = $data[$col][$row]['date'];
-                }
+        $this->initMpdf([
+            'format' => 'A4-L',
+            'margin_left' => 5,
+            'margin_right' => 5,
+            'margin_top' => 10,
+            'margin_bottom' => 0,
+        ]);
+        $this->mpdf->AddPage();
+        $this->mpdf->SetFont('Helvetica');
 
-                $fill = false;
-                if (!empty($data[$col][$row]['color'])) {
-                    if (!empty($dateText)) {
-                        $this->getPdfClass()->SetFont('', $data[$col][$row]['fontwidth']);
-                    }
-                    $rgb = $this->getPdfClass()->hex2rgb($data[$col][$row]['color']);
-                    $this->getPdfClass()->SetFillColor($rgb[0], $rgb[1], $rgb[2]);
-                    $fill = true;
-                }
-                
-                $this->getPdfClass()->SetFontSize(6);        
-                $this->getPdfClass()->Cell($this->_colWidth, $this->_rowHeight , $dateText, 1, 0, '', $fill);
-                $this->_drawAdditionalData($data[$col][$row]);
-                
-                $this->getPdfClass()->SetFont('', '');
-            }
-            $this->getPdfClass()->Ln();
-        }
+        $this->eventRenderer->setPdfRenderClass($this->mpdf);
+        $this->eventRenderer->registerRenderer(new SchoolHolidayRenderer());
+        $this->eventRenderer->registerRenderer(new PublicHolidayRenderer());
     }
-    
-    public function drawCalender()
+
+    public function renderCalendar(string $file = ''): ?string
     {
-        setlocale(LC_TIME, 'de_DE');
-        $this->getPdfClass()->SetLineWidth(0.1);
-        $this->getPdfClass()->SetFont('','B');
-        
-        if (is_null($this->_startYear)) {
-            $year = intval(date('Y'));
+        $this->initRenderer();
+        $this->calculateTableDimensions(count($this->calendarData));
+        $this->validateCalendarData();
+        //TODO: set Calendar object and use decorator to render
+        $this->renderHeader();
+        $this->renderData();
+        $this->renderEvents();
+
+        $redBorder = RenderUtils::hex2rgb(self::COLOR_BORDER_TABLE);
+        $this->mpdf->SetDrawColor($redBorder[0], $redBorder[1], $redBorder[2]);
+        $this->mpdf->Rect(
+            $this->mpdf->lMargin-2,
+            $this->mpdf->tMargin,
+            $this->monthCount * $this->calenderRenderInformation->getColumnWidth() + 2,
+            31 * $this->calenderRenderInformation->getRowHeight() + $this->headerHeight + 2
+        );
+
+        if (!empty($file)) {
+            $this->mpdf->Output($file, Destination::FILE);
+            return '';
         } else {
-            $year = $this->_startYear;
+            return $this->mpdf->Output();
         }
-        $canvasSizeX = $this->getPdfClass()->GetPageWidth();
-        $canvasSizeY = $this->getPdfClass()->GetPageHeight();
-        $this->_colWidth = round(($canvasSizeX-($this->_marginLeft+$this->_marginRight))/12, 3);
-        $this->_rowHeight = round(($canvasSizeY-($this->_calenderStartY+$this->_marginBottom+$this->_headerHeight))/31, 3);
-        
-        $this->getPdfClass()->SetY($this->_calenderStartY);
-    
-        $this->_drawHeader($this->_startMonth-1, $year);
-        $data = $this->_generateCalenderData($this->_startMonth-1, $year, array());
-        $this->_drawCalenderData($data);
-        
-        // draw bigger boxes as outline
-        $this->getPdfClass()->SetY($this->_calenderStartY);
-        $this->getPdfClass()->SetLineWidth(0.4);
-            for($col=0; $col<=11; $col++)
-                $this->getPdfClass()->Cell($this->_colWidth, ($canvasSizeY-($this->_calenderStartY+$this->_marginBottom)), '', 1);
-        
+    }
+
+    private function renderHeader()
+    {
+        $this->mpdf->SetFontSize(self::FONT_SIZE_HEADER);
+        $this->mpdf->SetFont('', 'B');
+        $borderColor = RenderUtils::hex2rgb(self::COLOR_BORDER_HEADER);
+        $textColor = RenderUtils::hex2rgb(self::COLOR_TEXT_HEADER);
+        $this->mpdf->SetDrawColor($borderColor[0], $borderColor[1], $borderColor[2]);
+        $this->mpdf->SetTextColor($textColor[0], $textColor[1], $textColor[2]);
+
+        /** @var Month $month */
+        foreach ($this->calendarData as $key => $month) {
+            $text = !$this->crossYears ? $month->getName() : $month->getName() . ' `' .$month->getYear(true);
+            $this->mpdf->WriteCell(
+                $this->calenderRenderInformation->getColumnWidth() ,
+                $this->headerHeight ,
+                $text,
+                'B',
+                0,
+                'C'
+            );
+        }
+    }
+
+    public function renderData(): void
+    {
+        $this->mpdf->SetFontSize(self::FONT_SIZE_CELL);
+        $this->mpdf->SetTextColor(0, 0, 0);
+        $startHeight = $this->mpdf->tMargin + $this->headerHeight;
+
+        /** @var  Month$month */
+        foreach ($this->calendarData as $key => $month) {
+            /** @var Day $day */
+            foreach ($month->getDays() as $dom => $day) {
+                $fill = 0;
+                $this->mpdf->SetXY(
+                    $this->mpdf->lMargin + ($key * $this->calenderRenderInformation->getColumnWidth() ),
+                    $startHeight + (($dom-1) * $this->calenderRenderInformation->getRowHeight() )
+                );
+
+                $text = $day->getDay() . ' ' . $day->getWeekdayName();
+                $colorData = $this->getDayColorData($day);
+                if ($colorData['fill']) {
+                    $this->mpdf->SetFillColor($colorData['color'][0], $colorData['color'][1], $colorData['color'][2]);
+                }
+
+                $this->mpdf->Cell(
+                    $this->calenderRenderInformation->getColumnWidth() -1,
+                    $this->calenderRenderInformation->getRowHeight()  ,
+                    $text,
+                    'B',
+                    0,
+                    '',
+                    $colorData['fill']);
+            }
+        }
+    }
+
+    private function getDayColorData(Day $day): array
+    {
+        $colorData = [
+            'fill' => false,
+            'color' => [0,0,0]
+        ];
+
+        $dow = $day->getDayOfWeek();
+        if ($day->getDayOfWeek() > 5) {
+            $colorData['fill'] = 1;
+            if (isset($this->fillColorWeekday[$dow])) {
+                $colorData['color'] = RenderUtils::hex2rgb($this->fillColorWeekday[$dow]);
+            }
+        }
+
+        return $colorData;
+    }
+    private function validateCalendarData():void
+    {
+        $this->monthCount = count($this->calendarData);
+        $this->crossYears = $this->calendarData[0]->getYear() != $this->calendarData[$this->monthCount-1]->getYear();
+        $firstDay = $this->calendarData[0]->getFirstDay();
+        $lastDay = $this->calendarData[$this->monthCount-1]->getLastDay();
+        $this->calendarStartsAt = !empty($firstDay) ? $firstDay->getDate() : 0;
+        $this->calendarEndsAt = !empty($lastDay) ? $lastDay->getDate() : 0;
+    }
+
+    /**
+     * @param mixed $calendarData
+     */
+    public function setCalendarData($calendarData): void
+    {
+        $this->calendarData = $calendarData;
+    }
+
+    public function setCalendarEvents($events): void
+    {
+     $this->calendarEvents = $events;
+    }
+
+    private function renderEvents():void
+    {
+        if (empty($this->calendarEvents)) {
+            return;
+        }
+
+        $this->eventRenderer->renderEvents($this->calendarEvents, $this->calenderRenderInformation);
     }
 }
