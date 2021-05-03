@@ -1,12 +1,15 @@
 <?php
 
-namespace App\Renderer\LandscapeYear;
+namespace App\Renderer\EventTypeRenderer\LandscapeYear;
 
 use App\Calendar\Event;
-use App\Renderer\Pdf\CalendarDimension;
+use App\Calendar\Event\Types;
+use App\Renderer\AdditionsRenderer\AbstractAdditionsRenderer;
+use App\Renderer\CalendarRenderInformation;
+use App\Renderer\EventTypeRenderer\AbstractEventTypeRenderer;
 use App\Service\RenderUtils;
 
-class SchoolHolidayRenderer extends AbstractRenderer
+class SchoolHolidayRenderer extends AbstractEventTypeRenderer
 {
     const COLORS_SCHOOL_HOLIDAY = [
         '#11CC11',
@@ -16,9 +19,11 @@ class SchoolHolidayRenderer extends AbstractRenderer
 
     const HOLIDAY_WIDTH = 6;
 
-    public function render(Event $event, CalendarDimension $dimensions, \DateTime $calendarStart, \DateTime $calendarEnd): void
+    public function render(Event $event, CalendarRenderInformation $calendarRenderInformation): void
     {
-        if ($event->isInRange($calendarStart, $calendarEnd)) {
+        if ($event->isInRange(
+            $calendarRenderInformation->getCalendarStartsAt(),
+            $calendarRenderInformation->getCalendarEndsAt())) {
             echo $event->getText() . ' ' . $event->getStart()->format('Y') .
                  ' - ' .  $event->getStart()->format('d.m.') . '-' . $event->getEnd()->format('d.m.') . PHP_EOL;
 
@@ -29,12 +34,12 @@ class SchoolHolidayRenderer extends AbstractRenderer
             $monthEnd = $end->format('m');
 
             for ($i=$monthStart; $i<=$monthEnd; $i++) {
-                $x = $dimensions->getLeft() +
-                    (($i - 1) * $dimensions->getColumnWidth()) +
-                    $dimensions->getColumnWidth() - self::HOLIDAY_WIDTH - 1;
-                $y = ($start->format('d') - 1) * $dimensions->getRowHeight() +
-                    $dimensions->getTop() +
-                    $dimensions->getHeaderHeight();
+                $x = $calendarRenderInformation->getLeft() +
+                    (($i - 1) * $calendarRenderInformation->getColumnWidth()) +
+                    $calendarRenderInformation->getColumnWidth() - self::HOLIDAY_WIDTH - 1;
+                $y = ($start->format('d') - 1) * $calendarRenderInformation->getRowHeight() +
+                    $calendarRenderInformation->getTop() +
+                    $calendarRenderInformation->getHeaderHeight();
 
                 if ($i == $monthEnd) {
                     $days = (int) $end->format('d') - (int) $start->format('d') + 1;
@@ -46,7 +51,7 @@ class SchoolHolidayRenderer extends AbstractRenderer
                     $start = $newStart;
                 }
 
-                $height = $days * $dimensions->getRowHeight();
+                $height = $days * $calendarRenderInformation->getRowHeight();
                 $drawColor = RenderUtils::hex2rgb(self::COLORS_SCHOOL_HOLIDAY[2]);
 
                 $this->mpdf->SetFillColor($drawColor[0], $drawColor[1], $drawColor[2]);
@@ -61,4 +66,8 @@ class SchoolHolidayRenderer extends AbstractRenderer
         }
     }
 
+    public function getRenderType(): string
+    {
+        return Types::EVENT_TYPE_SCHOOL_HOLIDAY;
+    }
 }

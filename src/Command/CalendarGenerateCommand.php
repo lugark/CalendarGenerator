@@ -3,9 +3,8 @@
 namespace App\Command;
 
 use App\Calendar\Calendar;
+use App\Renderer\EventRenderer;
 use App\Renderer\LandscapeYear;
-use App\Renderer\LandscapeYearMpdf;
-use App\Renderer\LandscapeYearTwig;
 use App\Repository\HolidaysRepository;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -70,7 +69,7 @@ class CalendarGenerateCommand extends Command
 
         $io->text('* rendering calendar');
         $io->newLine();
-        $renderer = new LandscapeYearMpdf();
+        $renderer = new LandscapeYear(new EventRenderer());
         $renderer->setCalendarData($calendar->getData());
         /** TODO: do not pass events through calendar - renderer can filter */
         $renderer->setCalendarEvents($calendar->getActiveCalendarEvents());
