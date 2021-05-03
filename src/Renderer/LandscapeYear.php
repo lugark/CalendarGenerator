@@ -36,6 +36,9 @@ class LandscapeYear extends MpdfRendererAbstract
     ];
 
     protected EventRenderer $eventRenderer;
+    protected CalendarRenderInformation $calenderRenderInformation;
+
+
 
     public function __construct(EventRenderer $eventRenderer)
     {
@@ -62,7 +65,7 @@ class LandscapeYear extends MpdfRendererAbstract
     public function renderCalendar(string $file = ''): ?string
     {
         $this->initRenderer();
-        $this->calculateTableDimensions(count($this->calendarData));
+        $this->calenderRenderInformation = $this->calculateTableDimensions(count($this->calendarData));
         $this->validateCalendarData();
         //TODO: set Calendar object and use decorator to render
         $this->renderHeader();
@@ -164,10 +167,14 @@ class LandscapeYear extends MpdfRendererAbstract
     {
         $this->monthCount = count($this->calendarData);
         $this->crossYears = $this->calendarData[0]->getYear() != $this->calendarData[$this->monthCount-1]->getYear();
-        $firstDay = $this->calendarData[0]->getFirstDay();
-        $lastDay = $this->calendarData[$this->monthCount-1]->getLastDay();
-        $this->calendarStartsAt = !empty($firstDay) ? $firstDay->getDate() : 0;
-        $this->calendarEndsAt = !empty($lastDay) ? $lastDay->getDate() : 0;
+
+        if (!empty($this->calenderRenderInformation)) {
+            $firstDay = $this->calendarData[0]->getFirstDay();
+            $lastDay = $this->calendarData[$this->monthCount - 1]->getLastDay();
+            $this->calenderRenderInformation
+                ->setCalendarStartsAt(!empty($firstDay) ? $firstDay->getDate() : 0)
+                ->setCalendarEndsAt(!empty($lastDay) ? $lastDay->getDate() : 0);
+        }
     }
 
     /**

@@ -4,108 +4,93 @@ namespace App\Renderer;
 
 class CalendarRenderInformation
 {
-    /** @var float */
-    private $top;
+    private float $top;
 
-    /** @var float */
-    private $left;
+    private float $left;
 
-    /** @var float */
-    private $headerHeight;
+    private float $headerHeight;
 
-    /** @var float */
-    private $columnWidth;
+    private float $columnWidth;
 
-    /** @var float */
-    private $rowHeight;
+    private float $rowHeight;
 
-    /**
-     * @return float
-     */
+    private \DateTime $calendarStartsAt;
+
+    private \DateTime $calendarEndsAt;
+
     public function getTop(): float
     {
         return $this->top;
     }
 
-    /**
-     * @param float $top
-     * @return CalendarRenderInformation
-     */
     public function setTop(float $top): CalendarRenderInformation
     {
         $this->top = $top;
         return $this;
     }
-
-    /**
-     * @return float
-     */
     public function getLeft(): float
     {
         return $this->left;
     }
 
-    /**
-     * @param float $left
-     * @return CalendarRenderInformation
-     */
     public function setLeft(float $left): CalendarRenderInformation
     {
         $this->left = $left;
         return $this;
     }
 
-    /**
-     * @return float
-     */
     public function getHeaderHeight(): float
     {
         return $this->headerHeight;
     }
 
-    /**
-     * @param float $headerHeight
-     * @return CalendarRenderInformation
-     */
     public function setHeaderHeight(float $headerHeight): CalendarRenderInformation
     {
         $this->headerHeight = $headerHeight;
         return $this;
     }
 
-    /**
-     * @return float
-     */
     public function getColumnWidth(): float
     {
         return $this->columnWidth;
     }
 
-    /**
-     * @param float $columnWidth
-     * @return CalendarRenderInformation
-     */
     public function setColumnWidth(float $columnWidth): CalendarRenderInformation
     {
         $this->columnWidth = $columnWidth;
         return $this;
     }
 
-    /**
-     * @return float
-     */
     public function getRowHeight(): float
     {
         return $this->rowHeight;
     }
 
-    /**
-     * @param float $rowHeight
-     * @return CalendarRenderInformation
-     */
     public function setRowHeight(float $rowHeight): CalendarRenderInformation
     {
         $this->rowHeight = $rowHeight;
+        return $this;
+    }
+
+    public function getCalendarStartsAt(): \DateTime
+    {
+        return $this->calendarStartsAt;
+    }
+
+    public function setCalendarStartsAt(\DateTime $calendarStartsAt): CalendarRenderInformation
+    {
+        $this->calendarStartsAt = $calendarStartsAt;
+        return $this;
+    }
+
+    public function getCalendarEndsAt(): \DateTime
+    {
+        return $this->calendarEndsAt;
+    }
+
+    public function setCalendarEndsAt(\DateTime $calendarEndsAt): CalendarRenderInformation
+    {
+        $this->calendarEndsAt = $calendarEndsAt;
         return $this;
     }
 }

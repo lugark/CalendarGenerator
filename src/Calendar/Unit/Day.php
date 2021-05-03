@@ -4,8 +4,7 @@ namespace App\Calendar\Unit;
 
 class Day
 {
-    /** @var \DateTime */
-    private $date;
+    private \DateTime $date;
 
     public function setDate(\DateTime $date):void
     {
@@ -30,7 +29,7 @@ class Day
         );
     }
 
-    public function getDate()
+    public function getDate(): \DateTime
     {
         return $this->date;
     }

@@ -21,7 +21,9 @@ class SchoolHolidayRenderer extends AbstractEventTypeRenderer
 
     public function render(Event $event, CalendarRenderInformation $calendarRenderInformation): void
     {
-        if ($event->isInRange($calendarStart, $calendarEnd)) {
+        if ($event->isInRange(
+            $calendarRenderInformation->getCalendarStartsAt(),
+            $calendarRenderInformation->getCalendarEndsAt())) {
             echo $event->getText() . ' ' . $event->getStart()->format('Y') .
                  ' - ' .  $event->getStart()->format('d.m.') . '-' . $event->getEnd()->format('d.m.') . PHP_EOL;
 

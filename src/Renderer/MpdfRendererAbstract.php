@@ -32,9 +32,6 @@ abstract class MpdfRendererAbstract implements RendererInterface
     /** @var Calendar */
     protected $calendar;
 
-    /** @var CalendarRenderInformation */
-    protected $calenderRenderInformation;
-
     protected function initMpdf(array $options=[], string $displaymode='fullpage' ): void
     {
         $this->mpdf = new Mpdf($options);
@@ -50,17 +47,18 @@ abstract class MpdfRendererAbstract implements RendererInterface
         $this->mpdf->SetFontSize(6);
     }
 
-    protected function calculateTableDimensions(int $months=12, int $maxRows=31): void
+    protected function calculateTableDimensions(int $months=12, int $maxRows=31): CalendarRenderInformation
     {
         if (empty($this->mpdf)) {
-            return;
+            throw new RendererException('Can not find PDF-Class - required to calculate dimensions');
         }
 
         $canvasSizeX = $this->mpdf->w;
         $canvasSizeY = $this->mpdf->h;
-        $this->calenderRenderInformation = new CalendarRenderInformation();
-        $this->calenderRenderInformation
-           ->setHeaderHeight($this->headerHeight)
+
+        $renderInformation = new CalendarRenderInformation();
+        $renderInformation
+            ->setHeaderHeight($this->headerHeight)
             ->setColumnWidth(round(
                 ($canvasSizeX-($this->marginLeft+$this->marginRight))/$months,
                 3
@@ -72,6 +70,8 @@ abstract class MpdfRendererAbstract implements RendererInterface
             ))
             ->setLeft($this->mpdf->lMargin)
             ->setTop($this->mpdf->tMargin);
+
+        return $renderInformation;
     }
 
     public function setCalendar(Calendar $calendar): void
