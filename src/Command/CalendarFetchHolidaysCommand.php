@@ -33,7 +33,6 @@ class CalendarFetchHolidaysCommand extends Command
             ->setDescription('Fetches holidays from https://deutsche-feiertage-api.de to store in local file')
             ->addArgument('holidayTypes', InputArgument::REQUIRED, 'Which type to fetch - [public, school]')
             ->addOption('year', 'y',InputArgument::OPTIONAL,'The year to be fetched - default "this" year');
-        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

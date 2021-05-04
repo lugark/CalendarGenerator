@@ -18,6 +18,6 @@ class RenderUtils
             $b = hexdec(substr($hex,4,2));
         }
 
-        return array($r, $g, $b);; // returns an array with the rgb values
+        return array($r, $g, $b);
     }
 }
