@@ -34,7 +34,7 @@ class Storage
     {
         $this->dataPath = realpath($dataPath);
         if ($this->dataPath === false) {
-            throw new \Exception('could not read path: ' . $dataPath);
+            throw new StorageException('could not read path: ' . $dataPath);
         }
     }
 
