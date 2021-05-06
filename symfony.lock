@@ -1,4 +1,7 @@
 {
+    "aeon-php/calendar": {
+        "version": "0.18.0"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {

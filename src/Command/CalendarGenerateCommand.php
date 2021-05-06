@@ -2,9 +2,12 @@
 
 namespace App\Command;
 
+use Aeon\Calendar\Gregorian\Year;
 use App\Calendar\Calendar;
 use App\Renderer\EventRenderer;
 use App\Renderer\LandscapeYear;
+use App\Renderer\RenderRequest;
+use App\Renderer\RenderRequest\RequestTypes;
 use App\Repository\HolidaysRepository;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -50,6 +53,7 @@ class CalendarGenerateCommand extends Command
 
         $startDate = new \DateTime($arg1);
         $calendar = new Calendar($startDate);
+        $renderRequest = new RenderRequest(RequestTypes::LANDSCAPE_YEAR, $startDate);
         $io->title('Starting calender generation with startdate ' . $startDate->format('Y-m-d'));
 
         if (!empty($publicHolidaysFor)) {
@@ -69,13 +73,11 @@ class CalendarGenerateCommand extends Command
 
         $io->text('* rendering calendar');
         $io->newLine();
-        $renderer = new LandscapeYear(new EventRenderer());
-        $renderer->setCalendarData($calendar->getData());
+        $renderer = new LandscapeYear($renderRequest, new EventRenderer());
+        #$renderer->setCalendarData($calendar->getData());
         /** TODO: do not pass events through calendar - renderer can filter */
-        $renderer->setCalendarEvents($calendar->getActiveCalendarEvents());
+        #$renderer->setCalendarEvents($calendar->getActiveCalendarEvents());
         $renderer->renderCalendar(realpath(__DIR__ . '/../../') . '/test_direct.pdf');
-
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
 
         return 0;
     }

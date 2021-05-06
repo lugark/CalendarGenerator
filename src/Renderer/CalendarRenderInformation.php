@@ -2,6 +2,9 @@
 
 namespace App\Renderer;
 
+use Aeon\Calendar\Gregorian\DateTime;
+use Aeon\Calendar\Gregorian\TimePeriod;
+
 class CalendarRenderInformation
 {
     private float $top;
@@ -14,10 +17,10 @@ class CalendarRenderInformation
 
     private float $rowHeight;
 
-    private \DateTime $calendarStartsAt;
+    private TimePeriod $timePeriod;
 
-    private \DateTime $calendarEndsAt;
-
+    private bool $crossYear;
+    
     public function getTop(): float
     {
         return $this->top;
@@ -72,25 +75,26 @@ class CalendarRenderInformation
         return $this;
     }
 
-    public function getCalendarStartsAt(): \DateTime
+    public function getCalendarStartsAt(): DateTime
     {
-        return $this->calendarStartsAt;
+        return $this->timePeriod->start();
     }
 
-    public function setCalendarStartsAt(\DateTime $calendarStartsAt): CalendarRenderInformation
+    public function getCalendarEndsAt(): DateTime
     {
-        $this->calendarStartsAt = $calendarStartsAt;
+        return $this->timePeriod->end();
+    }
+
+    public function setCalendarPeriod($timePeriod): CalendarRenderInformation
+    {
+        $this->timePeriod = $timePeriod;
+        $this->crossYear = $timePeriod->start()->year()->number() != $timePeriod->year()->number();
+
         return $this;
     }
 
-    public function getCalendarEndsAt(): \DateTime
+    public function doesCrossYear():bool
     {
-        return $this->calendarEndsAt;
-    }
-
-    public function setCalendarEndsAt(\DateTime $calendarEndsAt): CalendarRenderInformation
-    {
-        $this->calendarEndsAt = $calendarEndsAt;
-        return $this;
+        return $this->crossYear;
     }
 }

@@ -9,6 +9,7 @@
         "ext-curl": "*",
         "ext-iconv": "*",
         "ext-json": "*",
+        "aeon-php/calendar": "^0.18.0",
         "mpdf/mpdf": "^8.0",
         "rybakit/msgpack": "^0.8.0",
         "setasign/fpdf": "^1.8",

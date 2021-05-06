@@ -26,23 +26,19 @@ class LandscapeYear extends MpdfRendererAbstract
     /** @var array<Event> */
     private $calendarEvents;
 
-    private $monthCount = 12;
-
-    private $crossYears = false;
-
     private $fillColorWeekday = [
         6 => self::COLOR_FILL_SA,
         7 => self::COLOR_FILL_SO
     ];
 
     protected EventRenderer $eventRenderer;
+    protected RenderRequest $renderRequest;
     protected CalendarRenderInformation $calenderRenderInformation;
 
-
-
-    public function __construct(EventRenderer $eventRenderer)
+    public function __construct(RenderRequest $renderRequest, EventRenderer $eventRenderer)
     {
         $this->eventRenderer = $eventRenderer;
+        $this->renderRequest = $renderRequest;
     }
 
     public function initRenderer()
@@ -62,11 +58,12 @@ class LandscapeYear extends MpdfRendererAbstract
         $this->eventRenderer->registerRenderer(new PublicHolidayRenderer());
     }
 
-    public function renderCalendar(string $file = ''): ?string
+    public function renderCalendar(): ?string
     {
         $this->initRenderer();
         $this->calenderRenderInformation = $this->calculateTableDimensions(count($this->calendarData));
-        $this->validateCalendarData();
+        $this->calenderRenderInformation->setCalendarPeriod($this->renderRequest->getPeriod());
+        # kann weg $this->validateCalendarData();
         //TODO: set Calendar object and use decorator to render
         $this->renderHeader();
         $this->renderData();
@@ -81,8 +78,8 @@ class LandscapeYear extends MpdfRendererAbstract
             31 * $this->calenderRenderInformation->getRowHeight() + $this->headerHeight + 2
         );
 
-        if (!empty($file)) {
-            $this->mpdf->Output($file, Destination::FILE);
+        if ($this->renderRequest->doRenderToFile()) {
+            $this->mpdf->Output($this->renderRequest->getRenderFile(), Destination::FILE);
             return '';
         } else {
             return $this->mpdf->Output();
@@ -98,9 +95,10 @@ class LandscapeYear extends MpdfRendererAbstract
         $this->mpdf->SetDrawColor($borderColor[0], $borderColor[1], $borderColor[2]);
         $this->mpdf->SetTextColor($textColor[0], $textColor[1], $textColor[2]);
 
+        $includeYear = !$this->calenderRenderInformation->doesCrossYear();
         /** @var Month $month */
         foreach ($this->calendarData as $month) {
-            $text = !$this->crossYears ? $month->getName() : $month->getName() . ' `' .$month->getYear(true);
+            $text = !$includeYear ? $month->getName() : $month->getName() . ' `' .$month->getYear(true);
             $this->mpdf->WriteCell(
                 $this->calenderRenderInformation->getColumnWidth() ,
                 $this->headerHeight ,
@@ -164,8 +162,7 @@ class LandscapeYear extends MpdfRendererAbstract
     }
     private function validateCalendarData():void
     {
-        $this->monthCount = count($this->calendarData);
-        $this->crossYears = $this->calendarData[0]->getYear() != $this->calendarData[$this->monthCount-1]->getYear();
+        $monthCount = $this->renderRequest->monthsToRender();
 
         if (!empty($this->calenderRenderInformation)) {
             $firstDay = $this->calendarData[0]->getFirstDay();
