@@ -14,7 +14,6 @@ class RenderRequest
     const DEFAULT_RENDERED_YEAR = 1;
 
     protected TimePeriod $period;
-    protected int $months;
     protected string $requestType;
     protected bool $renderToFile = true;
     protected string $renderFile = 'calendar.pdf';
@@ -26,22 +25,14 @@ class RenderRequest
         }
 
         if (empty($endDate)) {
-            $endDate = $startDate->add(new DateInterval("P" . self::DEFAULT_RENDERED_MONTHS . "M"));
-            $this->months = self::DEFAULT_RENDERED_MONTHS;
-        } else {
-            $interval = $startDate->diff($endDate);
-            $this->months = $interval->format("m");    
+            $endDate = clone $startDate;
+            $endDate->add(new DateInterval("P" . self::DEFAULT_RENDERED_MONTHS . "M"));
         }
 
         $this->requestType = $requestType;
         $this->period = new TimePeriod(
             DateTime::fromDateTime($startDate),
             DateTime::fromDateTime($endDate));
-    }
-
-    public function monthsToRender(): int
-    {
-        return $this->months;
     }
 
     public function getPeriod(): TimePeriod
@@ -64,9 +55,17 @@ class RenderRequest
         return $this->renderToFile;
     }
 
-    public function setRenderToFile(bool $renderToFile)
+    public function renderToFile(string $filename): RenderRequest
     {
-        $this->renderToFile = $renderToFile;
+        $this->renderToFile = true;
+        $this->renderFile = $filename;
+        return $this;
+    }
+
+    public function disableFileRendering():RenderRequest
+    {
+        $this->renderToFile = false;
+        return $this;
     }
 
 }

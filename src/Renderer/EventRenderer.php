@@ -5,6 +5,7 @@ namespace App\Renderer;
 use App\Calendar\Event;
 use App\Renderer\EventTypeRenderer\EventTypeRendererException;
 use App\Renderer\EventTypeRenderer\EventTypeRendererInterface;
+use App\Renderer\RenderInformation\RenderInformationInterface;
 use Mpdf\Mpdf;
 
 class EventRenderer
@@ -26,7 +27,7 @@ class EventRenderer
         $this->renderer[$eventRenderer->getRenderType()] = $eventRenderer;
     }
 
-    public function renderEvents(array $events, CalendarRenderInformation $calendarRenderInformation)
+    public function renderEvents(array $events, RenderInformationInterface $calendarRenderInformation)
     {
         /** @var Event $event */
         foreach ($events as $event) {

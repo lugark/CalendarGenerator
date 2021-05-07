@@ -4,9 +4,8 @@ namespace App\Renderer\EventTypeRenderer\LandscapeYear;
 
 use App\Calendar\Event;
 use App\Calendar\Event\Types;
-use App\Renderer\AdditionsRenderer\AbstractAdditionsRenderer;
-use App\Renderer\CalendarRenderInformation;
 use App\Renderer\EventTypeRenderer\AbstractEventTypeRenderer;
+use App\Renderer\RenderInformation\RenderInformationInterface;
 use App\Service\RenderUtils;
 
 class SchoolHolidayRenderer extends AbstractEventTypeRenderer
@@ -19,11 +18,11 @@ class SchoolHolidayRenderer extends AbstractEventTypeRenderer
 
     const HOLIDAY_WIDTH = 6;
 
-    public function render(Event $event, CalendarRenderInformation $calendarRenderInformation): void
+    public function render(Event $event, RenderInformationInterface $calendarRenderInformation): void
     {
-        if ($event->isInRange(
-            $calendarRenderInformation->getCalendarStartsAt(),
-            $calendarRenderInformation->getCalendarEndsAt())) {
+        $calenderStart = \DateTime::createFromImmutable($calendarRenderInformation->getCalendarStartsAt()->toDateTimeImmutable());
+        $calenderEnd = \DateTime::createFromImmutable($calendarRenderInformation->getCalendarEndsAt()->toDateTimeImmutable());
+        if ($event->isInRange($calenderStart, $calenderEnd)) {
             echo $event->getText() . ' ' . $event->getStart()->format('Y') .
                  ' - ' .  $event->getStart()->format('d.m.') . '-' . $event->getEnd()->format('d.m.') . PHP_EOL;
 

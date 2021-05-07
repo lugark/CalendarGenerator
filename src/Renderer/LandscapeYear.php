@@ -2,11 +2,13 @@
 
 namespace App\Renderer;
 
+use Aeon\Calendar\Gregorian\Day;
+use Aeon\Calendar\Gregorian\Month;
 use App\Calendar\Event;
-use App\Calendar\Unit\Day;
-use App\Calendar\Unit\Month;
 use App\Renderer\EventTypeRenderer\LandscapeYear\PublicHolidayRenderer;
 use App\Renderer\EventTypeRenderer\LandscapeYear\SchoolHolidayRenderer;
+use App\Renderer\RenderInformation\LandscapeYearInformation;
+use App\Renderer\RenderInformation\RenderInformationInterface;
 use App\Service\RenderUtils;
 use Mpdf\Output\Destination;
 
@@ -20,9 +22,6 @@ class LandscapeYear extends MpdfRendererAbstract
     const COLOR_FILL_SA = '#F8E6E6';
     const COLOR_FILL_SO = '#F3D5D5';
 
-    /** @var Month[] */
-    private $calendarData;
-
     /** @var array<Event> */
     private $calendarEvents;
 
@@ -31,15 +30,7 @@ class LandscapeYear extends MpdfRendererAbstract
         7 => self::COLOR_FILL_SO
     ];
 
-    protected EventRenderer $eventRenderer;
-    protected RenderRequest $renderRequest;
-    protected CalendarRenderInformation $calenderRenderInformation;
-
-    public function __construct(RenderRequest $renderRequest, EventRenderer $eventRenderer)
-    {
-        $this->eventRenderer = $eventRenderer;
-        $this->renderRequest = $renderRequest;
-    }
+    protected LandscapeYearInformation $renderInformation;
 
     public function initRenderer()
     {
@@ -60,22 +51,18 @@ class LandscapeYear extends MpdfRendererAbstract
 
     public function renderCalendar(): ?string
     {
-        $this->initRenderer();
-        $this->calenderRenderInformation = $this->calculateTableDimensions(count($this->calendarData));
-        $this->calenderRenderInformation->setCalendarPeriod($this->renderRequest->getPeriod());
-        # kann weg $this->validateCalendarData();
-        //TODO: set Calendar object and use decorator to render
+        $this->renderInformation = $this->calculateDimensions();
         $this->renderHeader();
         $this->renderData();
-        $this->renderEvents();
+       #$this->renderEvents();
 
         $redBorder = RenderUtils::hex2rgb(self::COLOR_BORDER_TABLE);
         $this->mpdf->SetDrawColor($redBorder[0], $redBorder[1], $redBorder[2]);
         $this->mpdf->Rect(
             $this->mpdf->lMargin-2,
             $this->mpdf->tMargin,
-            $this->monthCount * $this->calenderRenderInformation->getColumnWidth() + 2,
-            31 * $this->calenderRenderInformation->getRowHeight() + $this->headerHeight + 2
+            $this->renderInformation->numberOfMonthsToRender() * $this->renderInformation->getColumnWidth() + 2,
+            31 * $this->renderInformation->getRowHeight() + $this->headerHeight + 2
         );
 
         if ($this->renderRequest->doRenderToFile()) {
@@ -95,14 +82,13 @@ class LandscapeYear extends MpdfRendererAbstract
         $this->mpdf->SetDrawColor($borderColor[0], $borderColor[1], $borderColor[2]);
         $this->mpdf->SetTextColor($textColor[0], $textColor[1], $textColor[2]);
 
-        $includeYear = !$this->calenderRenderInformation->doesCrossYear();
-        /** @var Month $month */
-        foreach ($this->calendarData as $month) {
-            $text = !$includeYear ? $month->getName() : $month->getName() . ' `' .$month->getYear(true);
+        $includeYear = !$this->renderInformation->doesCrossYear();
+
+        foreach ($this->renderInformation->getMonthsToRender() as $month) {
             $this->mpdf->WriteCell(
-                $this->calenderRenderInformation->getColumnWidth() ,
+                $this->renderInformation->getColumnWidth() ,
                 $this->headerHeight ,
-                $text,
+                RenderUtils::getMonthLocalized($month, $includeYear),
                 'B',
                 0,
                 'C'
@@ -114,26 +100,26 @@ class LandscapeYear extends MpdfRendererAbstract
     {
         $this->mpdf->SetFontSize(self::FONT_SIZE_CELL);
         $this->mpdf->SetTextColor(0, 0, 0);
-        $startHeight = $this->mpdf->tMargin + $this->headerHeight;
+        $startHeight = $this->mpdf->tMargin + $this->renderInformation->getHeaderHeight();
 
-        /** @var  Month$month */
-        foreach ($this->calendarData as $key => $month) {
+        /** @var Month $month */
+        foreach ($this->renderInformation->getMonthsToRender() as $month) {
             /** @var Day $day */
-            foreach ($month->getDays() as $dom => $day) {
+            foreach ($month->days()->all() as $day) {
                 $this->mpdf->SetXY(
-                    $this->mpdf->lMargin + ($key * $this->calenderRenderInformation->getColumnWidth() ),
-                    $startHeight + (($dom-1) * $this->calenderRenderInformation->getRowHeight() )
+                    $this->mpdf->lMargin + (($month->number()-1) * $this->renderInformation->getColumnWidth() ),
+                    $startHeight + (($day->number()-1) * $this->renderInformation->getRowHeight() )
                 );
 
-                $text = $day->getDay() . ' ' . $day->getWeekdayName();
+                $text = $day->number() . ' ' . RenderUtils::getDayOfWeekLocalized($day);
                 $colorData = $this->getDayColorData($day);
                 if ($colorData['fill']) {
                     $this->mpdf->SetFillColor($colorData['color'][0], $colorData['color'][1], $colorData['color'][2]);
                 }
 
                 $this->mpdf->Cell(
-                    $this->calenderRenderInformation->getColumnWidth() -1,
-                    $this->calenderRenderInformation->getRowHeight()  ,
+                    $this->renderInformation->getColumnWidth() -1,
+                    $this->renderInformation->getRowHeight()  ,
                     $text,
                     'B',
                     0,
@@ -150,35 +136,15 @@ class LandscapeYear extends MpdfRendererAbstract
             'color' => [0,0,0]
         ];
 
-        $dow = $day->getDayOfWeek();
-        if ($day->getDayOfWeek() > 5) {
+        $weekday = $day->weekDay();
+        if ($weekday->isWeekend()) {
             $colorData['fill'] = 1;
-            if (isset($this->fillColorWeekday[$dow])) {
-                $colorData['color'] = RenderUtils::hex2rgb($this->fillColorWeekday[$dow]);
+            if (isset($this->fillColorWeekday[$weekday->number()])) {
+                $colorData['color'] = RenderUtils::hex2rgb($this->fillColorWeekday[$weekday->number()]);
             }
         }
 
         return $colorData;
-    }
-    private function validateCalendarData():void
-    {
-        $monthCount = $this->renderRequest->monthsToRender();
-
-        if (!empty($this->calenderRenderInformation)) {
-            $firstDay = $this->calendarData[0]->getFirstDay();
-            $lastDay = $this->calendarData[$this->monthCount - 1]->getLastDay();
-            $this->calenderRenderInformation
-                ->setCalendarStartsAt(!empty($firstDay) ? $firstDay->getDate() : 0)
-                ->setCalendarEndsAt(!empty($lastDay) ? $lastDay->getDate() : 0);
-        }
-    }
-
-    /**
-     * @param mixed $calendarData
-     */
-    public function setCalendarData($calendarData): void
-    {
-        $this->calendarData = $calendarData;
     }
 
     public function setCalendarEvents($events): void
@@ -192,6 +158,34 @@ class LandscapeYear extends MpdfRendererAbstract
             return;
         }
 
-        $this->eventRenderer->renderEvents($this->calendarEvents, $this->calenderRenderInformation);
+        $this->eventRenderer->renderEvents($this->calendarEvents, $this->renderInformation);
     }
+
+    public function getRenderInformation(): RenderInformationInterface
+    {
+        return new LandscapeYearInformation();
+    }
+
+    protected function calculateDimensions(): RenderInformationInterface
+    {
+        $canvasSizeX = $this->mpdf->w;
+        $canvasSizeY = $this->mpdf->h;
+
+        /** @var LandscapeYearInformation $renderInformation */
+        $renderInformation =  parent::calculateDimensions();
+        $renderInformation
+            ->setHeaderHeight($this->headerHeight)
+            ->setColumnWidth(round(
+                ($canvasSizeX-($this->marginLeft+$this->marginRight))/$renderInformation->numberOfMonthsToRender(),
+                3
+            ))
+            ->setRowHeight(
+                round(
+                    ($canvasSizeY-($this->calenderStartY+$this->headerHeight))/$renderInformation->getMaxRowsToRender(),
+                    3
+                ));
+
+        return $renderInformation;
+    }
+
 }

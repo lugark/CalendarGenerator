@@ -2,6 +2,9 @@
 
 namespace App\Service;
 
+use Aeon\Calendar\Gregorian\Day;
+use Aeon\Calendar\Gregorian\Month;
+
 class RenderUtils
 {
     public static function hex2rgb($hex): array
@@ -19,5 +22,20 @@ class RenderUtils
         }
 
         return array($r, $g, $b);
+    }
+
+    public static function getMonthLocalized(Month $month, bool $includeYear = false): string
+    {
+        $text = strftime('%B', $month->toDateTimeImmutable()->getTimestamp());
+        if (!$includeYear) {
+            return $text;
+        }
+
+        return $text . ' `' . $month->year()->toDateTimeImmutable()->format('y');
+    }
+
+    public static function getDayOfWeekLocalized(Day $day): string
+    {
+        return strftime('%a', $day->toDateTimeImmutable()->getTimestamp());
     }
 }

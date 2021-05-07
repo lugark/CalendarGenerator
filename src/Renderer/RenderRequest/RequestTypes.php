@@ -6,11 +6,13 @@ use ReflectionClass;
 
 class RequestTypes
 {
-    const LANDSCAPE_YEAR = 'LandscapeYear';
+    const LANDSCAPE_YEAR = 'LandscapeYearInformationAbstract';
 
+    private static $validRequestTypes = [
+        self::LANDSCAPE_YEAR
+    ];
     public static function isValidRequestType(string $type): bool
     {
-        $reflection = new ReflectionClass(RequestTypes::class);
-        return in_array($type, $reflection->getConstants());
+        return in_array($type, self::$validRequestTypes);
     }
 }
