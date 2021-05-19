@@ -45,12 +45,11 @@ class EventNormalizerTest extends TestCase
 
         $eventComplete = new Event(Event\Types::EVENT_TYPE_SCHOOL_HOLIDAY);
         $eventComplete->setText('Complete')
-            ->setStart(new \DateTime('01-01-2020'))
-            ->setEnd(new \DateTime('02-01-2020'));
+            ->setEventPeriod(new \DateTime('01-01-2020'), new \DateTime('02-01-2020'));
 
         $eventCompleteOnlyDate = new Event(Event\Types::EVENT_TYPE_SCHOOL_HOLIDAY);
         $eventCompleteOnlyDate->setText('CompleteOnlyDate')
-            ->setStart(new \DateTime('01-01-2020'));
+            ->setEventPeriod(new \DateTime('01-01-2020'));
 
         return [
             [

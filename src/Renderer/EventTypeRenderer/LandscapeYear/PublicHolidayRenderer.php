@@ -17,8 +17,8 @@ class PublicHolidayRenderer extends AbstractEventTypeRenderer
         $this->mpdf->SetFont('', 'B');
         $this->mpdf->SetTextColor(199, 50, 50);
 
-        $month = $event->getStart()->format('m');
-        $day = $event->getStart()->format('d');
+        $month = $event->getStart()->month()->number();
+        $day = $event->getStart()->day()->number();
 
         $x = $calendarRenderInformation->getLeft() + (($month-1) * $calendarRenderInformation->getColumnWidth());
         $y = $calendarRenderInformation->getTop() +

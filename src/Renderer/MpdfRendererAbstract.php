@@ -70,12 +70,10 @@ abstract class MpdfRendererAbstract implements RendererInterface
             throw new RendererException('Can not find PDF-Class - required to calculate dimensions');
         }
 
-        $renderInformation = $this->getRenderInformation()
+        return $this->getRenderInformation()
             ->setCalendarPeriod($this->renderRequest->getPeriod())
             ->initRenderInformation()
             ->setLeft($this->mpdf->lMargin)
             ->setTop($this->mpdf->tMargin);
-
-        return $renderInformation;
     }
 }

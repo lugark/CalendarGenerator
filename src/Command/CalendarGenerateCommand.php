@@ -74,10 +74,8 @@ class CalendarGenerateCommand extends Command
         $io->text('* rendering calendar');
         $io->newLine();
         $renderer = new LandscapeYear($renderRequest, new EventRenderer());
-        #$renderer->setCalendarData($calendar->getData());
-        /** TODO: do not pass events through calendar - renderer can filter */
-        #$renderer->setCalendarEvents($calendar->getActiveCalendarEvents());
-        $renderer->renderCalendar(realpath(__DIR__ . '/../../') . '/test_direct.pdf');
+        $renderer->setCalendarEvents($calendar->getActiveCalendarEvents());
+        $renderer->renderCalendar();
 
         return 0;
     }

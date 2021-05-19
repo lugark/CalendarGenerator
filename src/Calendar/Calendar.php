@@ -2,6 +2,7 @@
 
 namespace App\Calendar;
 
+use Aeon\Calendar\Gregorian\DateTime;
 use App\Calendar\Event;
 use App\Calendar\Unit\Day;
 use App\Calendar\Unit\Month;
@@ -92,9 +93,8 @@ class Calendar
 
     public function getActiveCalendarEvents(): array
     {
-        $start = $this->startDate;
-        $end = clone $start;
-        $end->modify('+' . count($this->calendarData) . ' month');
+        $start = DateTime::fromDateTime($this->startDate);
+        $end = $start->addMonths(count($this->calendarData));
         return array_filter($this->events, function ($event) use ($start, $end) {
             /** @var Event $event */
             return $event->isInRange($start, $end);

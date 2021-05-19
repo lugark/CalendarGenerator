@@ -40,18 +40,15 @@ class CalendarTest extends TestCase
     public function getEventTestData()
     {
         $futureEvent = new Event(Types::EVENT_TYPE_CUSTOM);
-        $futureEvent->setStart(new \DateTime(strftime('+12 day')));
-        $futureEvent->setEnd(new \DateTime(strftime('+13 day')));
+        $futureEvent->setEventPeriod(new \DateTime(strftime('+12 day')), new \DateTime(strftime('+13 day')));
         $futureEvent->setText('FutureEvent');
 
         $futureEvent2 = new Event(Types::EVENT_TYPE_CUSTOM);
-        $futureEvent2->setStart(new \DateTime(strftime('+13 month')));
-        $futureEvent2->setEnd(new \DateTime(strftime('+14 month')));
+        $futureEvent2->setEventPeriod(new \DateTime(strftime('+13 month')), new \DateTime(strftime('+14 month')));
         $futureEvent2->setText('FutureEvent');
 
         $pastEvent = new Event(Types::EVENT_TYPE_CUSTOM);
-        $pastEvent->setStart(new \DateTime(strftime('-2 day')));
-        $pastEvent->setEnd(new \DateTime(strftime('-1 day')));
+        $pastEvent->setEventPeriod(new \DateTime(strftime('-2 day')), new \DateTime(strftime('-1 day')));
         $pastEvent->setText('FutureEvent');
 
         return [

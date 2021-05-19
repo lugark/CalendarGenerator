@@ -54,7 +54,7 @@ class LandscapeYear extends MpdfRendererAbstract
         $this->renderInformation = $this->calculateDimensions();
         $this->renderHeader();
         $this->renderData();
-       #$this->renderEvents();
+        $this->renderEvents();
 
         $redBorder = RenderUtils::hex2rgb(self::COLOR_BORDER_TABLE);
         $this->mpdf->SetDrawColor($redBorder[0], $redBorder[1], $redBorder[2]);
@@ -171,21 +171,21 @@ class LandscapeYear extends MpdfRendererAbstract
         $canvasSizeX = $this->mpdf->w;
         $canvasSizeY = $this->mpdf->h;
 
-        /** @var LandscapeYearInformation $renderInformation */
-        $renderInformation =  parent::calculateDimensions();
-        $renderInformation
+        /** @var LandscapeYearInformation $landscapeRenderInformation */
+        $landscapeRenderInformation =  parent::calculateDimensions();
+        $landscapeRenderInformation
             ->setHeaderHeight($this->headerHeight)
             ->setColumnWidth(round(
-                ($canvasSizeX-($this->marginLeft+$this->marginRight))/$renderInformation->numberOfMonthsToRender(),
+                ($canvasSizeX-($this->marginLeft+$this->marginRight))/$landscapeRenderInformation->numberOfMonthsToRender(),
                 3
             ))
             ->setRowHeight(
                 round(
-                    ($canvasSizeY-($this->calenderStartY+$this->headerHeight))/$renderInformation->getMaxRowsToRender(),
+                    ($canvasSizeY-($this->calenderStartY+$this->headerHeight))/$landscapeRenderInformation->getMaxRowsToRender(),
                     3
                 ));
 
-        return $renderInformation;
+        return $landscapeRenderInformation;
     }
 
 }
