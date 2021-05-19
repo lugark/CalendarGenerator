@@ -4,20 +4,16 @@ namespace App\Tests\Serializer\Normalizer;
 
 use App\Calendar\Event;
 use App\Serializer\Normalizer\EventNormalizer;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Serializer\Encoder\DecoderInterface;
-use Symfony\Component\Serializer\Encoder\EncoderInterface;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class EventNormalizerTest extends TestCase
 {
 
-    /** @var MockObject */
+    /** @var EventNormalizer */
     protected $sut;
 
     public function setUp()
@@ -29,7 +25,6 @@ class EventNormalizerTest extends TestCase
 
     public function testInterface()
     {
-        $this->assertInstanceOf(NormalizerInterface::class, $this->sut);
         $this->assertInstanceOf(DenormalizerInterface::class, $this->sut);
     }
 
@@ -88,21 +83,5 @@ class EventNormalizerTest extends TestCase
         );
 
         $this->assertEquals($output, $result);
-    }
-
-    public function testSupportsNormalization()
-    {
-        $this->markTestSkipped('skipped because wrong usage');
-        $this->assertTrue($this->sut->supportsNormalization([], Event::class));
-    }
-
-    public function testSupportsNormalizationFail()
-    {
-        $this->assertFalse($this->sut->supportsNormalization([], TestCase::class));
-    }
-
-    public function testNormalize()
-    {
-        $this->assertEmpty($this->sut->normalize(['something' => 'useless']));
     }
 }

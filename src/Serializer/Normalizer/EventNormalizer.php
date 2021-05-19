@@ -8,13 +8,9 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerAwareTrait;
 
-class EventNormalizer implements NormalizerInterface, DenormalizerInterface, SerializerAwareInterface
+class EventNormalizer implements DenormalizerInterface, SerializerAwareInterface
 {
     use SerializerAwareTrait;
-
-    public function normalize($object, string $format = null, array $context = [])
-    {
-    }
 
     public function denormalize($data, string $type, string $format = null, array $context = [])
     {
@@ -38,11 +34,6 @@ class EventNormalizer implements NormalizerInterface, DenormalizerInterface, Ser
         $entity->setText($data['name']);
 
         return $entity;
-    }
-
-    public function supportsNormalization($data, string $format = null)
-    {
-        return is_subclass_of($format, Event::class);
     }
 
     public function supportsDenormalization($data, string $type, string $format = null)
