@@ -5,6 +5,7 @@ namespace App\Renderer;
 use Aeon\Calendar\Gregorian\Day;
 use Aeon\Calendar\Gregorian\Month;
 use App\Calendar\Event;
+use App\Calendar\Events;
 use App\Renderer\EventTypeRenderer\LandscapeYear\PublicHolidayRenderer;
 use App\Renderer\EventTypeRenderer\LandscapeYear\SchoolHolidayRenderer;
 use App\Renderer\RenderInformation\LandscapeYearInformation;
@@ -22,7 +23,7 @@ class LandscapeYear extends MpdfRendererAbstract
     const COLOR_FILL_SA = '#F8E6E6';
     const COLOR_FILL_SO = '#F3D5D5';
 
-    /** @var array<Event> */
+    /** @var Events */
     private $calendarEvents;
 
     private $fillColorWeekday = [
@@ -158,7 +159,13 @@ class LandscapeYear extends MpdfRendererAbstract
             return;
         }
 
-        $this->eventRenderer->renderEvents($this->calendarEvents, $this->renderInformation);
+        $this->eventRenderer->renderEvents(
+            $this->calendarEvents->getEventsByRange(
+                $this->renderInformation->getCalendarStartsAt(),
+                $this->renderInformation->getCalendarEndsAt()
+            ),
+            $this->renderInformation
+        );
     }
 
     public function getRenderInformation(): RenderInformationInterface

@@ -9,9 +9,6 @@ use PHPUnit\Framework\TestCase;
 class EventTest extends TestCase
 {
 
-
-    /**
-     */
     public function testEventCreation()
     {
         $start = new \DateTime('now');
@@ -79,6 +76,7 @@ class EventTest extends TestCase
     public function testInRange($start, $end, $testStart, $testEnd, bool $isInRange)
     {
         $eventTest = new Event(Event\Types::EVENT_TYPE_CUSTOM);
+        $this->assertFalse($eventTest->isInRange($testStart, $testEnd));
         $eventTest->setEventPeriod($start, $end);
 
         $this->assertEquals($isInRange, $eventTest->isInRange($testStart, $testEnd));

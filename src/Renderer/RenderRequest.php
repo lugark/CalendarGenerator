@@ -21,7 +21,7 @@ class RenderRequest
     public function __construct(string $requestType, \DateTime $startDate, \DateTime $endDate = null)
     {
         if (!RequestTypes::isValidRequestType($requestType)) {
-            throw new Exception('Not a valid render request type: ' . $requestType);
+            throw new RendererException('Not a valid render request type: ' . $requestType);
         }
 
         if (empty($endDate)) {

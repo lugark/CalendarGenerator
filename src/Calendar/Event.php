@@ -3,7 +3,6 @@
 namespace App\Calendar;
 
 use Aeon\Calendar\Gregorian\DateTime;
-use Aeon\Calendar\Gregorian\Day;
 use Aeon\Calendar\Gregorian\TimePeriod;
 use App\Calendar\Event\Types;
 

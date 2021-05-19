@@ -4,6 +4,7 @@ namespace App\Command;
 
 use Aeon\Calendar\Gregorian\Year;
 use App\Calendar\Calendar;
+use App\Calendar\Events;
 use App\Renderer\EventRenderer;
 use App\Renderer\LandscapeYear;
 use App\Renderer\RenderRequest;
@@ -52,29 +53,26 @@ class CalendarGenerateCommand extends Command
         $schoolHolidaysFor = strtoupper($input->getOption('schoolholidays'));
 
         $startDate = new \DateTime($arg1);
-        $calendar = new Calendar($startDate);
         $renderRequest = new RenderRequest(RequestTypes::LANDSCAPE_YEAR, $startDate);
         $io->title('Starting calender generation with startdate ' . $startDate->format('Y-m-d'));
 
+        $events = new Events();
         if (!empty($publicHolidaysFor)) {
             $io->text('* loading holidays for ' . $publicHolidaysFor);
             $holidays = $this->holidayRepo->getPublicHolidays($publicHolidaysFor);
-            $calendar->addEvents($holidays);
+            $events->addEvents($holidays);
         }
 
         if (!empty($schoolHolidaysFor)) {
             $io->text('* loading school vacations for ' . $schoolHolidaysFor);
             $vacations = $this->holidayRepo->getSchoolHolidays($schoolHolidaysFor);
-            $calendar->addEvents($vacations);
+            $events->addEvents($vacations);
         }
-
-        $io->text('* generating calendar');
-        $calendar->generateCalendarData();
 
         $io->text('* rendering calendar');
         $io->newLine();
         $renderer = new LandscapeYear($renderRequest, new EventRenderer());
-        $renderer->setCalendarEvents($calendar->getActiveCalendarEvents());
+        $renderer->setCalendarEvents($events);
         $renderer->renderCalendar();
 
         return 0;
