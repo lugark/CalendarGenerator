@@ -1,49 +1,57 @@
 <?php
 
-namespace App\Service;
+namespace App\ApiDataLoader;
 
 use Symfony\Component\DomCrawler\Crawler;
+use App\Service\FederalService;
+use App\ApiDataLoader\Loader\Response;
+use Exception;
 
-class ApiCrawler
+class ApiDataLoader
 {
-    const DEUTSCHE_FEIERTAGE_URL = 'https://deutsche-feiertage-api.de/api/v1/';
     const SCHULFERIEN_ORG_URL = 'https://www.schulferien.org/deutschland/ferien/';
 
     /** @var FederalService  */
     private $federalService;
 
-    public function __construct(FederalService $federalService)
+    /** @var <LoaderInterface></LoaderInterface> */
+    private $loader;
+
+    /** @var <TransformerInterface></TransformerInterface> */
+    private $transformer;
+
+    public function __construct(FederalService $federalService, iterable $loader, iterable $transformer)
     {
         $this->federalService = $federalService;
-    }
 
-    public function fetchFromDFAPI(string $year): array
-    {
-        $ch = curl_init(self::DEUTSCHE_FEIERTAGE_URL . $year);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                'Content-Type: application/json',
-                'X-DFA-Token: dfa')
-        );
-
-        $result = curl_exec($ch);
-        $data = json_decode($result, true);
-        if ($data['result']) {
-            foreach ($data['holidays'] as $key => $holiday) {
-                $regions = [];
-                foreach ($holiday['holiday']['regions'] as $region => $hasHoliday) {
-                    $region = $region === 'bay' ? 'BY' : strtoupper($region);
-                    if ($hasHoliday) {
-                        $regions[] = $region;
-                    }
-                }
-                $data['holidays'][$key]['holiday']['regions'] = $regions;
-            }
-            return $data['holidays'];
+        foreach ($loader as $instance) {
+            $this->loader[$instance->getType()] = $instance;
         }
 
-        return [];
+        foreach ($transformer as $instance) {
+            $this->transformer[$instance->getType()] = $instance;
+        }
+    }
+
+    public function fetchData(string $type, string $year): array
+    {
+        if (!array_key_exists($type, $this->loader)) {
+            throw new DataLoaderException('Can not find api-loader for ' . $type);
+        }
+
+        /** @var Response */
+        $response = $this->loader[$type]->fetch($year);
+        if (!$response->isSuccess()) {
+            throw new DataLoaderException('Error loading data: ' . $response->getResponse());
+        }
+
+        if (array_key_exists($type, $this->transformer)) {
+            $data = $this->transformer[$type]($response);
+        } else {
+            $data = $response->getData();
+        }
+
+        return $data;
     }
 
     public function fetchDataFromSF(string  $crawlYear): array
