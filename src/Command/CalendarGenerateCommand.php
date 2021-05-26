@@ -2,8 +2,6 @@
 
 namespace App\Command;
 
-use Aeon\Calendar\Gregorian\Year;
-use App\Calendar\Calendar;
 use App\Calendar\Events;
 use App\Renderer\EventRenderer;
 use App\Renderer\LandscapeYear;
@@ -16,7 +14,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Twig\Environment;
 
 class CalendarGenerateCommand extends Command
 {
@@ -25,10 +22,9 @@ class CalendarGenerateCommand extends Command
     /** @var HolidaysRepository */
     protected $holidayRepo;
 
-    public function __construct(HolidaysRepository $holidaysRepository, Environment $twig)
+    public function __construct(HolidaysRepository $holidaysRepository)
     {
         $this->holidayRepo = $holidaysRepository;
-        $this->twig = $twig;
         parent::__construct();
     }
 

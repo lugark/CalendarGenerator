@@ -2,8 +2,6 @@
 
 namespace App\Renderer;
 
-use Aeon\Calendar\Gregorian\Month;
-use App\Calendar\Calendar;
 use App\Renderer\RenderInformation\RenderInformationInterface;
 use Mpdf\Mpdf;
 
@@ -31,9 +29,6 @@ abstract class MpdfRendererAbstract implements RendererInterface
     /** @var Mpdf */
     protected $mpdf;
 
-    /** @var Calendar */
-    protected $calendar;
-
     protected EventRenderer $eventRenderer;
     protected RenderRequest $renderRequest;
 
@@ -57,11 +52,6 @@ abstract class MpdfRendererAbstract implements RendererInterface
 
         $this->mpdf->SetDisplayMode($displaymode);
         $this->mpdf->SetFontSize(6);
-    }
-
-    public function setCalendar(Calendar $calendar): void
-    {
-        $this->calendar = $calendar;
     }
 
     protected function calculateDimensions(): RenderInformationInterface
