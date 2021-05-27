@@ -2,9 +2,11 @@
 
 namespace App\Command;
 
-use App\Calendar\Calendar;
+use App\Calendar\Events;
 use App\Renderer\EventRenderer;
 use App\Renderer\LandscapeYear;
+use App\Renderer\RenderRequest;
+use App\Renderer\RenderRequest\RequestTypes;
 use App\Repository\HolidaysRepository;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -12,7 +14,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Twig\Environment;
 
 class CalendarGenerateCommand extends Command
 {
@@ -21,10 +22,9 @@ class CalendarGenerateCommand extends Command
     /** @var HolidaysRepository */
     protected $holidayRepo;
 
-    public function __construct(HolidaysRepository $holidaysRepository, Environment $twig)
+    public function __construct(HolidaysRepository $holidaysRepository)
     {
         $this->holidayRepo = $holidaysRepository;
-        $this->twig = $twig;
         parent::__construct();
     }
 
@@ -33,7 +33,6 @@ class CalendarGenerateCommand extends Command
         $this
             ->setDescription('Add a short description for your command')
             ->addArgument('startdate', InputArgument::REQUIRED, 'Argument description')
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
             ->addOption('publicholidays', null, InputOption::VALUE_OPTIONAL, 'Use public holidays for federal country')
             ->addOption('schoolholidays', null, InputOption::VALUE_OPTIONAL, 'Use school holidays for federal country')
         ;
@@ -49,33 +48,27 @@ class CalendarGenerateCommand extends Command
         $schoolHolidaysFor = strtoupper($input->getOption('schoolholidays'));
 
         $startDate = new \DateTime($arg1);
-        $calendar = new Calendar($startDate);
+        $renderRequest = new RenderRequest(RequestTypes::LANDSCAPE_YEAR, $startDate);
         $io->title('Starting calender generation with startdate ' . $startDate->format('Y-m-d'));
 
+        $events = new Events();
         if (!empty($publicHolidaysFor)) {
             $io->text('* loading holidays for ' . $publicHolidaysFor);
             $holidays = $this->holidayRepo->getPublicHolidays($publicHolidaysFor);
-            $calendar->addEvents($holidays);
+            $events->addEvents($holidays);
         }
 
         if (!empty($schoolHolidaysFor)) {
             $io->text('* loading school vacations for ' . $schoolHolidaysFor);
             $vacations = $this->holidayRepo->getSchoolHolidays($schoolHolidaysFor);
-            $calendar->addEvents($vacations);
+            $events->addEvents($vacations);
         }
-
-        $io->text('* generating calendar');
-        $calendar->generateCalendarData();
 
         $io->text('* rendering calendar');
         $io->newLine();
         $renderer = new LandscapeYear(new EventRenderer());
-        $renderer->setCalendarData($calendar->getData());
-        /** TODO: do not pass events through calendar - renderer can filter */
-        $renderer->setCalendarEvents($calendar->getActiveCalendarEvents());
-        $renderer->renderCalendar(realpath(__DIR__ . '/../../') . '/test_direct.pdf');
-
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
+        $renderer->setCalendarEvents($events);
+        $renderer->renderCalendar($renderRequest);
 
         return 0;
     }

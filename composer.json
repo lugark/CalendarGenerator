@@ -2,13 +2,12 @@
     "name": "lugark/calendar-generator",
     "description": "to generate pdf calendars with custom events & holidays",
     "type": "project",
-    "license": "proprietary",
+    "license": "MIT",
     "require": {
         "php": "^7.4",
-        "ext-ctype": "*",
         "ext-curl": "*",
-        "ext-iconv": "*",
         "ext-json": "*",
+        "aeon-php/calendar": "^0.18.0",
         "mpdf/mpdf": "^8.0",
         "rybakit/msgpack": "^0.8.0",
         "setasign/fpdf": "^1.8",
@@ -18,7 +17,6 @@
         "symfony/flex": "^1.12",
         "symfony/framework-bundle": "5.2.*",
         "symfony/serializer-pack": "^1.0",
-        "symfony/twig-bundle": "5.2.*",
         "symfony/yaml": "5.2.*"
     },
     "require-dev": {

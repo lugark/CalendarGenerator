@@ -3,8 +3,7 @@
 namespace App\Renderer\EventTypeRenderer;
 
 use App\Calendar\Event;
-use App\Renderer\CalendarRenderInformation;
-use App\Renderer\EventRenderer;
+use App\Renderer\RenderInformation\RenderInformationInterface;
 
 interface EventTypeRendererInterface
 {
@@ -12,7 +11,7 @@ interface EventTypeRendererInterface
 
     public function render(
         Event $event,
-        CalendarRenderInformation $calendarRenderInformation
+        RenderInformationInterface $calendarRenderInformation
     ): void;
 
     public function getRenderType(): string;

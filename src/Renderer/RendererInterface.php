@@ -2,9 +2,13 @@
 
 namespace App\Renderer;
 
+use App\Renderer\RenderInformation\RenderInformationInterface;
+
 interface RendererInterface
 {
-    public function renderCalendar(string $file = ''): ?string;
-    public function setCalendarData($calendarData): void;
+    public function renderCalendar(RenderRequest $renderRequest): ?string;
     public function setCalendarEvents($events): void;
+
+    public function initRenderer();
+    public function getRenderInformation(): RenderInformationInterface;
 }
