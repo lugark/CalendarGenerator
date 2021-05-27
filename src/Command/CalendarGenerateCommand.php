@@ -33,7 +33,6 @@ class CalendarGenerateCommand extends Command
         $this
             ->setDescription('Add a short description for your command')
             ->addArgument('startdate', InputArgument::REQUIRED, 'Argument description')
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
             ->addOption('publicholidays', null, InputOption::VALUE_OPTIONAL, 'Use public holidays for federal country')
             ->addOption('schoolholidays', null, InputOption::VALUE_OPTIONAL, 'Use school holidays for federal country')
         ;
@@ -67,9 +66,9 @@ class CalendarGenerateCommand extends Command
 
         $io->text('* rendering calendar');
         $io->newLine();
-        $renderer = new LandscapeYear($renderRequest, new EventRenderer());
+        $renderer = new LandscapeYear(new EventRenderer());
         $renderer->setCalendarEvents($events);
-        $renderer->renderCalendar();
+        $renderer->renderCalendar($renderRequest);
 
         return 0;
     }

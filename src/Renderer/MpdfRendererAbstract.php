@@ -32,10 +32,9 @@ abstract class MpdfRendererAbstract implements RendererInterface
     protected EventRenderer $eventRenderer;
     protected RenderRequest $renderRequest;
 
-    public function __construct(RenderRequest $renderRequest, EventRenderer $eventRenderer)
+    public function __construct(EventRenderer $eventRenderer)
     {
         $this->eventRenderer = $eventRenderer;
-        $this->renderRequest = $renderRequest;
         $this->initRenderer();
     }
 

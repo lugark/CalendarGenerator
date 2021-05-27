@@ -50,8 +50,9 @@ class LandscapeYear extends MpdfRendererAbstract
         $this->eventRenderer->registerRenderer(new PublicHolidayRenderer());
     }
 
-    public function renderCalendar(): ?string
+    public function renderCalendar(RenderRequest $renderRequest): ?string
     {
+        $this->renderRequest = $renderRequest;
         $this->renderInformation = $this->calculateDimensions();
         $this->renderHeader();
         $this->renderData();
