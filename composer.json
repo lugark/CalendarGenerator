@@ -17,7 +17,7 @@
         "symfony/flex": "^1.12",
         "symfony/framework-bundle": "5.2.*",
         "symfony/serializer-pack": "^1.0",
-        "symfony/yaml": "5.2.*"
+        "symfony/yaml": "5.3.*"
     },
     "require-dev": {
         "symfony/phpunit-bridge": "^5.2"
