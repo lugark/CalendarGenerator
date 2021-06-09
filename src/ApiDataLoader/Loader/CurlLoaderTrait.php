@@ -26,15 +26,24 @@ trait CurlLoaderTrait
         $responseCode = $this->client->getInfo(CURLINFO_RESPONSE_CODE);
         $this->client->close();
 
+        return $this->getValidatedResponse($responseCode, $result);
+    }
+
+    private function getValidatedResponse(int $responseCode, string $result): Response
+    {
         if ($responseCode !== 200) {
             return new Response(false, $responseCode, $result, []);
         }
 
+        $status = true;
         $data = json_decode($result, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
-            return new Response(false, json_last_error(), json_last_error_msg(), []);
+            $data = [];
+            $result = json_last_error_msg();
+            $responseCode = json_last_error();
+            $status = false;
         }
 
-        return new Response(true, $responseCode, $result, $data);
+        return new Response($status, $responseCode, $result, $data);
     }
 }

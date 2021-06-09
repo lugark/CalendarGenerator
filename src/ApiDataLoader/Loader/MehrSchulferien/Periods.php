@@ -10,8 +10,6 @@ class Periods extends AbstractApi
     const TYPES_FIELD = 'holiday_or_vacation_type_id';
     const LOCATIONS_FIELD = 'location_id';
 
-    private array $periods = [];
-
     public function getApiSubPath(): string
     {
         return self::PERIODS_PATH;
