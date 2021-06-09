@@ -9,7 +9,9 @@ The goal is to have a printable PDF with customized calendar including german sc
 
 ## Dependencies
 - PHP 7.4 or higher
+- Symfony 5.3
 - "Feiertage" can be fetched from https://deutsche-feiertage-api.de/
+- "Schulferien" can be fetched from [mehr-schulferien.de](https://www.mehr-schulferien.de/)
 - [aeon-php/calendar](https://github.com/aeon-php/calendar) to iterate/calculate calendar
 - [mpdf/mpdf](https://github.com/mpdf/mpdf) to generate the PDF 
 ## Installaion
@@ -37,4 +39,9 @@ To also render holidays you can fetch the dates for public holidays from "Deutsc
 
 ```
 bin/console calendar:fetch:holidays --year 2021 public
+```
+
+To fetch the dates for german school vacations from [mehr-schulferien.de](https://www.mehr-schulferien.de/)
+```
+bin/console calendar:fetch:holidays --year 2021 school
 ```
