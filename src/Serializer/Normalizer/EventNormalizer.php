@@ -20,18 +20,23 @@ class EventNormalizer implements DenormalizerInterface, SerializerAwareInterface
 
         $eventType = isset($context['eventType']) ? $context['eventType'] : '';
         $entity = new Event($eventType);
+        $entity->setText($data['name']);
+
         if (isset($data['date']) && !isset($data['start'])) {
-            $entity->setStart($this->serializer->denormalize($data['date'], \DateTime::class));
+            $date = ($this->serializer->denormalize($data['date'], \DateTime::class));
+            $entity->setEventPeriod($date, $date);
+            return $entity;
         }
 
         if (isset($data['start'])) {
-            $entity->setStart($this->serializer->denormalize($data['start'], \DateTime::class));
-        }
-        if (isset($data['end'])) {
-            $entity->setEnd($this->serializer->denormalize($data['end'], \DateTime::class));
-        }
+            if (!isset($data['end'])) {
+                $data['end'] = $data['start'];
+            }
+            $start = $this->serializer->denormalize($data['start'], \DateTime::class);
+            $end = $this->serializer->denormalize($data['end'], \DateTime::class);
 
-        $entity->setText($data['name']);
+            $entity->setEventPeriod($start, $end);
+        }
 
         return $entity;
     }

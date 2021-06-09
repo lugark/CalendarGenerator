@@ -4,9 +4,8 @@ namespace App\Renderer\EventTypeRenderer\LandscapeYear;
 
 use App\Calendar\Event;
 use App\Calendar\Event\Types;
-use App\Renderer\AdditionsRenderer\AbstractAdditionsRenderer;
-use App\Renderer\CalendarRenderInformation;
 use App\Renderer\EventTypeRenderer\AbstractEventTypeRenderer;
+use App\Renderer\RenderInformation\RenderInformationInterface;
 use App\Service\RenderUtils;
 
 class SchoolHolidayRenderer extends AbstractEventTypeRenderer
@@ -19,36 +18,29 @@ class SchoolHolidayRenderer extends AbstractEventTypeRenderer
 
     const HOLIDAY_WIDTH = 6;
 
-    public function render(Event $event, CalendarRenderInformation $calendarRenderInformation): void
+    public function render(Event $event, RenderInformationInterface $calendarRenderInformation): void
     {
-        if ($event->isInRange(
-            $calendarRenderInformation->getCalendarStartsAt(),
-            $calendarRenderInformation->getCalendarEndsAt())) {
             echo $event->getText() . ' ' . $event->getStart()->format('Y') .
                  ' - ' .  $event->getStart()->format('d.m.') . '-' . $event->getEnd()->format('d.m.') . PHP_EOL;
 
 
-            $start = $event->getStart();
-            $end = $event->getEnd();
-            $monthStart = $start->format('m');
-            $monthEnd = $end->format('m');
+            $startDay = $event->getStart()->day();
+            $endDay = $event->getEnd()->day();
+            $monthEnd = $endDay->month()->number();
 
-            for ($i=$monthStart; $i<=$monthEnd; $i++) {
+            for ($i=$startDay->month()->number(); $i<=$monthEnd; $i++) {
                 $x = $calendarRenderInformation->getLeft() +
                     (($i - 1) * $calendarRenderInformation->getColumnWidth()) +
                     $calendarRenderInformation->getColumnWidth() - self::HOLIDAY_WIDTH - 1;
-                $y = ($start->format('d') - 1) * $calendarRenderInformation->getRowHeight() +
+                $y = ($startDay->number() - 1) * $calendarRenderInformation->getRowHeight() +
                     $calendarRenderInformation->getTop() +
                     $calendarRenderInformation->getHeaderHeight();
 
                 if ($i == $monthEnd) {
-                    $days = (int) $end->format('d') - (int) $start->format('d') + 1;
+                    $days = $endDay->number() - $startDay->number() + 1;
                 } else {
-                    $newStart = clone $start;
-                    $newStart->modify('last day of this month');
-                    $days = (int) $newStart->format('d') - (int) $start->format('d') + 1;
-                    $newStart->modify('+1 day');
-                    $start = $newStart;
+                    $days = $startDay->month()->lastDay()->number() - $startDay->number() + 1;
+                    $startDay = $startDay->plusMonths(1)->month()->firstDay();
                 }
 
                 $height = $days * $calendarRenderInformation->getRowHeight();
@@ -63,7 +55,6 @@ class SchoolHolidayRenderer extends AbstractEventTypeRenderer
                     "F"
                 );
             }
-        }
     }
 
     public function getRenderType(): string

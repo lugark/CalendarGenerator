@@ -2,16 +2,12 @@
 
 namespace App\Calendar;
 
+use Aeon\Calendar\Gregorian\DateTime;
+use Aeon\Calendar\Gregorian\TimePeriod;
 use App\Calendar\Event\Types;
 
 class Event
 {
-    /** @var \DateTime */
-    private $start;
-
-    /** @var \DateTime */
-    private $end;
-
     private $text;
 
     /** @var string */
@@ -20,31 +16,11 @@ class Event
     /** @var array */
     private $additionalInformation;
 
+    private TimePeriod $period;
+
     public function __construct($type=Types::EVENT_TYPE_CUSTOM)
     {
         $this->type = $type;
-    }
-
-    public function getStart(): \DateTime
-    {
-        return $this->start;
-    }
-
-    public function setStart(\DateTime $start): Event
-    {
-        $this->start = $start;
-        return $this;
-    }
-
-    public function getEnd(): ?\DateTime
-    {
-        return $this->end;
-    }
-
-    public function setEnd(\DateTime $end): Event
-    {
-        $this->end = $end;
-        return $this;
     }
 
     public function getText(): string
@@ -69,17 +45,36 @@ class Event
         return $this;
     }
 
-    public function isInRange(\DateTime $start, \DateTime $end): bool
+    public function isInRange(DateTime $start, DateTime $end): bool
     {
-        if (empty($this->end)) {
-            return ($this->start >= $start);
+        if (empty($this->period)) {
+            return false;
         }
 
-        return ($this->start >= $start) && ($this->end <= $end);
+        return ($this->period->start()->isAfterOrEqual($start) && $this->period->end()->isBeforeOrEqual($end));
     }
 
     public function getType()
     {
         return $this->type;
+    }
+
+    public function setEventPeriod(\DateTime $start, \DateTime $end=null)
+    {
+        if (empty($end)) {
+            $end = clone $start;
+        }
+
+        $this->period = new TimePeriod(DateTime::fromDateTime($start), DateTime::fromDateTime($end));
+    }
+
+    public function getStart(): DateTime
+    {
+        return $this->period->start();
+    }
+
+    public function getEnd(): DateTime
+    {
+        return $this->period->end();
     }
 }

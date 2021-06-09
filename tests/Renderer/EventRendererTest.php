@@ -3,9 +3,10 @@
 namespace App\Tests\Renderer;
 
 use App\Calendar\Event;
-use App\Renderer\CalendarRenderInformation;
+use App\Renderer\RenderInformation\AbstractRenderInformation;
 use App\Renderer\EventRenderer;
 use App\Renderer\EventTypeRenderer\EventTypeRendererInterface;
+use App\Renderer\RenderInformation\RenderInformationInterface;
 use Mpdf\Mpdf;
 use PHPUnit\Framework\TestCase;
 
@@ -14,8 +15,11 @@ class EventRendererTest extends TestCase
     /** @var EventRenderer */
     protected $sut;
 
-    /** @var EventRendererInterface */
+    /** @var EventTypeRendererInterface */
     protected $mockRenderer;
+
+    /** @var RenderInformationInterface */
+    protected $mockRenderInformation;
 
     public function setUp()
     {
@@ -31,7 +35,10 @@ class EventRendererTest extends TestCase
                             ->setMockClassName('TestRenderer')
                             ->getMock();
         $this->mockRenderer->method('getRenderType')
-            ->will($this->returnValue('Test'));                        
+            ->will($this->returnValue('Test'));
+
+        $this->mockRenderInformation = $this->getMockBuilder(AbstractRenderInformation::class)
+            ->getMock();
     }
 
     public function testRegisterRenderer()
@@ -49,7 +56,7 @@ class EventRendererTest extends TestCase
             ->method('render');
         
         $this->sut->registerRenderer($this->mockRenderer);
-        $this->sut->renderEvents([$event], new CalendarRenderInformation());
+        $this->sut->renderEvents([$event], $this->mockRenderInformation);
     }
 
     public function testRenderFail()
@@ -58,6 +65,6 @@ class EventRendererTest extends TestCase
         $this->expectException('App\Renderer\EventTypeRenderer\EventTypeRendererException');
         
         $this->sut->registerRenderer($this->mockRenderer);
-        $this->sut->renderEvents([$event], new CalendarRenderInformation());
+        $this->sut->renderEvents([$event], $this->mockRenderInformation);
     }    
 }

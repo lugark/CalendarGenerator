@@ -2,7 +2,7 @@
 
 namespace App\Renderer;
 
-use App\Calendar\Calendar;
+use App\Renderer\RenderInformation\RenderInformationInterface;
 use Mpdf\Mpdf;
 
 abstract class MpdfRendererAbstract implements RendererInterface
@@ -29,8 +29,14 @@ abstract class MpdfRendererAbstract implements RendererInterface
     /** @var Mpdf */
     protected $mpdf;
 
-    /** @var Calendar */
-    protected $calendar;
+    protected EventRenderer $eventRenderer;
+    protected RenderRequest $renderRequest;
+
+    public function __construct(EventRenderer $eventRenderer)
+    {
+        $this->eventRenderer = $eventRenderer;
+        $this->initRenderer();
+    }
 
     protected function initMpdf(array $options=[], string $displaymode='fullpage' ): void
     {
@@ -47,35 +53,16 @@ abstract class MpdfRendererAbstract implements RendererInterface
         $this->mpdf->SetFontSize(6);
     }
 
-    protected function calculateTableDimensions(int $months=12, int $maxRows=31): CalendarRenderInformation
+    protected function calculateDimensions(): RenderInformationInterface
     {
         if (empty($this->mpdf)) {
             throw new RendererException('Can not find PDF-Class - required to calculate dimensions');
         }
 
-        $canvasSizeX = $this->mpdf->w;
-        $canvasSizeY = $this->mpdf->h;
-
-        $renderInformation = new CalendarRenderInformation();
-        $renderInformation
-            ->setHeaderHeight($this->headerHeight)
-            ->setColumnWidth(round(
-                ($canvasSizeX-($this->marginLeft+$this->marginRight))/$months,
-                3
-            ))
-            ->setRowHeight(
-                round(
-                    ($canvasSizeY-($this->calenderStartY+$this->headerHeight))/$maxRows,
-                    3
-            ))
+        return $this->getRenderInformation()
+            ->setCalendarPeriod($this->renderRequest->getPeriod())
+            ->initRenderInformation()
             ->setLeft($this->mpdf->lMargin)
             ->setTop($this->mpdf->tMargin);
-
-        return $renderInformation;
-    }
-
-    public function setCalendar(Calendar $calendar): void
-    {
-        $this->calendar = $calendar;
     }
 }

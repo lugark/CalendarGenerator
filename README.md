@@ -1,5 +1,5 @@
 # CalendarGenerator
-
+[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.4-8892BF.svg)](https://php.net/)
 [![Travis CI](https://img.shields.io/travis/com/lugark/CalendarGenerator?label=TravisCI)](https://travis-ci.com/github/lugark/CalendarGenerator)
 [![CodeCov](https://img.shields.io/codecov/c/gh/lugark/CalendarGenerator?label=CodeCov)](https://codecov.io/gh/lugark/CalendarGenerator)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=lugark_CalendarGenerator&metric=alert_status)](https://sonarcloud.io/dashboard?id=lugark_CalendarGenerator)
@@ -10,6 +10,8 @@ The goal is to have a printable PDF with customized calendar including german sc
 ## Dependencies
 - PHP 7.4 or higher
 - "Feiertage" can be fetched from https://deutsche-feiertage-api.de/
+- [aeon-php/calendar](https://github.com/aeon-php/calendar) to iterate/calculate calendar
+- [mpdf/mpdf](https://github.com/mpdf/mpdf) to generate the PDF 
 ## Installaion
 ```
 composer install
