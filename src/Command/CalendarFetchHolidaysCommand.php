@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\ApiDataLoader\Loader\MehrSchulferienApi;
 use App\Repository\HolidaysRepository;
 use App\ApiDataLoader\ApiDataLoader;
 use App\ApiDataLoader\Loader\DeutscheFeiertageApi;
@@ -55,6 +56,10 @@ class CalendarFetchHolidaysCommand extends Command
             }
             $this->holidayRepo->savePublicHolidays($result);
             $io->success('Successfully loaded data from https://deutsche-feiertage-api.de');
+        }
+
+        if (in_array('school', $holidayTypes)) {
+            $result = $this->apiCrawler->fetchData(MehrSchulferienApi::LOADER_TYPE, '2020');
         }
 
         return 0;

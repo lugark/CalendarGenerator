@@ -11,7 +11,7 @@ class DeutscheFeiertageApi implements TransformerInterface
     public function __invoke(Response $response)
     {
         $data = $response->getData();
-        if (!$response->isSuccess() || !$data['result']) {
+        if (!$response->isSuccess() || !isset($data['result'])) {
             return [];
         }
         

@@ -2,6 +2,9 @@
 
 namespace App\ApiDataLoader\Loader;
 
+/**
+ * @codeCoverageIgnore
+ */
 class Response
 {
     /** @var int */

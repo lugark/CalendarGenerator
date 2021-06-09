@@ -1,0 +1,28 @@
+{
+  "data": [
+    {
+      "ends_on": "2020-04-03",
+      "holiday_or_vacation_type_id": 9,
+      "id": 1,
+      "is_public_holiday": false,
+      "is_school_vacation": true,
+      "is_valid_for_everybody": false,
+      "is_valid_for_students": true,
+      "location_id": 2,
+      "starts_on": "2020-03-16",
+      "updated_at": "2020-03-20T09:58:27"
+    },
+    {
+      "ends_on": "2020-04-03",
+      "holiday_or_vacation_type_id": 9,
+      "id": 2,
+      "is_public_holiday": false,
+      "is_school_vacation": true,
+      "is_valid_for_everybody": false,
+      "is_valid_for_students": true,
+      "location_id": 3,
+      "starts_on": "2020-03-16",
+      "updated_at": "2020-03-20T09:58:27"
+    }
+  ]
+}

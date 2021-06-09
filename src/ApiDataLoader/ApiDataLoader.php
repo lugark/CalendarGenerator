@@ -54,6 +54,10 @@ class ApiDataLoader
         return $data;
     }
 
+    /**
+     * @deprecated
+     * @codeCoverageIgnore
+     */
     public function fetchDataFromSF(string  $crawlYear): array
     {
         $values = $this->crawlSFWebsite($crawlYear);
@@ -68,6 +72,10 @@ class ApiDataLoader
         return $vacations;
     }
 
+    /**
+     * @deprecated
+     * @codeCoverageIgnore
+     */
     private function parseSFWebsiteDates(string $date, string $year): array
     {
         $parsedDate = [];
@@ -83,6 +91,10 @@ class ApiDataLoader
         return $parsedDate;
     }
 
+    /**
+     * @deprecated
+     * @codeCoverageIgnore
+     */
     private function crawlSFWebsite(string $crawlYear): array
     {
         $ch = curl_init(self::SCHULFERIEN_ORG_URL . $crawlYear);
