@@ -16,7 +16,7 @@ class DeutscheFeiertageApiTransformerTest extends TestCase
     public function testGetType()
     {
         $sut = new DeutscheFeiertageApi();
-        $this->assertEquals(DeutscheFeiertageApi::TRANSFORMER_TYPE, $sut->getType());
+        $this->assertEquals(\App\ApiDataLoader\Loader\DeutscheFeiertageApi::LOADER_TYPE, $sut->getType());
     }
 
     public function testSuccessTransform()

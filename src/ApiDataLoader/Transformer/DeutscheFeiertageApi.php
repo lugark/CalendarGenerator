@@ -2,12 +2,11 @@
 
 namespace App\ApiDataLoader\Transformer;
 
+use App\ApiDataLoader\Loader\DeutscheFeiertageApi as DeutscheFeiertageApiLoader;
 use App\ApiDataLoader\Loader\Response;
 
 class DeutscheFeiertageApi implements TransformerInterface
 {
-    const TRANSFORMER_TYPE = 'deutsche_feiertage_api';
-
     public function __invoke(Response $response)
     {
         $data = $response->getData();
@@ -30,6 +29,6 @@ class DeutscheFeiertageApi implements TransformerInterface
 
     public function getType(): string
     {
-        return self::TRANSFORMER_TYPE;
+        return DeutscheFeiertageApiLoader::LOADER_TYPE;
     }
 }

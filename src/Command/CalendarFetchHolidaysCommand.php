@@ -52,14 +52,19 @@ class CalendarFetchHolidaysCommand extends Command
         if (in_array('public', $holidayTypes)) {
             $result = [];
             foreach ($years as $year) {
-                $result = array_merge($this->apiCrawler->fetchData(DeutscheFeiertageApi::LOADER_TYPE, $year), $result);
+                $result[] = array_merge($this->apiCrawler->fetchData(DeutscheFeiertageApi::LOADER_TYPE, $year), $result);
             }
-            $this->holidayRepo->savePublicHolidays($result);
+            $this->holidayRepo->savePublicHolidays(array_merge(...$result));
             $io->success('Successfully loaded data from https://deutsche-feiertage-api.de');
         }
 
         if (in_array('school', $holidayTypes)) {
-            $result = $this->apiCrawler->fetchData(MehrSchulferienApi::LOADER_TYPE, '2020');
+            $result = [];
+            foreach ($years as $year) {
+                $result[] = $this->apiCrawler->fetchData(MehrSchulferienApi::LOADER_TYPE, $year);
+            }
+            $this->holidayRepo->saveSchoolHolidays(array_merge(...$result));
+            $io->success('Successfully loaded data from https://mehr-schulferien.de');
         }
 
         return 0;

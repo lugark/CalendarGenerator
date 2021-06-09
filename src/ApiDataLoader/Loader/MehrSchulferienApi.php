@@ -28,7 +28,13 @@ class MehrSchulferienApi implements LoaderInterface
             return $response;
         }
 
-        $data = $response->getData()['data'];
+        $data = array_filter(
+            $response->getData()['data'],
+            function($period) use ($year) {
+                return (strpos($period['starts_on'], $year) !== false) || (strpos($period['ends_on'], $year) !== false);
+            }
+        );
+
         foreach ($data as $key => $period) {
             $data[$key]['type'] = $this->typesApi->getType(intval($period[Periods::TYPES_FIELD]));
             $data[$key]['location'] = $this->locationsApi->getLocation(intval($period[Periods::LOCATIONS_FIELD]));
