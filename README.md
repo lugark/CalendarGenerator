@@ -3,7 +3,7 @@
 [![Travis CI](https://img.shields.io/travis/com/lugark/CalendarGenerator?label=TravisCI)](https://travis-ci.com/github/lugark/CalendarGenerator)
 [![CodeCov](https://img.shields.io/codecov/c/gh/lugark/CalendarGenerator?label=CodeCov)](https://codecov.io/gh/lugark/CalendarGenerator)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=lugark_CalendarGenerator&metric=alert_status)](https://sonarcloud.io/dashboard?id=lugark_CalendarGenerator)
-
+![CI](://github.com/lugark/CalendarGenerator/workflows/Integrate/badge.svg)
 The goal is to have a printable PDF with customized calendar including german school holidays and/or public holidays
 
 ## Dependencies
