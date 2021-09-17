@@ -27,11 +27,18 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: 7.4
-          extension: zip, json
+          extensions: curl, json
+          #ini-values: pcov.directory=api #optional, see above for usage.
+          #coverage: pcov
 
       - name: Install dependencies
         if: steps.composer-cache.outputs.cache-hit != 'true'
         run: composer install --prefer-dist --no-interaction --no-suggest
 
+      #- name: Setup PCOV
+      #  run: |
+      #    composer require pcov/clobber
+      #    vendor/bin/pcov clobber
+
       - name: Run unittests
-        run: vendor/bin/simple-phpuni
+        run: XDEBUG_MODE=coverage bin/phpunit  --coverage-clover coverage.xml --coverage-text
