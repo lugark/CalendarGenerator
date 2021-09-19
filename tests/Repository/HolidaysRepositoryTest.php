@@ -5,13 +5,11 @@ namespace App\Tests\Repository;
 use App\Calendar\Event;
 use App\Repository\HolidaysRepository;
 use App\Service\Storage\Storage;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class HolidaysRepositoryTest extends TestCase
 {
-    /** @var MockObject */
-    protected $storageMock;
+    protected Storage $storage;
 
     public function setUp(): void
     {
