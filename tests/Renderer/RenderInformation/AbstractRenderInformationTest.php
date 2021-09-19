@@ -11,7 +11,7 @@ class AbstractRenderInformationTest extends TestCase
 {
     protected AbstractRenderInformation $sut;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->sut = $this->getMockForAbstractClass(AbstractRenderInformation::class);

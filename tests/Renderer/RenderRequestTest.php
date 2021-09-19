@@ -11,7 +11,7 @@ class RenderRequestTest extends TestCase
 {
     protected RenderRequest $sut;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
     }

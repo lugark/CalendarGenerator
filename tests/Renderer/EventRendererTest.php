@@ -21,7 +21,7 @@ class EventRendererTest extends TestCase
     /** @var RenderInformationInterface */
     protected $mockRenderInformation;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $mpdfMock = $this->getMockBuilder(Mpdf::class)

@@ -14,7 +14,7 @@ class DeutscheFeiertageApiTest extends TestCase
 
     private $curlRequestMock;
 
-    public function setUp()
+    public function setUp(): void 
     {
         parent::setUp();
         $this->curlRequestMock = $this->getMockBuilder(CurlRequest::class)

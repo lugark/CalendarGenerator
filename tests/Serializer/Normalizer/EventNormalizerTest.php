@@ -16,7 +16,7 @@ class EventNormalizerTest extends TestCase
     /** @var EventNormalizer */
     protected $sut;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->sut = new EventNormalizer();
