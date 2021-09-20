@@ -1,16 +1,31 @@
-name: Integrate
+name: CI
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
+  - push
+  - pull_request
 
 jobs:
-  build:
+  tests:
     name: Build
 
-    runs-on: ubuntu-latest
+    env:
+      PHP_EXTENSIONS: json, curl, zip
+      PHP_INI_VALUES: memory_limit=-1
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+
+        php-version:
+          - "7.4"
+
+        coverage-driver:
+          - "pcov"
+          - "xdebug3"
+
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout code
@@ -26,19 +41,15 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 7.4
-          extensions: curl, json
-          #ini-values: pcov.directory=api #optional, see above for usage.
-          coverage: pcov
+          php-version: ${{ matrix.php-version }}
+          coverage: ${{ matrix.coverage-driver }}
+          extensions: ${{ env.PHP_EXTENSIONS }}
+          ini-values: ${{ env.PHP_INI_VALUES }}
+          tools: none
 
       - name: Install dependencies
         if: steps.composer-cache.outputs.cache-hit != 'true'
-        run: composer install --prefer-dist --no-interaction --no-suggest
-
-      #- name: Setup PCOV
-      #  run: |
-      #    composer require pcov/clobber
-      #    vendor/bin/pcov clobber
+        run: composer install --no-interaction --no-suggest
 
       - name: Run unittests
         run: XDEBUG_MODE=coverage bin/phpunit  --coverage-clover coverage.xml --coverage-text
