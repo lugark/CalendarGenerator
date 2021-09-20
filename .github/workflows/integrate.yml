@@ -21,10 +21,6 @@ jobs:
         php-version:
           - "7.4"
 
-        coverage-driver:
-          - "pcov"
-          - "xdebug3"
-
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -42,14 +38,13 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          coverage: ${{ matrix.coverage-driver }}
+          coverage: pcov
           extensions: ${{ env.PHP_EXTENSIONS }}
           ini-values: ${{ env.PHP_INI_VALUES }}
-          tools: none
 
       - name: Install dependencies
         if: steps.composer-cache.outputs.cache-hit != 'true'
         run: composer install --no-interaction --no-suggest
 
       - name: Run unittests
-        run: XDEBUG_MODE=coverage bin/phpunit  --coverage-clover coverage.xml --coverage-text
+        run: bin/phpunit  --coverage-clover coverage.xml --coverage-text
