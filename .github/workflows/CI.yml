@@ -40,9 +40,6 @@ jobs:
       - name: Run unittests
         run: bin/phpunit  --coverage-clover reports/coverage.xml --log-junit reports/phpunit_report.xml
 
-      - name: Fix coverage-reports
-        run: sed -i 's#/home/runner/work/CalendarGenerator/CalendarGenerator/##g' reports/coverage.xml; sed -i 's#/home/runner/work/CalendarGenerator/CalendarGenerator/##g' reports/phpunit_report.xml
-
       - name: Send code coverage report to Codecov.io
         uses: codecov/codecov-action@v2
         with:
@@ -50,30 +47,3 @@ jobs:
           flags: unittests # optional
           files: ./coverage.xml
 
-      - uses: actions/upload-artifact@v2
-        with:
-          name: test-reports
-          path: reports/
-          retention-days: 1
-
-  sonarcloud:
-    needs: tests
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          # Disabling shallow clone is recommended for improving relevancy of reporting
-          fetch-depth: 0
-
-      - uses: actions/download-artifact@v2
-        with:
-          name: test-reports
-
-      - name: testPath
-        run: ls -lah; pwd
-
-      - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
