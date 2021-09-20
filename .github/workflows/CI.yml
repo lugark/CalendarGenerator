@@ -38,7 +38,7 @@ jobs:
         run: composer install --no-interaction --no-suggest
 
       - name: Run unittests
-        run: bin/phpunit  --coverage-clover coverage.xml
+        run: bin/phpunit  --coverage-clover reports/coverage.xml --log-junit reports/phpunit_report.xml
 
       - name: Send code coverage report to Codecov.io
         uses: codecov/codecov-action@v2
@@ -47,13 +47,25 @@ jobs:
           flags: unittests # optional
           files: ./coverage.xml
 
+      - uses: actions/upload-artifact@v2
+        with:
+          name: test-reports
+          path: reports/
+          retention-days: 1
+
   sonarcloud:
+    needs: tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
           # Disabling shallow clone is recommended for improving relevancy of reporting
           fetch-depth: 0
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: test-reports
+
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         env:
