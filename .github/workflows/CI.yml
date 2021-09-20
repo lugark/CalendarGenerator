@@ -5,8 +5,8 @@ on:
   - pull_request
 
 jobs:
-  setup:
-    name: Setup
+  tests:
+    name: Unittests & Coverage-Report
 
     env:
       PHP_EXTENSIONS: json, curl, zip
@@ -43,15 +43,12 @@ jobs:
         if: steps.composer-cache.outputs.cache-hit != 'true'
         run: composer install --no-interaction --no-suggest
 
-  tests:
-    name: Run Unittests
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
       - name: Run unittests
-        run: bin/phpunit  --coverage-clover coverage.xml --coverage-text
+        run: bin/phpunit  --coverage-clover coverage.xml
 
       - name: Send code coverage report to Codecov.io
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          flags: unittests # optional
+          files: ./coverage.xml
