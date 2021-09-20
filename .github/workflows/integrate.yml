@@ -5,8 +5,8 @@ on:
   - pull_request
 
 jobs:
-  tests:
-    name: Build
+  setup:
+    name: Setup
 
     env:
       PHP_EXTENSIONS: json, curl, zip
@@ -43,6 +43,11 @@ jobs:
         if: steps.composer-cache.outputs.cache-hit != 'true'
         run: composer install --no-interaction --no-suggest
 
+  tests:
+    name: Run Unittests
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
       - name: Run unittests
         run: bin/phpunit  --coverage-clover coverage.xml --coverage-text
 
