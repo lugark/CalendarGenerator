@@ -12,12 +12,6 @@ jobs:
       PHP_EXTENSIONS: json, curl, zip
       PHP_INI_VALUES: memory_limit=-1
 
-    strategy:
-      fail-fast: false
-      matrix:
-        php-version:
-          - "7.4"
-
     runs-on: ubuntu-latest
 
     steps:
@@ -34,7 +28,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-version }}
+          php-version: 7.4
           coverage: pcov
           extensions: ${{ env.PHP_EXTENSIONS }}
           ini-values: ${{ env.PHP_INI_VALUES }}
@@ -60,11 +54,6 @@ jobs:
         with:
           # Disabling shallow clone is recommended for improving relevancy of reporting
           fetch-depth: 0
-          args: >
-            -Dsonar.sources=src/
-            -Dsonar.test.exclusions=tests/**
-            -Dsonar.tests=tests/
-            -Dsonar.verbose=true
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         env:
