@@ -40,8 +40,8 @@ jobs:
       - name: Run unittests
         run: bin/phpunit  --coverage-clover reports/coverage.xml --log-junit reports/phpunit_report.xml
 
-      - name: testPath
-        run: ls -lah; pwd
+      - name: Fix coverage-reports
+        run: sed -i 's#/home/runner/work/CalendarGenerator/CalendarGenerator/##g' reports/coverage.xml; sed -i 's#/home/runner/work/CalendarGenerator/CalendarGenerator/##g' reports/phpunit_report.xml
 
       - name: Send code coverage report to Codecov.io
         uses: codecov/codecov-action@v2
