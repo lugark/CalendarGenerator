@@ -40,6 +40,9 @@ jobs:
       - name: Run unittests
         run: bin/phpunit  --coverage-clover reports/coverage.xml --log-junit reports/phpunit_report.xml
 
+      - name: testPath
+        run: ls -lah; pwd
+
       - name: Send code coverage report to Codecov.io
         uses: codecov/codecov-action@v2
         with:
@@ -65,6 +68,9 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: test-reports
+
+      - name: testPath
+        run: ls -lah; pwd
 
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
