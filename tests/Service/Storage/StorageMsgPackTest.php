@@ -12,7 +12,7 @@ class StorageMsgPackTest extends TestCase
 {
     /** @var Storage */
     protected $sut;
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         $public = json_decode(file_get_contents(__DIR__ . '/fixture/publicHolidays.json'), true);
         $f = fopen(__DIR__ . '/fixture/publicHolidays.mpack', 'w+b');
@@ -27,7 +27,7 @@ class StorageMsgPackTest extends TestCase
         fclose($f);
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         array_map('unlink', glob("/tmp/*" . MsgPackWriter::FILE_ENDING));
@@ -35,7 +35,7 @@ class StorageMsgPackTest extends TestCase
         $this->sut->setDataPath(realpath(__DIR__ . '/fixture/'));
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->sut = null;
         parent::tearDown();

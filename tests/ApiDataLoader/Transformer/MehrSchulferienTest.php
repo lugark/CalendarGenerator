@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 class MehrSchulferienTest extends TestCase
 {
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
     }

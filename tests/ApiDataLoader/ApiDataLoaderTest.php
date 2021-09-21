@@ -20,7 +20,7 @@ class ApiDataLoaderTest extends TestCase
     private $loaderMock;
     private $transformMock;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->loaderMock = $this->getMockBuilder(LoaderInterface::class)

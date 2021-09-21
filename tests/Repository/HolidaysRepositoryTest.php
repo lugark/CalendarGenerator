@@ -5,15 +5,13 @@ namespace App\Tests\Repository;
 use App\Calendar\Event;
 use App\Repository\HolidaysRepository;
 use App\Service\Storage\Storage;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class HolidaysRepositoryTest extends TestCase
 {
-    /** @var MockObject */
-    protected $storageMock;
+    protected Storage $storage;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->storageMock = $this->getMockBuilder(Storage::class)
@@ -21,7 +19,7 @@ class HolidaysRepositoryTest extends TestCase
             ->getMock();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->storageMock = null;
         parent::tearDown();
@@ -30,8 +28,7 @@ class HolidaysRepositoryTest extends TestCase
     public function testSaveSchoolHolidays()
     {
         $this->storageMock->expects($this->once())
-            ->method('writeSchoolHolidays')
-            ->willReturn(true);
+            ->method('writeSchoolHolidays');
         $sut = new HolidaysRepository($this->storageMock);
         $sut->saveSchoolHolidays([]);
     }
@@ -39,8 +36,7 @@ class HolidaysRepositoryTest extends TestCase
     public function testSavePublicHolidays()
     {
         $this->storageMock->expects($this->once())
-            ->method('writePublicHolidays')
-            ->willReturn(true);
+            ->method('writePublicHolidays');
         $sut = new HolidaysRepository($this->storageMock);
         $sut->savePublicHolidays([]);
     }
