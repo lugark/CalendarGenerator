@@ -1,4 +1,4 @@
-name: CI (new)
+name: CI
 
 on:
   - push
@@ -70,7 +70,7 @@ jobs:
 
       - name: Fix coverage-reports path
         run:  sed -i 's#/home/runner/work/CalendarGenerator/CalendarGenerator#/github/workspace#g' coverage.xml; sed -i 's#/home/runner/work/CalendarGenerator/CalendarGenerator#/github/workspace#g' phpunit_report.xml
-        
+
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         env:
