@@ -1,4 +1,4 @@
-name: CI
+name: Sonarqube-Scan
 
 on:
   workflow_run:
