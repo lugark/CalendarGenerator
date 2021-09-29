@@ -1,14 +1,13 @@
 name: Sonarqube-Scan
 
 on:
-  workflow_run:
+    workflow_run:
         types:
             - completed
         workflows:
             - 'CI'
 
 jobs:
-
   sonarcloud:
     needs: tests
     runs-on: ubuntu-latest
