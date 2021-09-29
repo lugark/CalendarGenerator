@@ -12,6 +12,7 @@ jobs:
     uses: lugark/CalendarGenerator/.github/workflows/PhpUnit.yml@v1
 
   codecov:
+    steps:
       - uses: actions/download-artifact@v2
         name: Download reports-artifacts 
         with:
