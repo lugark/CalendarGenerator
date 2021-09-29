@@ -9,7 +9,7 @@ on:
 
 jobs:
   tests:
-    uses: lugark/CalendarGenerator/.github/workflows/PhpUnit.yml
+    uses: lugark/CalendarGenerator/.github/workflows/PhpUnit.yml@v1
 
   codecov:
       - uses: actions/download-artifact@v2
