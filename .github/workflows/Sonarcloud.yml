@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  workflow_run:
+        types:
+            - completed
+        workflows:
+            - 'CI'
+
+jobs:
+
+  sonarcloud:
+    needs: tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          # Disabling shallow clone is recommended for improving relevancy of reporting
+          fetch-depth: 0
+
+      - uses: actions/download-artifact@v2
+        name: Download reports-artifacts 
+        with:
+          name: test-reports
+
+      - name: Fix coverage-reports path
+        run:  sed -i 's#/home/runner/work/CalendarGenerator/CalendarGenerator#/github/workspace#g' coverage.xml; sed -i 's#/home/runner/work/CalendarGenerator/CalendarGenerator#/github/workspace#g' phpunit_report.xml
+
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
