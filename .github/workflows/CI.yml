@@ -12,6 +12,7 @@ jobs:
     uses: lugark/CalendarGenerator/.github/workflows/PhpUnit.yml@5a3a06081d120261d71e0266af5e6da35a3cd3aa
 
   codecov:
+    needs: tests
     runs-on: ubuntu-latest
     steps:      
       - uses: actions/download-artifact@v2
