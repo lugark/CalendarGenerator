@@ -4,7 +4,7 @@ namespace App\Tests\Service;
 
 use Aeon\Calendar\Gregorian\Day;
 use Aeon\Calendar\Gregorian\Month;
-use App\Service\RenderUtils;
+use Calendar\Pdf\RendererBundle\Renderer\RenderUtils;
 use PHPUnit\Framework\TestCase;
 
 class RenderUtilsTest extends TestCase

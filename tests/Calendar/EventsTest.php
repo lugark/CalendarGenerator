@@ -3,9 +3,9 @@
 namespace App\Tests\Calendar;
 
 use Aeon\Calendar\Gregorian\DateTime;
-use App\Calendar\Event;
-use App\Calendar\EventException;
-use App\Calendar\Events;
+use Calendar\Pdf\RendererBundle\Event;
+use Calendar\Pdf\RendererBundle\EventException;
+use Calendar\Pdf\RendererBundle\Events;
 use PHPUnit\Framework\TestCase;
 
 class EventsTest extends TestCase
@@ -20,7 +20,7 @@ class EventsTest extends TestCase
         for ($i=0; $i<3; $i++) {
             $end = clone $start;
             $end->add(new \DateInterval('P2D'));
-            $event = new Event(Event\Types::EVENT_TYPE_CUSTOM);
+            $event = new Event(\Calendar\Pdf\RendererBundle\Types::EVENT_TYPE_CUSTOM);
             $event->setEventPeriod($start, $end);
             $events[]=$event;
             $start = $end;

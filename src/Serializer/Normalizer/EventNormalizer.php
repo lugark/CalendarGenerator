@@ -2,7 +2,7 @@
 
 namespace App\Serializer\Normalizer;
 
-use App\Calendar\Event;
+use Calendar\Pdf\RendererBundle\Event\Event;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerAwareTrait;

@@ -2,12 +2,11 @@
 
 namespace App\Tests\Serializer\Normalizer;
 
-use App\Calendar\Event;
 use App\Serializer\Normalizer\EventNormalizer;
+use Calendar\Pdf\RendererBundle\Event;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Serializer;
 
 class EventNormalizerTest extends TestCase
@@ -40,14 +39,14 @@ class EventNormalizerTest extends TestCase
 
     public function denormalizeProvider()
     {
-        $eventOnlyName = new Event(Event\Types::EVENT_TYPE_SCHOOL_HOLIDAY);
+        $eventOnlyName = new Event(\Calendar\Pdf\RendererBundle\Types::EVENT_TYPE_SCHOOL_HOLIDAY);
         $eventOnlyName->setText('TestEvent');
 
-        $eventComplete = new Event(Event\Types::EVENT_TYPE_SCHOOL_HOLIDAY);
+        $eventComplete = new Event(\Calendar\Pdf\RendererBundle\Types::EVENT_TYPE_SCHOOL_HOLIDAY);
         $eventComplete->setText('Complete')
             ->setEventPeriod(new \DateTime('01-01-2020'), new \DateTime('02-01-2020'));
 
-        $eventCompleteOnlyDate = new Event(Event\Types::EVENT_TYPE_SCHOOL_HOLIDAY);
+        $eventCompleteOnlyDate = new Event(\Calendar\Pdf\RendererBundle\Types::EVENT_TYPE_SCHOOL_HOLIDAY);
         $eventCompleteOnlyDate->setText('CompleteOnlyDate')
             ->setEventPeriod(new \DateTime('01-01-2020'));
 
@@ -78,7 +77,7 @@ class EventNormalizerTest extends TestCase
             $input,
             Event::class,
             null,
-            ['eventType' => Event\Types::EVENT_TYPE_SCHOOL_HOLIDAY]
+            ['eventType' => \Calendar\Pdf\RendererBundle\Types::EVENT_TYPE_SCHOOL_HOLIDAY]
         );
 
         $this->assertEquals($output, $result);

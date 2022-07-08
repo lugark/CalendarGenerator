@@ -3,7 +3,7 @@
 namespace App\Tests\Calendar;
 
 use Aeon\Calendar\Gregorian\DateTime;
-use App\Calendar\Event;
+use Calendar\Pdf\RendererBundle\Event;
 use PHPUnit\Framework\TestCase;
 
 class EventTest extends TestCase
@@ -15,7 +15,7 @@ class EventTest extends TestCase
         $end = new \DateTime('now');
         $text = 'Test';
         $additionalInfo = [];
-        $eventType = Event\Types::EVENT_TYPE_CUSTOM;
+        $eventType = \Calendar\Pdf\RendererBundle\Types::EVENT_TYPE_CUSTOM;
 
         $eventTest = new Event($eventType);
         $eventTest->setText($text);
@@ -75,7 +75,7 @@ class EventTest extends TestCase
      */
     public function testInRange($start, $end, $testStart, $testEnd, bool $isInRange)
     {
-        $eventTest = new Event(Event\Types::EVENT_TYPE_CUSTOM);
+        $eventTest = new Event(\Calendar\Pdf\RendererBundle\Types::EVENT_TYPE_CUSTOM);
         $this->assertFalse($eventTest->isInRange($testStart, $testEnd));
         $eventTest->setEventPeriod($start, $end);
 

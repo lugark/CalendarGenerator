@@ -2,12 +2,12 @@
 
 namespace App\Command;
 
-use App\Calendar\Events;
-use App\Renderer\EventRenderer;
-use App\Renderer\LandscapeYear;
-use App\Renderer\RenderRequest;
-use App\Renderer\RenderRequest\RequestTypes;
 use App\Repository\HolidaysRepository;
+use Calendar\Pdf\RendererBundle\Event\Events;
+use Calendar\Pdf\RendererBundle\Renderer\EventRenderer;
+use Calendar\Pdf\RendererBundle\Renderer\LandscapeYear;
+use Calendar\Pdf\RendererBundle\Renderer\RenderRequest;
+use Calendar\Pdf\RendererBundle\Renderer\RenderRequest\RequestTypes;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -66,6 +66,20 @@ class CalendarGenerateCommand extends Command
 
         $io->text('* rendering calendar');
         $io->newLine();
+        $renderer = Renderer::factory($renderRequest);
+        /**
+         * public static factory(RenderRequest $renderRequest): RenderInterface
+         * {
+         *   switch $renderRequest->getRenderType()
+         *      case RequestTypes::SCHOOL_YEAR_SOMETHING_ELSE:
+         *      case RequestTypes::SCHOOL_YEAR:
+         *      case RequestTypes::LANDSCAPE_YEAR:
+         *          return new LandscapeYear(new EventRenderer());
+         *          break;
+         *      default:
+         *          break;
+         * }
+         */
         $renderer = new LandscapeYear(new EventRenderer());
         $renderer->setCalendarEvents($events);
         $renderer->renderCalendar($renderRequest);
