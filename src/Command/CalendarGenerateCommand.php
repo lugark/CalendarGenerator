@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Repository\HolidaysRepository;
 use Calendar\Pdf\RendererBundle\Event\Events;
+use Calendar\Pdf\RendererBundle\Renderer\CalendarRenderer;
 use Calendar\Pdf\RendererBundle\Renderer\EventRenderer;
 use Calendar\Pdf\RendererBundle\Renderer\LandscapeYear;
 use Calendar\Pdf\RendererBundle\Renderer\RenderRequest;
@@ -66,24 +67,10 @@ class CalendarGenerateCommand extends Command
 
         $io->text('* rendering calendar');
         $io->newLine();
-        $renderer = Renderer::factory($renderRequest);
-        /**
-         * public static factory(RenderRequest $renderRequest): RenderInterface
-         * {
-         *   switch $renderRequest->getRenderType()
-         *      case RequestTypes::SCHOOL_YEAR_SOMETHING_ELSE:
-         *      case RequestTypes::SCHOOL_YEAR:
-         *      case RequestTypes::LANDSCAPE_YEAR:
-         *          return new LandscapeYear(new EventRenderer());
-         *          break;
-         *      default:
-         *          break;
-         * }
-         */
-        $renderer = new LandscapeYear(new EventRenderer());
+
+        $renderer = new CalendarRenderer();
         $renderer->setCalendarEvents($events);
         $renderer->renderCalendar($renderRequest);
-
         return 0;
     }
 }

@@ -213,7 +213,7 @@
             "dist": {
                 "type": "path",
                 "url": "../calendar-pdf-renderer",
-                "reference": "7e0db56ee2f339d16edd935ca7df9a25fc5aa9e0"
+                "reference": "24daa394bdd254d1cebd4ed2c6bf095034d0b721"
             },
             "require": {
                 "aeon-php/calendar": "^1.0",
