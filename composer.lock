@@ -806,16 +806,16 @@
         },
         {
             "name": "rybakit/msgpack",
-            "version": "v0.9.0",
+            "version": "v0.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rybakit/msgpack.php.git",
-                "reference": "c780f21d8340681100988dda78f7b950f443fb8b"
+                "reference": "fc6bc45e92274e78c32d0a86f2e2cc1f8b5e017b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rybakit/msgpack.php/zipball/c780f21d8340681100988dda78f7b950f443fb8b",
-                "reference": "c780f21d8340681100988dda78f7b950f443fb8b",
+                "url": "https://api.github.com/repos/rybakit/msgpack.php/zipball/fc6bc45e92274e78c32d0a86f2e2cc1f8b5e017b",
+                "reference": "fc6bc45e92274e78c32d0a86f2e2cc1f8b5e017b",
                 "shasum": ""
             },
             "require": {
@@ -856,7 +856,7 @@
             ],
             "support": {
                 "issues": "https://github.com/rybakit/msgpack.php/issues",
-                "source": "https://github.com/rybakit/msgpack.php/tree/v0.9.0"
+                "source": "https://github.com/rybakit/msgpack.php/tree/v0.9.1"
             },
             "funding": [
                 {
@@ -864,7 +864,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-10-25T20:12:31+00:00"
+            "time": "2022-02-16T00:48:07+00:00"
         },
         {
             "name": "setasign/fpdf",
