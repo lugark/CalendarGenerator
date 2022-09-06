@@ -49,4 +49,3 @@ services:
     App\ApiDataLoader\ApiDataLoader:
         arguments:
             $loader: !tagged_iterator 'app.api_data_loader'
-            $transformer: !tagged_iterator 'app.api_data_transformer'

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b934f36f826f9cef4304a04dbb9681c2",
+    "content-hash": "da5a423c6e3c88e7f8c73064fbc2090c",
     "packages": [
         {
             "name": "aeon-php/calendar",
@@ -208,12 +208,12 @@
             "time": "2020-05-25T17:44:05+00:00"
         },
         {
-            "name": "lugark/calendar-pdf-renderer-bundle",
+            "name": "lugark/calendar-pdf-renderer",
             "version": "dev-renderer",
             "dist": {
                 "type": "path",
                 "url": "../calendar-pdf-renderer",
-                "reference": "24daa394bdd254d1cebd4ed2c6bf095034d0b721"
+                "reference": "31ee769df225f7357b29a8a839b9f7b3ed667a12"
             },
             "require": {
                 "aeon-php/calendar": "^1.0",
@@ -223,7 +223,8 @@
             "require-dev": {
                 "phpstan/phpstan": "^1.8",
                 "symfony/dependency-injection": "^5.4",
-                "symfony/http-kernel": "^5.4"
+                "symfony/http-kernel": "^5.4",
+                "symfony/phpunit-bridge": "^6.1"
             },
             "suggest": {
                 "symfony/dependency-injection": "",
@@ -232,12 +233,12 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Calendar\\Pdf\\RendererBundle\\": "src/"
+                    "Calendar\\Pdf\\Renderer\\": "src/"
                 }
             },
             "autoload-dev": {
                 "psr-4": {
-                    "Calendar\\Pdf\\RendererBundle\\Tests\\": "tests/"
+                    "Calendar\\Pdf\\Renderer\\Tests\\": "tests/"
                 }
             },
             "transport-options": {
@@ -3912,7 +3913,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "lugark/calendar-pdf-renderer-bundle": 20,
+        "lugark/calendar-pdf-renderer": 20,
         "phpstan/phpstan": 20
     },
     "prefer-stable": false,

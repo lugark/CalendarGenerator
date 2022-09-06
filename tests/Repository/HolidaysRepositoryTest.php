@@ -4,7 +4,7 @@ namespace App\Tests\Repository;
 
 use App\Repository\HolidaysRepository;
 use App\Service\Storage\Storage;
-use Calendar\Pdf\RendererBundle\Event;
+use Calendar\Pdf\Renderer\Event\Event;
 use PHPUnit\Framework\TestCase;
 
 class HolidaysRepositoryTest extends TestCase

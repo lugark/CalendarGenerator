@@ -3,12 +3,10 @@
 namespace App\Command;
 
 use App\Repository\HolidaysRepository;
-use Calendar\Pdf\RendererBundle\Event\Events;
-use Calendar\Pdf\RendererBundle\Renderer\CalendarRenderer;
-use Calendar\Pdf\RendererBundle\Renderer\EventRenderer;
-use Calendar\Pdf\RendererBundle\Renderer\LandscapeYear;
-use Calendar\Pdf\RendererBundle\Renderer\RenderRequest;
-use Calendar\Pdf\RendererBundle\Renderer\RenderRequest\RequestTypes;
+use Calendar\Pdf\Renderer\Event\Events;
+use Calendar\Pdf\Renderer\Renderer\CalendarRenderer;
+use Calendar\Pdf\Renderer\Renderer\LandscapeYear;
+use Calendar\Pdf\Renderer\Renderer\RenderRequest;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -49,7 +47,6 @@ class CalendarGenerateCommand extends Command
         $schoolHolidaysFor = strtoupper($input->getOption('schoolholidays'));
 
         $startDate = new \DateTime($arg1);
-        $renderRequest = new RenderRequest(RequestTypes::LANDSCAPE_YEAR, $startDate);
         $io->title('Starting calender generation with startdate ' . $startDate->format('Y-m-d'));
 
         $events = new Events();
@@ -68,9 +65,12 @@ class CalendarGenerateCommand extends Command
         $io->text('* rendering calendar');
         $io->newLine();
 
+        $renderRequest = new RenderRequest(LandscapeYear::class, $startDate);
+        $renderRequest->setEvents($events);
+
         $renderer = new CalendarRenderer();
-        $renderer->setCalendarEvents($events);
         $renderer->renderCalendar($renderRequest);
+
         return 0;
     }
 }

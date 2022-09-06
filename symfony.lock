@@ -20,14 +20,17 @@
     "doctrine/lexer": {
         "version": "1.2.0"
     },
+    "lugark/calendar-pdf-renderer": {
+        "version": "dev-renderer"
+    },
     "lugark/calendar-pdf-renderer-bundle": {
         "version": "dev-renderer"
     },
     "mpdf/mpdf": {
-        "version": "v8.0.4"
+        "version": "v8.1.1"
     },
     "myclabs/deep-copy": {
-        "version": "1.9.4"
+        "version": "1.x-dev"
     },
     "php": {
         "version": "7.4"
@@ -69,7 +72,7 @@
         "version": "1.8.2"
     },
     "setasign/fpdi": {
-        "version": "v2.2.0"
+        "version": "v2.3.6"
     },
     "symfony/cache": {
         "version": "v5.0.2"

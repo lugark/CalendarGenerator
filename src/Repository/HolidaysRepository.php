@@ -4,8 +4,8 @@ namespace App\Repository;
 
 use App\Serializer\Normalizer\EventNormalizer;
 use App\Service\Storage\Storage;
-use Calendar\Pdf\RendererBundle\Event\Event;
-use Calendar\Pdf\RendererBundle\Event\Types;
+use Calendar\Pdf\Renderer\Event\Event;
+use Calendar\Pdf\Renderer\Event\Types;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
