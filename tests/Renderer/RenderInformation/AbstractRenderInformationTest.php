@@ -36,12 +36,13 @@ class AbstractRenderInformationTest extends TestCase
     }
 
     /** @dataProvider getPeriodData */
-    public function testPeriodSettings($period, $expectedCrossYear, $expectedStart, $expectedEnd)
+    public function testPeriodSettings($period, $expectedCrossYear, DateTime $expectedStart, DateTime $expectedEnd)
     {
         $this->sut->setCalendarPeriod($period);
+        $expectedStart->time();
         $this->assertEquals($period, $this->sut->getTimePeriod());
-        $this->assertEquals($expectedStart, $this->sut->getCalendarStartsAt());
-        $this->assertEquals($expectedEnd, $this->sut->getCalendarEndsAt());
+        $this->assertEquals($expectedStart->toISO8601(), $this->sut->getCalendarStartsAt()->toISO8601());
+        $this->assertEquals($expectedEnd->toISO8601(), $this->sut->getCalendarEndsAt()->toISO8601());
         $this->assertEquals($expectedCrossYear, $this->sut->doesCrossYear());
     }
 }
