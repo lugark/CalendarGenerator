@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "da5a423c6e3c88e7f8c73064fbc2090c",
+    "content-hash": "811a70d1d1ae8beeec9dcb4117ede384",
     "packages": [
         {
             "name": "aeon-php/calendar",
@@ -209,11 +209,17 @@
         },
         {
             "name": "lugark/calendar-pdf-renderer",
-            "version": "dev-renderer",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:lugark/calendar-pdf-renderer.git",
+                "reference": "bb436034976bff67e350bcaef909cf553ad5ecb9"
+            },
             "dist": {
-                "type": "path",
-                "url": "../calendar-pdf-renderer",
-                "reference": "31ee769df225f7357b29a8a839b9f7b3ed667a12"
+                "type": "zip",
+                "url": "https://api.github.com/repos/lugark/calendar-pdf-renderer/zipball/bb436034976bff67e350bcaef909cf553ad5ecb9",
+                "reference": "bb436034976bff67e350bcaef909cf553ad5ecb9",
+                "shasum": ""
             },
             "require": {
                 "aeon-php/calendar": "^1.0",
@@ -230,6 +236,7 @@
                 "symfony/dependency-injection": "",
                 "symfony/http-kernel": ""
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -241,9 +248,11 @@
                     "Calendar\\Pdf\\Renderer\\Tests\\": "tests/"
                 }
             },
-            "transport-options": {
-                "relative": true
-            }
+            "support": {
+                "source": "https://github.com/lugark/calendar-pdf-renderer/tree/master",
+                "issues": "https://github.com/lugark/calendar-pdf-renderer/issues"
+            },
+            "time": "2022-09-07T05:48:52+00:00"
         },
         {
             "name": "mpdf/mpdf",

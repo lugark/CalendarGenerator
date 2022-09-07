@@ -10,7 +10,7 @@
         "ext-json": "*",
         "aeon-php/calendar": "^1.0.0",
         "doctrine/annotations": "^1.0",
-        "lugark/calendar-pdf-renderer": "dev-renderer",
+        "lugark/calendar-pdf-renderer": "dev-master",
         "phpdocumentor/reflection-docblock": "^5.2",
         "rybakit/msgpack": "^0.9.0",
         "setasign/fpdf": "^1.8",
@@ -76,8 +76,8 @@
     },
     "repositories": [
         {
-            "type": "path",
-            "url": "../calendar-pdf-renderer"
+            "type": "vcs",
+            "url": "https://github.com/lugark/calendar-pdf-renderer.git"
         }
     ]
 }
