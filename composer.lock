@@ -213,12 +213,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:lugark/calendar-pdf-renderer.git",
-                "reference": "3e68dad7a2ed9242d27f96a1d6fe4c1363251b27"
+                "reference": "0445e362ee7daf56c4a20a98f4b6596702df3f7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lugark/calendar-pdf-renderer/zipball/3e68dad7a2ed9242d27f96a1d6fe4c1363251b27",
-                "reference": "3e68dad7a2ed9242d27f96a1d6fe4c1363251b27",
+                "url": "https://api.github.com/repos/lugark/calendar-pdf-renderer/zipball/0445e362ee7daf56c4a20a98f4b6596702df3f7e",
+                "reference": "0445e362ee7daf56c4a20a98f4b6596702df3f7e",
                 "shasum": ""
             },
             "require": {
@@ -228,6 +228,7 @@
             },
             "require-dev": {
                 "phpstan/phpstan": "^1.8",
+                "phpstan/phpstan-symfony": "^1.2",
                 "symfony/dependency-injection": "^5.4",
                 "symfony/http-kernel": "^5.4",
                 "symfony/phpunit-bridge": "^6.1"
@@ -249,15 +250,22 @@
                 }
             },
             "scripts": {
-                "unit-test": [
-                    "vendor/bin/simple-phpunit"
+                "phpunit": [
+                    "vendor/bin/simple-phpunit -c phpunit.xml.dist"
+                ],
+                "phpstan": [
+                    "vendor/bin/phpstan analyze -c phpstan.neon --memory-limit=256M"
+                ],
+                "test": [
+                    "@phpstan",
+                    "@phpunit"
                 ]
             },
             "support": {
                 "source": "https://github.com/lugark/calendar-pdf-renderer/tree/master",
                 "issues": "https://github.com/lugark/calendar-pdf-renderer/issues"
             },
-            "time": "2022-09-08T16:32:46+00:00"
+            "time": "2022-10-04T05:50:19+00:00"
         },
         {
             "name": "mpdf/mpdf",

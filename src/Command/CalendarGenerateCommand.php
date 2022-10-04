@@ -6,6 +6,7 @@ use App\Repository\HolidaysRepository;
 use Calendar\Pdf\Renderer\Event\Events;
 use Calendar\Pdf\Renderer\Renderer\CalendarRenderer;
 use Calendar\Pdf\Renderer\Renderer\LandscapeYear;
+use Calendar\Pdf\Renderer\Renderer\PdfRenderer;
 use Calendar\Pdf\Renderer\Renderer\RenderRequest;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -68,7 +69,7 @@ class CalendarGenerateCommand extends Command
         $renderRequest = new RenderRequest(LandscapeYear::class, $startDate);
         $renderRequest->setEvents($events);
 
-        $renderer = new CalendarRenderer();
+        $renderer = new CalendarRenderer(new PdfRenderer());
         $renderer->renderCalendar($renderRequest);
 
         return 0;
