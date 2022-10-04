@@ -4,6 +4,7 @@ namespace App\Tests\ApiDataLoader\Loader\MehrSchulferien;
 
 use App\ApiDataLoader\Loader\CurlRequest;
 use App\ApiDataLoader\Loader\MehrSchulferien\Locations;
+use App\ApiDataLoader\Loader\Response;
 use PHPUnit\Framework\TestCase;
 
 class LocationsTest extends TestCase
@@ -25,12 +26,10 @@ class LocationsTest extends TestCase
 
     public function testGetLocationSuccess()
     {
-        $this->curlRequestMock->method('exec')
-            ->willReturn(file_get_contents(realpath(__DIR__ . '/fixtures/LocationSuccessResult.json')));
-        $this->curlRequestMock->method('getInfo')
-            ->willReturn(200);
-        $this->curlRequestMock->method('getLastErrorCode')
-            ->willReturn(0);
+        $jsonFixture = file_get_contents(realpath(__DIR__ . '/fixtures/LocationSuccessResult.json'));
+        $expectedResponse = new Response(true, 200, $jsonFixture, json_decode($jsonFixture, true));
+        $this->curlRequestMock->method('execute')
+            ->willReturn($expectedResponse);
 
         $sut = new Locations($this->curlRequestMock);
         $result = $sut->getLocation(9);

@@ -26,6 +26,7 @@
     },
     "require-dev": {
         "phpstan/phpstan": "1.8.x-dev",
+        "phpstan/phpstan-symfony": "1.2.x-dev",
         "symfony/phpunit-bridge": "^5.2"
     },
     "config": {
@@ -63,6 +64,12 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "phpunit": "bin/phpunit -c phpunit.xml.dist",
+        "phpstan": "vendor/bin/phpstan analyze src -c phpstan.neon",
+        "test": [
+            "@phpstan",
+            "@phpunit"
         ]
     },
     "conflict": {
@@ -71,7 +78,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "5.3.*"
+            "require": "5.4.*"
         }
     },
     "repositories": [

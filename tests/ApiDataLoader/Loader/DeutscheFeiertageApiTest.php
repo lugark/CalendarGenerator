@@ -14,7 +14,7 @@ class DeutscheFeiertageApiTest extends TestCase
 
     private $curlRequestMock;
 
-    public function setUp(): void 
+    public function setUp(): void
     {
         parent::setUp();
         $this->curlRequestMock = $this->getMockBuilder(CurlRequest::class)
@@ -23,16 +23,13 @@ class DeutscheFeiertageApiTest extends TestCase
 
     public function testSuccessFetch()
     {
-        $this->curlRequestMock->method('exec')
-            ->willReturn('{"test": true}');
-        $this->curlRequestMock->method('getInfo')
-            ->willReturn(200);
-        $this->curlRequestMock->method('getLastErrorCode')
-            ->willReturn(0);
+        $expectedResponse = new Response(true, 200, '{"test": true}', ['test' => true]);
+        $this->curlRequestMock->method('execute')
+            ->willReturn($expectedResponse);
 
         $this->sut = new DeutscheFeiertageApi($this->curlRequestMock);
-        $result = $this->sut->fetch('2020');
-        $this->assertEquals(new Response(true, 200, '{"test": true}', ['test' => true]), $result);
+        $result = $this->sut->fetchData('2020');
+        $this->assertEquals($expectedResponse, $result);
     }
 
     public function testGetType()
