@@ -4,6 +4,7 @@ namespace App\Tests\ApiDataLoader\Loader\MehrSchulferien;
 
 use App\ApiDataLoader\Loader\CurlRequest;
 use App\ApiDataLoader\Loader\MehrSchulferien\Types;
+use App\ApiDataLoader\Loader\Response;
 use PHPUnit\Framework\TestCase;
 
 class TypesTest extends TestCase
@@ -25,12 +26,10 @@ class TypesTest extends TestCase
 
     public function testFetchAll()
     {
-        $this->curlRequestMock->method('exec')
-            ->willReturn(file_get_contents(realpath(__DIR__ . '/fixtures/TypesSuccessResult.json')));
-        $this->curlRequestMock->method('getInfo')
-            ->willReturn(200);
-        $this->curlRequestMock->method('getLastErrorCode')
-            ->willReturn(0);
+        $fixture = file_get_contents(realpath(__DIR__ . '/fixtures/TypesSuccessResult.json'));
+        $response = new Response(true, 200, $fixture, json_decode($fixture, true));
+        $this->curlRequestMock->method('execute')
+            ->willReturn($response);
 
         $sut = new Types($this->curlRequestMock);
         $result = $sut->getType(2);
