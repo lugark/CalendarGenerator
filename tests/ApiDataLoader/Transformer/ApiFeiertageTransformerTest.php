@@ -2,6 +2,7 @@
 
 namespace App\Tests\ApiDataLoader\Transformer;
 
+use App\ApiDataLoader\Loader\ApiFeiertage;
 use App\ApiDataLoader\Loader\Response;
 use App\ApiDataLoader\Transformer\ApiFeiertageTransformer;
 use PHPUnit\Framework\Assert;
@@ -9,9 +10,14 @@ use PHPUnit\Framework\TestCase;
 
 class ApiFeiertageTransformerTest extends TestCase
 {
+    private $loaderData;
+    private $response;
+
     public function setUp(): void
     {
         parent::setUp();
+        $this->loaderData = file_get_contents(realpath(__DIR__ . '/fixtures/ApiFeiertageLoaderSuccess.json'));
+        $this->response = new Response(true, 200, $this->loaderData, json_decode($this->loaderData, true));
     }
 
     /**
@@ -31,5 +37,20 @@ class ApiFeiertageTransformerTest extends TestCase
                 'failNoDataKeyEmpty' => [new Response(true, 200, '{}', [])],
                 'failNoDataKey' => [new Response(true, 200, '{}', ['some' => 'data'])],
             ];
+    }
+
+    public function testGetType()
+    {
+        $sut = new ApiFeiertageTransformer();
+        $this->assertEquals(ApiFeiertage::LOADER_TYPE, $sut->getType());
+    }
+
+    public function testTransformData()
+    {
+        $sut = new ApiFeiertageTransformer();
+        $result = $sut($this->response);
+        Assert::assertEquals(3, count($result));
+        Assert::assertEquals('Heilige Drei Könige', $result[1]['name']);
+        Assert::assertEquals(3, count($result[1]['regions']));
     }
 }
