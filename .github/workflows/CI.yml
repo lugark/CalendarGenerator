@@ -9,14 +9,19 @@ on:
 
 jobs:
   tests:
-    uses: lugark/CalendarGenerator/.github/workflows/PhpUnit.yml@5a3a06081d120261d71e0266af5e6da35a3cd3aa
+    uses: lugark/CalendarGenerator/.github/workflows/PhpUnit.yml@master
 
   codecov:
     needs: tests
     runs-on: ubuntu-latest
-    steps:      
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          # Disabling shallow clone is recommended for improving relevancy of reporting
+          fetch-depth: 0
+
       - uses: actions/download-artifact@v2
-        name: Download reports-artifacts 
+        name: Download reports-artifacts
         with:
           name: test-reports
 
@@ -26,11 +31,13 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: unittests # optional
           files: ./coverage.xml
+          fail_ci_if_error: true
+          verbose: true
 
   sonarcloud:
     needs: tests
     runs-on: ubuntu-latest
-    continue-on-error: true
+    environment: ci
     steps:
       - uses: actions/checkout@v2
         with:
@@ -38,7 +45,7 @@ jobs:
           fetch-depth: 0
 
       - uses: actions/download-artifact@v2
-        name: Download reports-artifacts 
+        name: Download reports-artifacts
         with:
           name: test-reports
 
