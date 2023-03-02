@@ -16,9 +16,9 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - uses: actions/cache@v2.1.5
+      - uses: actions/cache@v3
         with:
           path: vendor
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -40,7 +40,7 @@ jobs:
       - name: Run unittests
         run: bin/phpunit  --coverage-clover reports/coverage.xml --log-junit reports/phpunit_report.xml
           
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         name: Upload reports-artifacts 
         with:
           name: test-reports
