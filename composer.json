@@ -3,9 +3,8 @@
     "description": "to generate pdf calendars with custom events & holidays",
     "type": "project",
     "license": "MIT",
-    "minimum-stability": "dev",
     "require": {
-        "php": "^7.4",
+        "php": "^8.1",
         "ext-curl": "*",
         "ext-json": "*",
         "aeon-php/calendar": "^1.0.0",
@@ -25,9 +24,9 @@
         "symfony/yaml": "5.4.*"
     },
     "require-dev": {
-        "phpstan/phpstan": "1.8.x-dev",
-        "phpstan/phpstan-symfony": "1.2.x-dev",
-        "symfony/phpunit-bridge": "^5.2"
+        "phpstan/phpstan": "^1.8",
+        "phpstan/phpstan-symfony": "^1.2",
+        "symfony/phpunit-bridge": "^6.2"
     },
     "config": {
         "preferred-install": {
@@ -65,7 +64,7 @@
         "post-update-cmd": [
             "@auto-scripts"
         ],
-        "phpunit": "bin/phpunit -c phpunit.xml.dist",
+        "phpunit": "vendor/bin/simple-phpunit  --coverage-clover reports/coverage.xml --log-junit reports/phpunit_report.xmlt",
         "phpstan": "vendor/bin/phpstan analyze src -c phpstan.neon",
         "test": [
             "@phpstan",

@@ -38,7 +38,7 @@ jobs:
         run: composer install --no-interaction --no-suggest
 
       - name: Run unittests
-        run: bin/phpunit  --coverage-clover reports/coverage.xml --log-junit reports/phpunit_report.xml
+        run: vendor/bin/simple-phpunit  --coverage-clover reports/coverage.xml --log-junit reports/phpunit_report.xml
           
       - uses: actions/upload-artifact@v3
         name: Upload reports-artifacts 

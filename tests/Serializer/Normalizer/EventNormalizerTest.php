@@ -19,8 +19,7 @@ class EventNormalizerTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->sut = new EventNormalizer();
-        $this->sut->setSerializer(new Serializer([new DateTimeNormalizer()]));
+        $this->sut = new EventNormalizer(new DateTimeNormalizer());
     }
 
     public function testInterface()
