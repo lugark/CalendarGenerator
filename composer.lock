@@ -267,7 +267,7 @@
             ],
             "description": "to generate pdf calendars with custom events & holidays",
             "support": {
-                "source": "https://github.com/lugark/calendar-pdf-renderer/tree/master",
+                "source": "https://github.com/lugark/calendar-pdf-renderer/tree/0.2",
                 "issues": "https://github.com/lugark/calendar-pdf-renderer/issues"
             },
             "time": "2023-03-02T20:12:37+00:00"

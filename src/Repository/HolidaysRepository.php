@@ -22,7 +22,7 @@ class HolidaysRepository
         $this->storage = $storage;
         $this->serializer = new Serializer(
             [
-                new EventNormalizer(new DateTimeNormalizer()),
+                new EventNormalizer(),
             ]
         );
     }

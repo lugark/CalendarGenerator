@@ -10,10 +10,11 @@ use Symfony\Component\Serializer\SerializerAwareTrait;
 
 class EventNormalizer implements DenormalizerInterface
 {
-    public function __construct(
-        private DateTimeNormalizer $dateTimeNormalizer
-    )
+    private DateTimeNormalizer $dateTimeNormalizer;
+
+    public function __construct()
     {        
+        $this->dateTimeNormalizer = new DateTimeNormalizer();
     }
 
     public function denormalize($data, string $type, string $format = null, array $context = [])

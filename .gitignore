@@ -18,3 +18,5 @@
 .vscode/
 coverage.xml
 /coverage/
+
+reports/phpunit_report.xmlt
