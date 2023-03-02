@@ -30,7 +30,7 @@ class CurlRequest implements RequestInterface
         return $this;
     }
 
-    private function getInfo(string $curlInfoType)
+    private function getInfo(int $curlInfoType)
     {
         return curl_getinfo($this->ch, $curlInfoType);
     }

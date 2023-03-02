@@ -40,6 +40,7 @@ class CalendarFetchHolidaysCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
+        $holidayTypes = [];
         if ($input->hasArgument('holidayTypes')) {
             $holidayTypes = explode(',', $input->getArgument('holidayTypes'));
         }
