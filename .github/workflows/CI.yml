@@ -9,7 +9,7 @@ on:
 
 jobs:
   tests:
-    uses: lugark/CalendarGenerator/.github/workflows/PhpUnit.yml@master
+    uses: lugark/CalendarGenerator/.github/workflows/PhpUnit.yml@25_calender_render_bundle_split
 
   codecov:
     needs: tests
