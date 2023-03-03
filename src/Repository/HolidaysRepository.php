@@ -2,9 +2,10 @@
 
 namespace App\Repository;
 
-use App\Calendar\Event;
 use App\Serializer\Normalizer\EventNormalizer;
 use App\Service\Storage\Storage;
+use Calendar\Pdf\Renderer\Event\Event;
+use Calendar\Pdf\Renderer\Event\Types;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
@@ -22,7 +23,6 @@ class HolidaysRepository
         $this->serializer = new Serializer(
             [
                 new EventNormalizer(),
-                new DateTimeNormalizer()
             ]
         );
     }
@@ -36,7 +36,7 @@ class HolidaysRepository
                 $data['holiday'],
                 Event::class,
                 null,
-                ['eventType' => Event\Types::EVENT_TYPE_PUBLIC_HOLIDAY]
+                ['eventType' => Types::EVENT_TYPE_PUBLIC_HOLIDAY]
             );
         }
         return $holidays;
@@ -51,7 +51,7 @@ class HolidaysRepository
                 $data,
                 Event::class,
                 null,
-                ['eventType' => Event\Types::EVENT_TYPE_SCHOOL_HOLIDAY]
+                ['eventType' => Types::EVENT_TYPE_SCHOOL_HOLIDAY]
             );
         }
         return $holidays;

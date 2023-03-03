@@ -29,26 +29,35 @@ class ApiDataLoaderTest extends TestCase
             ->getMock();
     }
 
-    public function testSuccessFetch()
+    public function testSuccessFetchWithoutTransformer()
     {
         // Test without transformer
         $this->loaderMock->method("getType")
             ->will($this->returnValue('deutsche_feiertage_api'));
-        $this->loaderMock->method('fetch')
+        $this->loaderMock->method('fetchData')
             ->willReturn(new Response(true, 200, '{}', ['test'=>true]));
+        $this->loaderMock->method('getTransformer')
+            ->willReturn(null);
 
-        $this->sut = new ApiDataLoader(new FederalService(), [$this->loaderMock], [$this->transformMock]);
+        $this->sut = new ApiDataLoader([$this->loaderMock]);
         $data = $this->sut->fetchData(DeutscheFeiertageApi::LOADER_TYPE, '2020');
         $this->assertEquals(['test'=>true], $data);
+    }
 
+    public function testSuccessFetchWithTransformer()
+    {
         // Test without transformer
-        $this->transformMock->method('getType')
-            ->will($this->returnValue('deutsche_feiertage_api'));
         $this->transformMock->expects($this->once())
             ->method('__invoke')
             ->willReturn(['test'=>'again']);
+        $this->loaderMock->method("getType")
+            ->will($this->returnValue('deutsche_feiertage_api'));
+        $this->loaderMock->method('fetchData')
+            ->willReturn(new Response(true, 200, '{}', ['test'=>true]));
+        $this->loaderMock->method('getTransformer')
+            ->willReturn($this->transformMock);
 
-        $this->sut = new ApiDataLoader(new FederalService(), [$this->loaderMock], [$this->transformMock]);
+        $this->sut = new ApiDataLoader([$this->loaderMock]);
         $data = $this->sut->fetchData(DeutscheFeiertageApi::LOADER_TYPE, '2020');
         $this->assertEquals(['test'=>'again'], $data);
     }
@@ -58,7 +67,7 @@ class ApiDataLoaderTest extends TestCase
         $this->expectException(DataLoaderException::class);
         $this->expectExceptionMessage('Can not find api-loader for deutsche_feiertage_api');
 
-        $this->sut = new ApiDataLoader(new FederalService(), [$this->loaderMock], [$this->transformMock]);
+        $this->sut = new ApiDataLoader([$this->loaderMock]);
         $data = $this->sut->fetchData(DeutscheFeiertageApi::LOADER_TYPE, '2020');
     }
 
@@ -69,10 +78,10 @@ class ApiDataLoaderTest extends TestCase
 
         $this->loaderMock->method("getType")
             ->will($this->returnValue('deutsche_feiertage_api'));
-        $this->loaderMock->method('fetch')
+        $this->loaderMock->method('fetchData')
             ->willReturn(new Response(false, 404, 'notFound', []));
 
-        $this->sut = new ApiDataLoader(new FederalService(), [$this->loaderMock], [$this->transformMock]);
+        $this->sut = new ApiDataLoader([$this->loaderMock]);
         $data = $this->sut->fetchData(DeutscheFeiertageApi::LOADER_TYPE, '2020');
     }
 }

@@ -15,7 +15,7 @@ class Types extends AbstractApi
 
     protected function loadTypes()
     {
-        $response =  $this->executeCurl(
+        $response =  $this->curlRequest->execute(
             $this->getApiUrl(),
             [
                 CURLOPT_RETURNTRANSFER => true,

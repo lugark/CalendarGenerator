@@ -17,7 +17,7 @@ class Periods extends AbstractApi
 
     public function getAllPeriods(): Response
     {
-        return $this->executeCurl(
+        return $this->curlRequest->execute(
             $this->getApiUrl(),
             [
                 CURLOPT_CUSTOMREQUEST => "GET",

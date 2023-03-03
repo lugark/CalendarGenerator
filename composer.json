@@ -1,15 +1,15 @@
-{   
+{
     "name": "lugark/calendar-generator",
     "description": "to generate pdf calendars with custom events & holidays",
     "type": "project",
     "license": "MIT",
     "require": {
-        "php": "^7.4",
+        "php": "^8.1",
         "ext-curl": "*",
         "ext-json": "*",
         "aeon-php/calendar": "^1.0.0",
+        "lugark/calendar-pdf-renderer": "dev-master",
         "doctrine/annotations": "^2.0",
-        "mpdf/mpdf": "^8.0",
         "phpdocumentor/reflection-docblock": "^5.2",
         "rybakit/msgpack": "^0.9.0",
         "setasign/fpdf": "^1.8",
@@ -24,7 +24,9 @@
         "symfony/yaml": "5.4.*"
     },
     "require-dev": {
-        "symfony/phpunit-bridge": "^6.1"
+        "phpstan/phpstan": "^1.8",
+        "phpstan/phpstan-symfony": "^1.2",
+        "symfony/phpunit-bridge": "^6.2"
     },
     "config": {
         "preferred-install": {
@@ -61,6 +63,12 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "phpunit": "vendor/bin/simple-phpunit  --coverage-clover reports/coverage.xml --log-junit reports/phpunit_report.xmlt",
+        "phpstan": "vendor/bin/phpstan analyze src -c phpstan.neon",
+        "test": [
+            "@phpstan",
+            "@phpunit"
         ]
     },
     "conflict": {
@@ -69,7 +77,13 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "5.3.*"
+            "require": "5.4.*"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/lugark/calendar-pdf-renderer.git"
+        }
+    ]
 }

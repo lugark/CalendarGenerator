@@ -23,7 +23,7 @@ class MehrSchulferien implements TransformerInterface
     *                 'end' =>
     *                 string(10) "28.02.2020"
     *                 }
-    **/
+    */
     public function __invoke(Response $response)
     {
         $schoolVacation = [];

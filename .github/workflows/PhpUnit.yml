@@ -25,20 +25,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: 7.4
-          coverage: pcov
-          extensions: ${{ env.PHP_EXTENSIONS }}
-          ini-values: ${{ env.PHP_INI_VALUES }}
-
       - name: Install dependencies
         if: steps.composer-cache.outputs.cache-hit != 'true'
         run: composer install --no-interaction --no-suggest
 
       - name: Run unittests
-        run: bin/phpunit  --coverage-clover reports/coverage.xml --log-junit reports/phpunit_report.xml
+        run: vendor/bin/simple-phpunit  --coverage-clover reports/coverage.xml --log-junit reports/phpunit_report.xml
           
       - uses: actions/upload-artifact@v3
         name: Upload reports-artifacts 

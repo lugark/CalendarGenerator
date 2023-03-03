@@ -5,6 +5,8 @@ namespace App\ApiDataLoader\Loader;
 use App\ApiDataLoader\Loader\MehrSchulferien\Locations;
 use App\ApiDataLoader\Loader\MehrSchulferien\Periods;
 use App\ApiDataLoader\Loader\MehrSchulferien\Types;
+use App\ApiDataLoader\Transformer\MehrSchulferien;
+use App\ApiDataLoader\Transformer\TransformerInterface;
 
 class MehrSchulferienApi implements LoaderInterface
 {
@@ -21,7 +23,7 @@ class MehrSchulferienApi implements LoaderInterface
         $this->typesApi = $types;
     }
 
-    public function fetch(string $year): Response
+    public function fetchData(string $year): Response
     {
         $response = $this->periodsApi->getAllPeriods();
         if (!$response->isSuccess()) {
@@ -47,4 +49,11 @@ class MehrSchulferienApi implements LoaderInterface
     {
         return self::LOADER_TYPE;
     }
+
+    public function getTransformer(): ?TransformerInterface
+    {
+        return new MehrSchulferien();
+    }
+
+
 }

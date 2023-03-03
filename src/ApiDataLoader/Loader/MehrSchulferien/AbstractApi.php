@@ -2,13 +2,18 @@
 
 namespace App\ApiDataLoader\Loader\MehrSchulferien;
 
-use App\ApiDataLoader\Loader\CurlLoaderTrait;
+use App\ApiDataLoader\Loader\RequestInterface;
 
 abstract class AbstractApi
 {
-    use CurlLoaderTrait;
-
     const API_URL = 'https://www.mehr-schulferien.de/api/v2.0/';
+
+    public RequestInterface $curlRequest;
+
+    public function __construct(RequestInterface $curlRequest)
+    {
+        $this->curlRequest = $curlRequest;
+    }
 
     public function getApiUrl(): String
     {
