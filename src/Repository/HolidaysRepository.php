@@ -23,6 +23,9 @@ class HolidaysRepository
         );
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function getPublicHolidays(string $federal): array
     {
         $filteredHolidays = $this->storage->readPublicHolidays($federal);
@@ -38,6 +41,9 @@ class HolidaysRepository
         return $holidays;
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function getSchoolHolidays(string $federal): array
     {
         $filteredHolidays = $this->storage->readSchoolHolidays($federal);
@@ -53,12 +59,18 @@ class HolidaysRepository
         return $holidays;
     }
 
-    public function savePublicHolidays(array $data):void
+    /**
+     * @param array<mixed> $data
+     */
+    public function savePublicHolidays(array $data): void
     {
         $this->storage->writePublicHolidays($data);
     }
 
-    public function saveSchoolHolidays(array $data):void
+    /**
+     * @param array<mixed> $data
+     */
+    public function saveSchoolHolidays(array $data): void
     {
         $this->storage->writeSchoolHolidays($data);
     }
