@@ -8,8 +8,8 @@ namespace App\ApiDataLoader\Loader;
 class Response
 {
     public function __construct(
-        private readonly bool $success, 
-        private readonly int $responseCode, 
+        private readonly bool $success,
+        private readonly int $responseCode,
         private readonly string $response,
          private readonly array $data
     ) {

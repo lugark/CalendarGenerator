@@ -11,21 +11,15 @@ class Storage
     public const STORAGE_TYPE_PUBLIC_HOLIDAY = 'publicHolidays';
     public const STORAGE_TYPE_SCHOOL_HOLIDAY = 'schoolHolidays';
 
-    protected $dataPath;
+    protected string $dataPath;
 
-    /** @var WriterInterface */
-    protected $writer;
-
-    /** @var ReaderInterface */
-    protected $reader;
-
-    public function __construct(WriterInterface $writer, ReaderInterface $reader)
-    {
-        $this->writer = $writer;
-        $this->reader = $reader;
+    public function __construct(
+        private readonly WriterInterface $writer, 
+        private readonly ReaderInterface $reader
+    ) {
     }
 
-    protected function getDataPath()
+    protected function getDataPath(): string
     {
         return $this->dataPath;
     }
@@ -38,6 +32,10 @@ class Storage
         }
     }
 
+    
+    /**
+     *  @return array<mixed>
+     */
     public function readPublicHolidays(string $federal): array
     {
         return array_filter(
@@ -46,6 +44,9 @@ class Storage
         );
     }
 
+    /**
+     *  @return array<mixed>
+     */
     public function readSchoolHolidays(string $federal): array
     {
         $filteredData = array_filter(
@@ -63,12 +64,18 @@ class Storage
         );
     }
 
-    public function writePublicHolidays(array $data):void
+    /**
+     *  @param array<mixed> $data
+     */
+    public function writePublicHolidays(array $data): void
     {
         $this->writer->writeData($this->getDataPath(), self::STORAGE_TYPE_PUBLIC_HOLIDAY, $data);
     }
 
-    public function writeSchoolHolidays(array $data):void
+    /**
+     *  @param array<mixed> $data
+     */
+    public function writeSchoolHolidays(array $data): void
     {
         $this->writer->writeData($this->getDataPath(), self::STORAGE_TYPE_SCHOOL_HOLIDAY, $data);
     }

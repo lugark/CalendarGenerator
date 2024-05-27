@@ -15,7 +15,7 @@ class ApiFeiertageTransformer implements TransformerInterface
         }
 
         $result = [];
-        foreach ($data['feiertage'] as $key => $holiday) {
+        foreach ($data['feiertage'] as $holiday) {
             $regions = [];
             $dataSet = [
                 'name' => $holiday['fname'],

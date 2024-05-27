@@ -11,7 +11,7 @@ class ApiFeiertage implements LoaderInterface
     public const DEUTSCHE_FEIERTAGE_URL = 'https://get.api-feiertage.de?years=';
 
     public function __construct(
-        private readonly RequestInterface $curlRequest, 
+        private readonly RequestInterface $curlRequest,
         private readonly ApiFeiertageTransformer $transformer
     ) {
     }

@@ -12,7 +12,7 @@ class ApiDataLoader
     public function __construct(
         /** @var LoaderInterface[] */
         private readonly iterable $loader
-    ) {        
+    ) {
     }
 
     public function fetchData(string $type, string $year): array

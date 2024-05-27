@@ -8,7 +8,7 @@ class MsgPackWriter implements WriterInterface
 {
     public const FILE_ENDING = '.mpack';
 
-    public function writeData(string $path, string $type, $data): bool
+    public function writeData(string $path, string $type, mixed $data): bool
     {
         $dataFile = $path . '/' . $type . self::FILE_ENDING;
         $f = fopen($dataFile, 'w+b');

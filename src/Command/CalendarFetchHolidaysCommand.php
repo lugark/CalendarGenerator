@@ -18,7 +18,7 @@ class CalendarFetchHolidaysCommand extends Command
     protected static $defaultName = 'calendar:fetch:holidays';
 
     public function __construct(
-        private readonly HolidaysRepository $holidayRepo, 
+        private readonly HolidaysRepository $holidayRepo,
         private readonly ApiDataLoader $apiCrawler
     ) {
         parent::__construct();
