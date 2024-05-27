@@ -19,12 +19,10 @@ jobs:
         with:
           # Disabling shallow clone is recommended for improving relevancy of reporting
           fetch-depth: 0
-
       - uses: actions/download-artifact@v3
         name: Download reports-artifacts
         with:
           name: test-reports
-
       - name: Send code coverage report to Codecov.io
         uses: codecov/codecov-action@v3
         with:
@@ -33,13 +31,19 @@ jobs:
           files: ./coverage.xml
           fail_ci_if_error: true
           verbose: true
+          
   sonarcloud:
+    needs: tests
     name: SonarCloud
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - uses: actions/download-artifact@v3
+        name: Download reports-artifacts
+        with:
+          name: test-reports          
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
