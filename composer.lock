@@ -261,7 +261,7 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git@github.com:lugark/calendar-pdf-renderer.git",
+                "url": "https://github.com/lugark/calendar-pdf-renderer.git",
                 "reference": "cfdb71b85d99bb8fd5939a8dc465cc0c13b5fb66"
             },
             "dist": {
