@@ -7,12 +7,10 @@
         "php": "^8.1",
         "ext-curl": "*",
         "ext-json": "*",
-        "aeon-php/calendar": "^1.0.0",
         "lugark/calendar-pdf-renderer": "dev-master",
         "doctrine/annotations": "^2.0",
         "phpdocumentor/reflection-docblock": "^5.2",
         "rybakit/msgpack": "^0.9.0",
-        "setasign/fpdf": "^1.8",
         "symfony/console": "5.4.*",
         "symfony/dom-crawler": "5.4.*",
         "symfony/dotenv": "5.4.*",
@@ -64,7 +62,7 @@
         "post-update-cmd": [
             "@auto-scripts"
         ],
-        "phpunit": "vendor/bin/simple-phpunit  --coverage-clover reports/coverage.xml --log-junit reports/phpunit_report.xmlt",
+        "phpunit": "vendor/bin/simple-phpunit  --coverage-clover reports/coverage.xml --log-junit reports/phpunit_report.xml",
         "phpstan": "vendor/bin/phpstan analyze src -c phpstan.neon",
         "test": [
             "@phpstan",

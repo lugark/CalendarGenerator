@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d1e3b5f85dd9e20edd8cd7727476ab5e",
+    "content-hash": "8456935629f3cb813ef4feb2b2e19f38",
     "packages": [
         {
             "name": "aeon-php/calendar",
@@ -262,12 +262,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:lugark/calendar-pdf-renderer.git",
-                "reference": "4ae4072fa903e742bf46fccfeaa984f9cf83eccb"
+                "reference": "cfdb71b85d99bb8fd5939a8dc465cc0c13b5fb66"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lugark/calendar-pdf-renderer/zipball/4ae4072fa903e742bf46fccfeaa984f9cf83eccb",
-                "reference": "4ae4072fa903e742bf46fccfeaa984f9cf83eccb",
+                "url": "https://api.github.com/repos/lugark/calendar-pdf-renderer/zipball/cfdb71b85d99bb8fd5939a8dc465cc0c13b5fb66",
+                "reference": "cfdb71b85d99bb8fd5939a8dc465cc0c13b5fb66",
                 "shasum": ""
             },
             "require": {
@@ -281,7 +281,7 @@
                 "phpstan/phpstan": "^1.8",
                 "phpstan/phpstan-symfony": "^1.2",
                 "symfony/dependency-injection": "^5.4",
-                "symfony/http-kernel": "^5.4",
+                "symfony/http-kernel": "^5.4 || ^6.0",
                 "symfony/phpunit-bridge": "^6.1"
             },
             "suggest": {
@@ -317,10 +317,10 @@
             ],
             "description": "to generate pdf calendars with custom events & holidays",
             "support": {
-                "source": "https://github.com/lugark/calendar-pdf-renderer/tree/0.2",
+                "source": "https://github.com/lugark/calendar-pdf-renderer/tree/master",
                 "issues": "https://github.com/lugark/calendar-pdf-renderer/issues"
             },
-            "time": "2023-03-04T22:13:03+00:00"
+            "time": "2024-05-27T19:19:06+00:00"
         },
         {
             "name": "mpdf/mpdf",
