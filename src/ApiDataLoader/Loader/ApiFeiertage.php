@@ -7,16 +7,13 @@ use App\ApiDataLoader\Transformer\TransformerInterface;
 
 class ApiFeiertage implements LoaderInterface
 {
-    const LOADER_TYPE = 'api_feiertage';
-    const DEUTSCHE_FEIERTAGE_URL = 'https://get.api-feiertage.de?years=';
+    public const LOADER_TYPE = 'api_feiertage';
+    public const DEUTSCHE_FEIERTAGE_URL = 'https://get.api-feiertage.de?years=';
 
-    private ApiFeiertageTransformer $transformer;
-    private RequestInterface $curlRequest;
-
-    public function __construct(RequestInterface $curlRequest, ApiFeiertageTransformer $transformer)
-    {
-        $this->transformer = $transformer;
-        $this->curlRequest = $curlRequest;
+    public function __construct(
+        private readonly RequestInterface $curlRequest, 
+        private readonly ApiFeiertageTransformer $transformer
+    ) {
     }
 
     public function getType(): String

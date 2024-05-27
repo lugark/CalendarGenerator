@@ -16,12 +16,11 @@ class DeutscheFeiertageApiTest extends TestCase
 
     public function setUp(): void
     {
-        parent::setUp();
         $this->curlRequestMock = $this->getMockBuilder(CurlRequest::class)
             ->getMock();
     }
 
-    public function testSuccessFetch()
+    public function testSuccessFetch(): void
     {
         $expectedResponse = new Response(true, 200, '{"test": true}', ['test' => true]);
         $this->curlRequestMock->method('execute')
@@ -32,7 +31,7 @@ class DeutscheFeiertageApiTest extends TestCase
         $this->assertEquals($expectedResponse, $result);
     }
 
-    public function testGetType()
+    public function testGetType(): void
     {
         $this->sut = new DeutscheFeiertageApi($this->curlRequestMock);
         $this->assertEquals(DeutscheFeiertageApi::LOADER_TYPE, $this->sut->getType());

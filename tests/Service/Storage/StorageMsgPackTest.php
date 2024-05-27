@@ -29,7 +29,6 @@ class StorageMsgPackTest extends TestCase
 
     public function setUp(): void
     {
-        parent::setUp();
         array_map('unlink', glob("/tmp/*" . MsgPackWriter::FILE_ENDING));
         $this->sut = new Storage(new MsgPackWriter(), new MsgPackReader());
         $this->sut->setDataPath(realpath(__DIR__ . '/fixture/'));
@@ -38,7 +37,6 @@ class StorageMsgPackTest extends TestCase
     public function tearDown(): void
     {
         $this->sut = null;
-        parent::tearDown();
     }
 
     public function dataProviderSchoolHolidays()
@@ -63,7 +61,7 @@ class StorageMsgPackTest extends TestCase
         ];
     }
     /** @dataProvider dataProviderSchoolHolidays */
-    public function testReadSchoolHolidays($federal, $expected)
+    public function testReadSchoolHolidays($federal, $expected): void
     {
         $this->assertEquals($expected, $this->sut->readSchoolHolidays($federal));
 
@@ -99,12 +97,12 @@ class StorageMsgPackTest extends TestCase
     }
 
     /** @dataProvider dataProviderPublicHolidays */
-    public function testReadPublicHolidays($federal, $expected)
+    public function testReadPublicHolidays($federal, $expected): void
     {
         $this->assertEquals($expected, $this->sut->readPublicHolidays($federal));
     }
 
-    public function testWriteSchoolHolidays()
+    public function testWriteSchoolHolidays(): void
     {
         $testData = ['test'=>true];
         $testFilename = '/tmp/' . Storage::STORAGE_TYPE_SCHOOL_HOLIDAY . MsgPackWriter::FILE_ENDING;
@@ -114,7 +112,7 @@ class StorageMsgPackTest extends TestCase
         $this->assertEquals(strlen(MessagePack::pack($testData)), filesize($testFilename));
     }
 
-    public function testWritePublicHolidays()
+    public function testWritePublicHolidays(): void
     {
         $testData = ['test'=>true];
         $testFilename = '/tmp/' . Storage::STORAGE_TYPE_PUBLIC_HOLIDAY . MsgPackWriter::FILE_ENDING;
@@ -124,7 +122,7 @@ class StorageMsgPackTest extends TestCase
         $this->assertEquals(strlen(MessagePack::pack($testData)), filesize($testFilename));
     }
 
-    public function testFailSetPath()
+    public function testFailSetPath(): void
     {
         $this->expectExceptionMessage('could not read path: /I-Dont-Exisstsss');
         $this->sut->setDataPath('/I-Dont-Exisstsss');

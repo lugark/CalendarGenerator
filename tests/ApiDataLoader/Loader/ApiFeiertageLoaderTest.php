@@ -15,23 +15,22 @@ class ApiFeiertageLoaderTest extends TestCase
 
     public function setUp(): void
     {
-        parent::setUp();
         $this->curlRequestMock = $this->getMockBuilder(CurlRequest::class)->getMock();
         $this->transformerMock = $this->getMockBuilder(ApiFeiertageTransformer::class)->getMock();
         $this->sut = new ApiFeiertage($this->curlRequestMock, $this->transformerMock);
     }
 
-    public function testGetType()
+    public function testGetType(): void
     {
         Assert::assertEquals(ApiFeiertage::LOADER_TYPE, $this->sut->getType());
     }
 
-    public function testGetTransformer()
+    public function testGetTransformer(): void
     {
         Assert::assertEquals($this->transformerMock, $this->sut->getTransformer());
     }
 
-    public function testLoad()
+    public function testLoad(): void
     {
         $this->curlRequestMock->method('execute')
             ->willReturn(new Response(true, 200, 'TestSuccess', []));

@@ -22,14 +22,13 @@ class ApiDataLoaderTest extends TestCase
 
     public function setUp(): void
     {
-        parent::setUp();
         $this->loaderMock = $this->getMockBuilder(LoaderInterface::class)
             ->getMock();
         $this->transformMock = $this->getMockBuilder(TransformerDeutscheFeiertageApi::class)
             ->getMock();
     }
 
-    public function testSuccessFetchWithoutTransformer()
+    public function testSuccessFetchWithoutTransformer(): void
     {
         // Test without transformer
         $this->loaderMock->method("getType")
@@ -44,7 +43,7 @@ class ApiDataLoaderTest extends TestCase
         $this->assertEquals(['test'=>true], $data);
     }
 
-    public function testSuccessFetchWithTransformer()
+    public function testSuccessFetchWithTransformer(): void
     {
         // Test without transformer
         $this->transformMock->expects($this->once())
@@ -62,7 +61,7 @@ class ApiDataLoaderTest extends TestCase
         $this->assertEquals(['test'=>'again'], $data);
     }
 
-    public function testFetchFailNoLoader()
+    public function testFetchFailNoLoader(): void
     {
         $this->expectException(DataLoaderException::class);
         $this->expectExceptionMessage('Can not find api-loader for deutsche_feiertage_api');
@@ -71,7 +70,7 @@ class ApiDataLoaderTest extends TestCase
         $data = $this->sut->fetchData(DeutscheFeiertageApi::LOADER_TYPE, '2020');
     }
 
-    public function testFetchFailRequest()
+    public function testFetchFailRequest(): void
     {
         $this->expectException(DataLoaderException::class);
         $this->expectExceptionMessage('Error loading data: ');

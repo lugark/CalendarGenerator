@@ -17,14 +17,10 @@ class CalendarFetchHolidaysCommand extends Command
 {
     protected static $defaultName = 'calendar:fetch:holidays';
 
-    private HolidaysRepository $holidayRepo;
-
-    private ApiDataLoader $apiCrawler;
-
-    public function __construct(HolidaysRepository $holidaysRepository, ApiDataLoader $apiCrawler)
-    {
-        $this->holidayRepo = $holidaysRepository;
-        $this->apiCrawler = $apiCrawler;
+    public function __construct(
+        private readonly HolidaysRepository $holidayRepo, 
+        private readonly ApiDataLoader $apiCrawler
+    ) {
         parent::__construct();
     }
 
@@ -42,11 +38,11 @@ class CalendarFetchHolidaysCommand extends Command
 
         $holidayTypes = [];
         if ($input->hasArgument('holidayTypes')) {
-            $holidayTypes = explode(',', $input->getArgument('holidayTypes'));
+            $holidayTypes = explode(',', (string) $input->getArgument('holidayTypes'));
         }
 
         $years = !empty($input->getOption('year')) ?
-            explode(',', $input->getOption('year')) :
+            explode(',', (string) $input->getOption('year')) :
             [date('Y')];
 
         if (in_array('public', $holidayTypes)) {

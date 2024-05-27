@@ -11,15 +11,11 @@ use Symfony\Component\Serializer\Serializer;
 
 class HolidaysRepository
 {
-    /** @var Storage */
-    private $storage;
-
     /** @var Serializer  */
     private $serializer;
 
-    public function __construct(Storage $storage)
+    public function __construct(private readonly Storage $storage)
     {
-        $this->storage = $storage;
         $this->serializer = new Serializer(
             [
                 new EventNormalizer(),

@@ -13,18 +13,17 @@ class PeriodsTest extends TestCase
 
     public function setUp(): void
     {
-        parent::setUp();
         $this->curlRequestMock = $this->getMockBuilder(CurlRequest::class)
             ->getMock();
     }
 
-    public function testGetApiSubPath()
+    public function testGetApiSubPath(): void
     {
         $sut = new Periods($this->curlRequestMock);
         $this->assertEquals(Periods::PERIODS_PATH, $sut->getApiSubPath());
     }
 
-    public function testFetchAllPeriods()
+    public function testFetchAllPeriods(): void
     {
         $fixture = file_get_contents(realpath(__DIR__ . '/fixtures/PeriodsSuccess.json'));
         $response = new Response(true, 200, $fixture, json_decode($fixture, true));

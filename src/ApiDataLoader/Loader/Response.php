@@ -7,21 +7,12 @@ namespace App\ApiDataLoader\Loader;
  */
 class Response
 {
-    /** @var int */
-    private $responseCode;
-    /** @var string */
-    private $response;
-    /** @var array */
-    private $data; 
-    /** @var bool */
-    private $success;
-
-    public function __construct(bool $success, int $responseCode, string $response, array $data)
-    {
-        $this->success = $success;
-        $this->responseCode = $responseCode;
-        $this->response = $response;
-        $this->data = $data;
+    public function __construct(
+        private readonly bool $success, 
+        private readonly int $responseCode, 
+        private readonly string $response,
+         private readonly array $data
+    ) {
     }
 
     /**

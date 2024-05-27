@@ -15,7 +15,6 @@ class ApiFeiertageTransformerTest extends TestCase
 
     public function setUp(): void
     {
-        parent::setUp();
         $this->loaderData = file_get_contents(realpath(__DIR__ . '/fixtures/ApiFeiertageLoaderSuccess.json'));
         $this->response = new Response(true, 200, $this->loaderData, json_decode($this->loaderData, true));
     }
@@ -23,7 +22,7 @@ class ApiFeiertageTransformerTest extends TestCase
     /**
      * @dataProvider getFailTransformData
      */
-    public function testTransformFail($response)
+    public function testTransformFail($response): void
     {
         $sut = new ApiFeiertageTransformer();
         Assert::assertEquals([], $sut->__invoke($response));
@@ -39,13 +38,13 @@ class ApiFeiertageTransformerTest extends TestCase
             ];
     }
 
-    public function testGetType()
+    public function testGetType(): void
     {
         $sut = new ApiFeiertageTransformer();
         $this->assertEquals(ApiFeiertage::LOADER_TYPE, $sut->getType());
     }
 
-    public function testTransformData()
+    public function testTransformData(): void
     {
         $sut = new ApiFeiertageTransformer();
         $result = $sut($this->response);

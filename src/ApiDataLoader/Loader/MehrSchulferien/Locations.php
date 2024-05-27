@@ -4,7 +4,7 @@ namespace App\ApiDataLoader\Loader\MehrSchulferien;
 
 class Locations extends AbstractApi
 {
-    const LOCATION_PATH='locations';
+    public const LOCATION_PATH='locations';
 
     protected array $locations = [];
 

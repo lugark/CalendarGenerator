@@ -35,7 +35,7 @@ class MehrSchulferien implements TransformerInterface
             if (!isset($schoolVacation[$typeId])) {
                 $schoolVacation[$typeId] = ['name' => $period['type']['colloquial']];
             }
-            $schoolVacation[$typeId][strtoupper($period['location']['code'])] = [
+            $schoolVacation[$typeId][strtoupper((string) $period['location']['code'])] = [
                 'start' => $period['starts_on'],
                 'end' => $period['ends_on'],
             ];

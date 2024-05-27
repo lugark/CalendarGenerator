@@ -12,16 +12,15 @@ class MehrSchulferienTest extends TestCase
 
     public function setUp(): void
     {
-        parent::setUp();
     }
 
-    public function testGetType()
+    public function testGetType(): void
     {
         $sut = new MehrSchulferien();
         $this->assertEquals(MehrSchulferienApi::LOADER_TYPE, $sut->getType());
     }
 
-    public function testTransformData()
+    public function testTransformData(): void
     {
         $loaderData = file_get_contents(realpath(__DIR__ . '/fixtures/MehrSchulferienLoaderSuccess.json'));
         $response = new Response(true, 200, $loaderData, json_decode($loaderData, true));

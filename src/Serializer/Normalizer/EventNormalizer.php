@@ -11,20 +11,20 @@ use Symfony\Component\Serializer\SerializerAwareTrait;
 
 class EventNormalizer implements DenormalizerInterface
 {
-    private DateTimeNormalizer $dateTimeNormalizer;
+    private readonly DateTimeNormalizer $dateTimeNormalizer;
 
     public function __construct()
     {
         $this->dateTimeNormalizer = new DateTimeNormalizer();
     }
 
-    public function denormalize($data, string $type, string $format = null, array $context = [])
+    public function denormalize($data, string $type, string|null $format = null, array $context = [])
     {
         if (!array_key_exists('name', $data)) {
             return null;
         }
 
-        $eventType = isset($context['eventType']) ? $context['eventType'] : '';
+        $eventType = $context['eventType'] ?? '';
         $entity = new Event($eventType);
         $entity->setText($data['name']);
 
@@ -47,7 +47,7 @@ class EventNormalizer implements DenormalizerInterface
         return $entity;
     }
 
-    public function supportsDenormalization($data, string $type, string $format = null): bool
+    public function supportsDenormalization($data, string $type, string|null $format = null): bool
     {
         return $type === Event::class;
     }

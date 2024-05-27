@@ -13,18 +13,17 @@ class TypesTest extends TestCase
 
     public function setUp(): void
     {
-        parent::setUp();
         $this->curlRequestMock = $this->getMockBuilder(CurlRequest::class)
             ->getMock();
     }
 
-    public function testGetApiSubPath()
+    public function testGetApiSubPath(): void
     {
         $sut = new Types($this->curlRequestMock);
         $this->assertEquals(Types::TYPES_PATH, $sut->getApiSubPath());
     }
 
-    public function testFetchAll()
+    public function testFetchAll(): void
     {
         $fixture = file_get_contents(realpath(__DIR__ . '/fixtures/TypesSuccessResult.json'));
         $response = new Response(true, 200, $fixture, json_decode($fixture, true));

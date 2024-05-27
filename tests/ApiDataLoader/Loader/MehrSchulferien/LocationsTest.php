@@ -13,18 +13,17 @@ class LocationsTest extends TestCase
 
     public function setUp(): void
     {
-        parent::setUp();
         $this->curlRequestMock = $this->getMockBuilder(CurlRequest::class)
             ->getMock();
     }
 
-    public function testGetApiSubPath()
+    public function testGetApiSubPath(): void
     {
         $sut = new Locations($this->curlRequestMock);
         $this->assertEquals(Locations::LOCATION_PATH, $sut->getApiSubPath());
     }
 
-    public function testGetLocationSuccess()
+    public function testGetLocationSuccess(): void
     {
         $jsonFixture = file_get_contents(realpath(__DIR__ . '/fixtures/LocationSuccessResult.json'));
         $expectedResponse = new Response(true, 200, $jsonFixture, json_decode($jsonFixture, true));

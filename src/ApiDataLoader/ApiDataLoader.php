@@ -9,12 +9,10 @@ use Exception;
 
 class ApiDataLoader
 {
-    /** @var LoaderInterface[] */
-    private iterable $loader;
-
-    public function __construct(iterable $loader)
-    {
-        $this->loader = $loader;
+    public function __construct(
+        /** @var LoaderInterface[] */
+        private readonly iterable $loader
+    ) {        
     }
 
     public function fetchData(string $type, string $year): array

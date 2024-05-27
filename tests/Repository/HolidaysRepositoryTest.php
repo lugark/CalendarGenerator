@@ -13,7 +13,6 @@ class HolidaysRepositoryTest extends TestCase
 
     public function setUp(): void
     {
-        parent::setUp();
         $this->storageMock = $this->getMockBuilder(Storage::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -22,10 +21,9 @@ class HolidaysRepositoryTest extends TestCase
     public function tearDown(): void
     {
         $this->storageMock = null;
-        parent::tearDown();
     }
 
-    public function testSaveSchoolHolidays()
+    public function testSaveSchoolHolidays(): void
     {
         $this->storageMock->expects($this->once())
             ->method('writeSchoolHolidays');
@@ -33,7 +31,7 @@ class HolidaysRepositoryTest extends TestCase
         $sut->saveSchoolHolidays([]);
     }
 
-    public function testSavePublicHolidays()
+    public function testSavePublicHolidays(): void
     {
         $this->storageMock->expects($this->once())
             ->method('writePublicHolidays');
@@ -41,7 +39,7 @@ class HolidaysRepositoryTest extends TestCase
         $sut->savePublicHolidays([]);
     }
 
-    public function testGetPublicHolidaysFound()
+    public function testGetPublicHolidaysFound(): void
     {
         $this->storageMock->method('readPublicHolidays')
             ->willReturn(
@@ -59,7 +57,7 @@ class HolidaysRepositoryTest extends TestCase
         $this->assertEquals('Allerheiligen', $holiday->getText());
     }
 
-    public function testGetSchoolHolidays()
+    public function testGetSchoolHolidays(): void
     {
         $this->storageMock->method('readSchoolHolidays')
             ->willReturn(

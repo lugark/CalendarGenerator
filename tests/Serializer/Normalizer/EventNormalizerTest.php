@@ -18,21 +18,20 @@ class EventNormalizerTest extends TestCase
 
     public function setUp(): void
     {
-        parent::setUp();
         $this->sut = new EventNormalizer();
     }
 
-    public function testInterface()
+    public function testInterface(): void
     {
         $this->assertInstanceOf(DenormalizerInterface::class, $this->sut);
     }
 
-    public function testSupportsDenormalization()
+    public function testSupportsDenormalization(): void
     {
         $this->assertTrue($this->sut->supportsDenormalization([], Event::class));
     }
 
-    public function testSupportsDenormalizationFail()
+    public function testSupportsDenormalizationFail(): void
     {
         $this->assertFalse($this->sut->supportsDenormalization([], TestCase::class));
     }
@@ -71,7 +70,7 @@ class EventNormalizerTest extends TestCase
     }
 
     /** @dataProvider  denormalizeProvider */
-    public function testDenormalize($input, $output)
+    public function testDenormalize($input, $output): void
     {
         $result = $this->sut->denormalize(
             $input,
