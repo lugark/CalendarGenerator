@@ -22,11 +22,10 @@ class CalendarFetchHolidaysCommand extends Command
     /** @var ApiCrawler */
     private $apiCrawler;
 
-    public function __construct(string $name = null, HolidaysRepository $holidaysRepository, ApiDataLoader $apiCrawler)
+    public function __construct(HolidaysRepository $holidaysRepository, ApiDataLoader $apiCrawler)
     {
         $this->holidayRepo = $holidaysRepository;
         $this->apiCrawler = $apiCrawler;
-        parent::__construct($name);
     }
 
     protected function configure()

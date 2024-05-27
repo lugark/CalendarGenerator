@@ -5,11 +5,8 @@
 
 name: Symfony
 
-on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+on: 
+  workflow_call:
 
 permissions:
   contents: read
@@ -20,8 +17,7 @@ jobs:
     steps:
     #  To automatically get bug fixes and new Php versions for shivammathur/setup-php,
     # change this to (see https://github.com/shivammathur/setup-php#bookmark-versioning):
-    # uses: shivammathur/setup-php@v2
-    - uses: shivammathur/setup-php@2cb9b829437ee246e9b3cac53555a39208ca6d28
+    - uses: shivammathur/setup-php@v2
       with:
         php-version: '8.3'
     - uses: actions/checkout@v4
@@ -44,4 +40,10 @@ jobs:
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       env:
         DATABASE_URL: sqlite:///%kernel.project_dir%/data/database.sqlite
-      run: vendor/bin/phpunit
+      run: composer phpunit
+    - uses: actions/upload-artifact@v4
+      name: Upload reports-artifacts 
+      with:
+        name: test-reports
+        path: reports/
+        retention-days: 1          
