@@ -10,9 +10,8 @@ on:
 jobs:
     merge-me:
         name: Merge Dependabot PR
-
+        permissions: write-all
         runs-on: ubuntu-latest
-
         steps:
             - name: Merge
               if: ${{ github.event.workflow_run.conclusion == 'success' }}
