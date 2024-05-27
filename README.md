@@ -1,12 +1,14 @@
 # CalendarGenerator
 [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.4-8892BF.svg)](https://php.net/)
 [![CodeCov](https://img.shields.io/codecov/c/gh/lugark/CalendarGenerator?label=CodeCov)](https://codecov.io/gh/lugark/CalendarGenerator)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=lugark_CalendarGenerator&metric=alert_status)](https://sonarcloud.io/dashboard?id=lugark_CalendarGenerator)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=lugark_CalendarGenerator&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=lugark_CalendarGenerator)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=lugark_CalendarGenerator&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=lugark_CalendarGenerator)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=lugark_CalendarGenerator&metric=bugs)](https://sonarcloud.io/summary/new_code?id=lugark_CalendarGenerator)
 ![CI](https://github.com/lugark/CalendarGenerator/workflows/CI/badge.svg)
 The goal is to have a printable PDF with customized calendar including german school holidays and/or public holidays
 
 ## Dependencies
-- PHP 7.4 or higher
+- PHP ^7.4 or ^8.1
 - Symfony 5.3
 - "Feiertage" can be fetched from https://deutsche-feiertage-api.de/
 - "Schulferien" can be fetched from [mehr-schulferien.de](https://www.mehr-schulferien.de/)
