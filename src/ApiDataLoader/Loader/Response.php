@@ -14,13 +14,12 @@ class Response
         private readonly bool $success,
         private readonly int $responseCode,
         private readonly string $response,
-         private readonly array $data
+        private readonly array $data
     ) {
     }
 
     /**
      * Get the value of data
-     * @return mixed
      */ 
     public function getData(): mixed
     {

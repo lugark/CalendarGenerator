@@ -10,10 +10,14 @@ use Symfony\Component\Serializer\Serializer;
 
 class HolidaysRepository
 {
-    /** @var Serializer  */
+    /**
+     * @var Serializer
+     */
     private $serializer;
 
-    public function __construct(private readonly Storage $storage)
+    public function __construct(
+        private readonly Storage $storage
+    )
     {
         $this->serializer = new Serializer(
             [
@@ -34,7 +38,9 @@ class HolidaysRepository
                 $data['holiday'],
                 Event::class,
                 null,
-                ['eventType' => Types::EVENT_TYPE_PUBLIC_HOLIDAY]
+                [
+                    'eventType' => Types::EVENT_TYPE_PUBLIC_HOLIDAY,
+                ]
             );
         }
         return $holidays;
@@ -52,7 +58,9 @@ class HolidaysRepository
                 $data,
                 Event::class,
                 null,
-                ['eventType' => Types::EVENT_TYPE_SCHOOL_HOLIDAY]
+                [
+                    'eventType' => Types::EVENT_TYPE_SCHOOL_HOLIDAY,
+                ]
             );
         }
         return $holidays;

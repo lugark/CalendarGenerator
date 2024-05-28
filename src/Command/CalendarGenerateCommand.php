@@ -19,7 +19,9 @@ class CalendarGenerateCommand extends Command
 {
     protected static $defaultName = 'calendar:generate';
 
-    public function __construct(protected HolidaysRepository $holidaysRepository)
+    public function __construct(
+        protected HolidaysRepository $holidaysRepository
+    )
     {
         parent::__construct();
     }
@@ -47,13 +49,13 @@ class CalendarGenerateCommand extends Command
         $io->title('Starting calender generation with startdate ' . $startDate->format('Y-m-d'));
 
         $events = new Events();
-        if (!empty($publicHolidaysFor)) {
+        if (! empty($publicHolidaysFor)) {
             $io->text('* loading holidays for ' . $publicHolidaysFor);
             $holidays = $this->holidaysRepository->getPublicHolidays($publicHolidaysFor);
             $events->addEvents($holidays);
         }
 
-        if (!empty($schoolHolidaysFor)) {
+        if (! empty($schoolHolidaysFor)) {
             $io->text('* loading school vacations for ' . $schoolHolidaysFor);
             $vacations = $this->holidaysRepository->getSchoolHolidays($schoolHolidaysFor);
             $events->addEvents($vacations);

@@ -10,8 +10,9 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class EventNormalizerTest extends TestCase
 {
-
-    /** @var EventNormalizer */
+    /**
+     * @var EventNormalizer
+     */
     protected $sut;
 
     public function setUp(): void
@@ -49,32 +50,47 @@ class EventNormalizerTest extends TestCase
 
         return [
             [
-                ['someRandomArray' => 'uselessData'],
-                null
+                [
+                    'someRandomArray' => 'uselessData',
+                ],
+                null,
             ],
             [
-                ['name' => 'TestEvent'],
-                $eventOnlyName
+                [
+                    'name' => 'TestEvent',
+                ],
+                $eventOnlyName,
             ],
             [
-                ['name' => 'Complete', 'start' => '01-01-2020', 'end' => '02-01-2020'],
-                $eventComplete
+                [
+                    'name' => 'Complete',
+                    'start' => '01-01-2020',
+                    'end' => '02-01-2020',
+                ],
+                $eventComplete,
             ],
             [
-                ['name' => 'CompleteOnlyDate', 'date' => '01-01-2020'],
-                $eventCompleteOnlyDate
-            ]
+                [
+                    'name' => 'CompleteOnlyDate',
+                    'date' => '01-01-2020',
+                ],
+                $eventCompleteOnlyDate,
+            ],
         ];
     }
 
-    /** @dataProvider  denormalizeProvider */
+    /**
+     * @dataProvider  denormalizeProvider
+     */
     public function testDenormalize($input, $output): void
     {
         $result = $this->sut->denormalize(
             $input,
             Event::class,
             null,
-            ['eventType' => Types::EVENT_TYPE_SCHOOL_HOLIDAY]
+            [
+                'eventType' => Types::EVENT_TYPE_SCHOOL_HOLIDAY,
+            ]
         );
 
         $this->assertEquals($output, $result);

@@ -7,14 +7,13 @@ use PHPUnit\Framework\TestCase;
 
 class FederalServiceTest extends TestCase
 {
-
     public function getFederalNames()
     {
         return [
-            'SachsenAnhalt'       => ['Sachsen-Anhalt', 'ST'],
-            'Sachsen'             => ['Sachsen', 'SN'],
+            'SachsenAnhalt' => ['Sachsen-Anhalt', 'ST'],
+            'Sachsen' => ['Sachsen', 'SN'],
             'TestNothingReturned' => ['Test', ''],
-            'Bayern'              => ['Bayern', 'BY'],
+            'Bayern' => ['Bayern', 'BY'],
         ];
     }
 

@@ -10,7 +10,9 @@ use PHPUnit\Framework\TestCase;
 class ApiFeiertageLoaderTest extends TestCase
 {
     private $transformerMock;
+
     private $curlRequestMock;
+
     private $sut;
 
     public function setUp(): void

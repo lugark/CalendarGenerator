@@ -8,6 +8,7 @@ use App\Service\Storage\Writer\WriterInterface;
 class Storage
 {
     public const STORAGE_TYPE_PUBLIC_HOLIDAY = 'publicHolidays';
+
     public const STORAGE_TYPE_SCHOOL_HOLIDAY = 'schoolHolidays';
 
     protected string $dataPath;
@@ -33,7 +34,6 @@ class Storage
         }
     }
 
-    
     /**
      *  @return array<mixed>
      */
@@ -52,7 +52,7 @@ class Storage
     {
         $filteredData = array_filter(
             $this->reader->readData($this->getDataPath(), self::STORAGE_TYPE_SCHOOL_HOLIDAY),
-            fn($vacation) => array_key_exists($federal, $vacation) && !empty($vacation[$federal])
+            fn($vacation) => array_key_exists($federal, $vacation) && ! empty($vacation[$federal])
         );
 
         return array_map(

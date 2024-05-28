@@ -10,8 +10,11 @@ use PHPUnit\Framework\TestCase;
 
 class StorageMsgPackTest extends TestCase
 {
-    /** @var Storage */
+    /**
+     * @var Storage
+     */
     protected $sut;
+
     public static function setUpBeforeClass(): void
     {
         $public = json_decode(file_get_contents(__DIR__ . '/fixture/publicHolidays.json'), true);
@@ -44,23 +47,34 @@ class StorageMsgPackTest extends TestCase
         return [
             [
                 'BE',
-                [['name' => "Winterferien", 'start' => "01.02.2021", 'end' => "06.02.2021"]]
+                [[
+                    'name' => "Winterferien",
+                    'start' => "01.02.2021",
+                    'end' => "06.02.2021",
+                ]],
             ],
             [
                 'HB',
-                [['name' => "Winterferien", 'start' => "01.02.2021", 'end' => "02.02.2021"]]
+                [[
+                    'name' => "Winterferien",
+                    'start' => "01.02.2021",
+                    'end' => "02.02.2021",
+                ]],
             ],
             [
                 'BY',
-                []
+                [],
             ],
             [
                 'NONE',
-                []
-            ]
+                [],
+            ],
         ];
     }
-    /** @dataProvider dataProviderSchoolHolidays */
+
+    /**
+     * @dataProvider dataProviderSchoolHolidays
+     */
     public function testReadSchoolHolidays($federal, $expected): void
     {
         $this->assertEquals($expected, $this->sut->readSchoolHolidays($federal));
@@ -72,31 +86,68 @@ class StorageMsgPackTest extends TestCase
         return [
             [
                 'BE',
-                [['holiday' => ["date" => "2021-01-01", "name" => "Neujahr", "regions" => ["BW", "BY", "BE", "BB", "HB", "HH", "HE", "MV", "NI", "NW", "RP", "SL", "SN", "ST", "SH", "TH"], "all_states" => true]]]
+                [[
+                    'holiday' => [
+                        "date" => "2021-01-01",
+                        "name" => "Neujahr",
+                        "regions" => ["BW", "BY", "BE", "BB", "HB", "HH", "HE", "MV", "NI", "NW", "RP", "SL", "SN", "ST", "SH", "TH"],
+                        "all_states" => true,
+                    ],
+                ]],
             ],
             [
                 'HB',
-                [['holiday' => ["date" => "2021-01-01", "name" => "Neujahr", "regions" => ["BW", "BY", "BE", "BB", "HB", "HH", "HE", "MV", "NI", "NW", "RP", "SL", "SN", "ST", "SH", "TH"], "all_states" => true]]]
+                [[
+                    'holiday' => [
+                        "date" => "2021-01-01",
+                        "name" => "Neujahr",
+                        "regions" => ["BW", "BY", "BE", "BB", "HB", "HH", "HE", "MV", "NI", "NW", "RP", "SL", "SN", "ST", "SH", "TH"],
+                        "all_states" => true,
+                    ],
+                ]],
             ],
             [
                 'HH',
-                [['holiday' => ["date" => "2021-01-01", "name" => "Neujahr", "regions" => ["BW", "BY", "BE", "BB", "HB", "HH", "HE", "MV", "NI", "NW", "RP", "SL", "SN", "ST", "SH", "TH"], "all_states" => true]]]
+                [[
+                    'holiday' => [
+                        "date" => "2021-01-01",
+                        "name" => "Neujahr",
+                        "regions" => ["BW", "BY", "BE", "BB", "HB", "HH", "HE", "MV", "NI", "NW", "RP", "SL", "SN", "ST", "SH", "TH"],
+                        "all_states" => true,
+                    ],
+                ]],
             ],
             [
                 'BY',
                 [
-                    ['holiday' => ["date" => "2021-01-01", "name" => "Neujahr", "regions" => ["BW", "BY", "BE", "BB", "HB", "HH", "HE", "MV", "NI", "NW", "RP", "SL", "SN", "ST", "SH", "TH"], "all_states" => true]],
-                    ['holiday' => ["date" => "2021-11-01", "name" => "Allerheiligen", "regions" => ["BW", "BY", "NW", "RP", "SL"], "all_states" => false]],
-                ]
+                    [
+                        'holiday' => [
+                            "date" => "2021-01-01",
+                            "name" => "Neujahr",
+                            "regions" => ["BW", "BY", "BE", "BB", "HB", "HH", "HE", "MV", "NI", "NW", "RP", "SL", "SN", "ST", "SH", "TH"],
+                            "all_states" => true,
+                        ],
+                    ],
+                    [
+                        'holiday' => [
+                            "date" => "2021-11-01",
+                            "name" => "Allerheiligen",
+                            "regions" => ["BW", "BY", "NW", "RP", "SL"],
+                            "all_states" => false,
+                        ],
+                    ],
+                ],
             ],
             [
                 'NONE',
-                []
-            ]
+                [],
+            ],
         ];
     }
 
-    /** @dataProvider dataProviderPublicHolidays */
+    /**
+     * @dataProvider dataProviderPublicHolidays
+     */
     public function testReadPublicHolidays($federal, $expected): void
     {
         $this->assertEquals($expected, $this->sut->readPublicHolidays($federal));
@@ -104,7 +155,9 @@ class StorageMsgPackTest extends TestCase
 
     public function testWriteSchoolHolidays(): void
     {
-        $testData = ['test'=>true];
+        $testData = [
+            'test' => true,
+        ];
         $testFilename = '/tmp/' . Storage::STORAGE_TYPE_SCHOOL_HOLIDAY . MsgPackWriter::FILE_ENDING;
         $this->sut->setDataPath('/tmp');
         $this->sut->writeSchoolHolidays($testData);
@@ -114,7 +167,9 @@ class StorageMsgPackTest extends TestCase
 
     public function testWritePublicHolidays(): void
     {
-        $testData = ['test'=>true];
+        $testData = [
+            'test' => true,
+        ];
         $testFilename = '/tmp/' . Storage::STORAGE_TYPE_PUBLIC_HOLIDAY . MsgPackWriter::FILE_ENDING;
         $this->sut->setDataPath('/tmp');
         $this->sut->writePublicHolidays($testData);

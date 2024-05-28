@@ -18,14 +18,15 @@ class Types extends AbstractApi
 
     protected function loadTypes(): void
     {
-        $response =  $this->curlRequest->execute(
+        $response = $this->curlRequest->execute(
             $this->getApiUrl(),
             [
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_HTTPHEADER => [
                     'Content-Type: application/json',
-                ]
-            ]);
+                ],
+            ]
+        );
 
         $this->types = array_column($response->getData()['data'], null, 'id');
     }

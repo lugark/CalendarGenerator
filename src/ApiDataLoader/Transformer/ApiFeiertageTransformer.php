@@ -10,7 +10,7 @@ class ApiFeiertageTransformer implements TransformerInterface
     public function __invoke(Response $response): mixed
     {
         $data = $response->getData();
-        if (!$response->isSuccess() || !isset($data['feiertage'])) {
+        if (! $response->isSuccess() || ! isset($data['feiertage'])) {
             return [];
         }
 
@@ -19,7 +19,7 @@ class ApiFeiertageTransformer implements TransformerInterface
             $regions = [];
             $dataSet = [
                 'name' => $holiday['fname'],
-                'date' => $holiday['date']
+                'date' => $holiday['date'],
             ];
             $regionList = array_diff(array_keys($holiday), ['fname', 'date', 'all_states', 'comment']);
             foreach ($regionList as $region) {

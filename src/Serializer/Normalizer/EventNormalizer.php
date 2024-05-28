@@ -4,8 +4,8 @@ namespace App\Serializer\Normalizer;
 
 use Calendar\Pdf\Renderer\Event\Event;
 use DateTime;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class EventNormalizer implements DenormalizerInterface
 {
@@ -18,7 +18,7 @@ class EventNormalizer implements DenormalizerInterface
 
     public function denormalize($data, string $type, string|null $format = null, array $context = []): mixed
     {
-        if (!array_key_exists('name', $data)) {
+        if (! array_key_exists('name', $data)) {
             return null;
         }
 
@@ -26,14 +26,14 @@ class EventNormalizer implements DenormalizerInterface
         $entity = new Event($eventType);
         $entity->setText($data['name']);
 
-        if (isset($data['date']) && !isset($data['start'])) {
+        if (isset($data['date']) && ! isset($data['start'])) {
             $date = ($this->dateTimeNormalizer->denormalize($data['date'], DateTime::class));
             $entity->setEventPeriod($date, $date);
             return $entity;
         }
 
         if (isset($data['start'])) {
-            if (!isset($data['end'])) {
+            if (! isset($data['end'])) {
                 $data['end'] = $data['start'];
             }
             $start = $this->dateTimeNormalizer->denormalize($data['start'], DateTime::class);

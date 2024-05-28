@@ -4,7 +4,7 @@ namespace App\ApiDataLoader\Loader\MehrSchulferien;
 
 class Locations extends AbstractApi
 {
-    public const LOCATION_PATH='locations';
+    public const LOCATION_PATH = 'locations';
 
     /**
      * @var array<mixed>
@@ -21,16 +21,17 @@ class Locations extends AbstractApi
      */
     public function getLocation(int $id): array
     {
-        if (!isset($this->locations[$id])) {
-            $response =  $this->curlRequest->execute(
+        if (! isset($this->locations[$id])) {
+            $response = $this->curlRequest->execute(
                 $this->getApiUrl() . '/' . $id,
                 [
                     CURLOPT_CUSTOMREQUEST => "GET",
                     CURLOPT_RETURNTRANSFER => true,
                     CURLOPT_HTTPHEADER => [
                         'Content-Type: application/json',
-                        ]
-                ]);
+                    ],
+                ]
+            );
 
             $this->locations[$id] = $response->getData()['data'];
         }

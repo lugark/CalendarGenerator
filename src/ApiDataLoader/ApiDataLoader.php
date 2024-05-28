@@ -22,12 +22,12 @@ class ApiDataLoader
 
         /** @var Response */
         $response = $loader->fetchData($year);
-        if (!$response->isSuccess()) {
+        if (! $response->isSuccess()) {
             throw new DataLoaderException('Error loading data: ' . $response->getResponse());
         }
 
         $transformer = $loader->getTransformer();
-        if (!empty($transformer)) {
+        if (! empty($transformer)) {
             $data = $transformer($response);
         } else {
             $data = $response->getData();

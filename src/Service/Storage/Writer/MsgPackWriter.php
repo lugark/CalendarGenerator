@@ -12,12 +12,11 @@ class MsgPackWriter implements WriterInterface
     {
         $dataFile = $path . '/' . $type . self::FILE_ENDING;
         $f = fopen($dataFile, 'w+b');
-        if (!empty($data)) {
+        if (! empty($data)) {
             $packedData = MessagePack::pack($data);
             fwrite($f, $packedData, strlen($packedData));
         }
         fclose($f);
         return true;
     }
-
 }
