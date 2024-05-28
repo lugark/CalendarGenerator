@@ -3,9 +3,7 @@
 namespace App\ApiDataLoader;
 
 use App\ApiDataLoader\Loader\LoaderInterface;
-use App\ApiDataLoader\Loader\RequestInterface;
 use App\ApiDataLoader\Loader\Response;
-use Exception;
 
 class ApiDataLoader
 {

@@ -10,7 +10,6 @@ use App\ApiDataLoader\Loader\LoaderInterface;
 use App\ApiDataLoader\Loader\Response;
 use App\ApiDataLoader\Transformer\DeutscheFeiertageApi as TransformerDeutscheFeiertageApi;
 
-use App\Service\FederalService;
 
 class ApiDataLoaderTest extends TestCase
 {

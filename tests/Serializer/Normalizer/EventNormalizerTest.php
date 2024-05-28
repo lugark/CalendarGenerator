@@ -6,9 +6,7 @@ use App\Serializer\Normalizer\EventNormalizer;
 use Calendar\Pdf\Renderer\Event\Event;
 use Calendar\Pdf\Renderer\Event\Types;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Serializer\Serializer;
 
 class EventNormalizerTest extends TestCase
 {
