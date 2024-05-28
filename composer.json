@@ -11,16 +11,16 @@
         "lugark/calendar-pdf-renderer": "dev-master",
         "phpdocumentor/reflection-docblock": "^5.2",
         "rybakit/msgpack": "^0.9.0",
-        "symfony/console": "6.0.*",
-        "symfony/dom-crawler": "6.0.*",
-        "symfony/dotenv": "6.0.*",
+        "symfony/console": "6.4.*",
+        "symfony/dom-crawler": "6.4.*",
+        "symfony/dotenv": "6.4.*",
         "symfony/flex": "^1.12",
-        "symfony/framework-bundle": "6.0.*",
-        "symfony/property-access": "6.0.*",
-        "symfony/property-info": "6.0.*",
-        "symfony/runtime": "6.0.*",
-        "symfony/serializer": "6.0.*",
-        "symfony/yaml": "6.0.*"
+        "symfony/framework-bundle": "6.4.*",
+        "symfony/property-access": "6.4.*",
+        "symfony/property-info": "6.4.*",
+        "symfony/runtime": "6.4.*",
+        "symfony/serializer": "6.4.*",
+        "symfony/yaml": "6.4.*"
     },
     "require-dev": {
         "phpstan/phpstan": "^1.8",
@@ -78,7 +78,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "6.0.*"
+            "require": "6.4.*"
         }
     },
     "repositories": [
