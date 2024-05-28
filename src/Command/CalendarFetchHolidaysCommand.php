@@ -23,7 +23,7 @@ class CalendarFetchHolidaysCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Fetches holidays/vacations from different API\'s to store in local file')

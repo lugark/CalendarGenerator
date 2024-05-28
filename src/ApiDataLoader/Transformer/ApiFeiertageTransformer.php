@@ -7,7 +7,7 @@ use App\ApiDataLoader\Loader\Response;
 
 class ApiFeiertageTransformer implements TransformerInterface
 {
-    public function __invoke(Response $response)
+    public function __invoke(Response $response): mixed
     {
         $data = $response->getData();
         if (!$response->isSuccess() || !isset($data['feiertage'])) {

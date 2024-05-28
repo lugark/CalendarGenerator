@@ -6,6 +6,9 @@ class Locations extends AbstractApi
 {
     public const LOCATION_PATH='locations';
 
+    /**
+     * @var array<mixed>
+     */
     protected array $locations = [];
 
     public function getApiSubPath(): string
@@ -13,6 +16,9 @@ class Locations extends AbstractApi
         return self::LOCATION_PATH;
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function getLocation(int $id): array
     {
         if (!isset($this->locations[$id])) {

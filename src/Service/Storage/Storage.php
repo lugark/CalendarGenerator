@@ -13,7 +13,7 @@ class Storage
     protected string $dataPath;
 
     public function __construct(
-        private readonly WriterInterface $writer, 
+        private readonly WriterInterface $writer,
         private readonly ReaderInterface $reader
     ) {
     }
@@ -26,7 +26,7 @@ class Storage
     public function setDataPath(string $dataPath): void
     {
         $realPath = realpath($dataPath);
-        if ($realPath === false) {            
+        if ($realPath === false) {
             throw new StorageException('could not read path: ' . $dataPath);
         } else {
             $this->dataPath = $realPath;

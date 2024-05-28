@@ -24,7 +24,7 @@ class CalendarGenerateCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Add a short description for your command')

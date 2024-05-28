@@ -24,7 +24,7 @@ class MehrSchulferien implements TransformerInterface
     *                 string(10) "28.02.2020"
     *                 }
     */
-    public function __invoke(Response $response)
+    public function __invoke(Response $response): mixed
     {
         $schoolVacation = [];
         foreach ($response->getData() as $period) {

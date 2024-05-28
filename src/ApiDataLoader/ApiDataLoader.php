@@ -15,6 +15,9 @@ class ApiDataLoader
     ) {
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function fetchData(string $type, string $year): array
     {
         $loader = $this->getMatchingLoader($type);
@@ -35,7 +38,7 @@ class ApiDataLoader
         return $data;
     }
 
-    private function getMatchingLoader(string $type)
+    private function getMatchingLoader(string $type): LoaderInterface
     {
         foreach ($this->loader as $loader) {
             if ($loader->getType() == $type) {
