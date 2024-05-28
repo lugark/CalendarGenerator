@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "02d3a2c04098ec20ac1b7376463650b0",
+    "content-hash": "c6304b9b2843ae6ae27e03889e603a18",
     "packages": [
         {
             "name": "aeon-php/calendar",
@@ -317,7 +317,7 @@
             ],
             "description": "to generate pdf calendars with custom events & holidays",
             "support": {
-                "source": "https://github.com/lugark/calendar-pdf-renderer/tree/master",
+                "source": "https://github.com/lugark/calendar-pdf-renderer/tree/feature/replace_aeon_with_carbon",
                 "issues": "https://github.com/lugark/calendar-pdf-renderer/issues"
             },
             "time": "2024-05-27T19:19:06+00:00"
