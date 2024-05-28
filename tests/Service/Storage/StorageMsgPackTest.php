@@ -124,7 +124,7 @@ class StorageMsgPackTest extends TestCase
 
     public function testFailSetPath(): void
     {
-        $this->markTestSkipped("Needs to be fixed");
+        #$this->markTestSkipped("Needs to be fixed");
         $this->expectExceptionMessage('could not read path: /I-Dont-Exisstsss');
         $this->sut->setDataPath('/I-Dont-Exisstsss');
     }

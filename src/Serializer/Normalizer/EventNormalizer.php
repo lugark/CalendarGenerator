@@ -6,8 +6,6 @@ use Calendar\Pdf\Renderer\Event\Event;
 use DateTime;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\SerializerAwareInterface;
-use Symfony\Component\Serializer\SerializerAwareTrait;
 
 class EventNormalizer implements DenormalizerInterface
 {
@@ -18,7 +16,7 @@ class EventNormalizer implements DenormalizerInterface
         $this->dateTimeNormalizer = new DateTimeNormalizer();
     }
 
-    public function denormalize($data, string $type, string|null $format = null, array $context = [])
+    public function denormalize($data, string $type, string|null $format = null, array $context = []): mixed
     {
         if (!array_key_exists('name', $data)) {
             return null;

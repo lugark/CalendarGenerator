@@ -4,7 +4,6 @@ namespace App\Service\Storage;
 
 use App\Service\Storage\Reader\ReaderInterface;
 use App\Service\Storage\Writer\WriterInterface;
-use MessagePack\MessagePack;
 
 class Storage
 {
@@ -26,9 +25,11 @@ class Storage
 
     public function setDataPath(string $dataPath): void
     {
-        $this->dataPath = realpath($dataPath);
-        if ($this->dataPath === false) {
+        $realPath = realpath($dataPath);
+        if ($realPath === false) {            
             throw new StorageException('could not read path: ' . $dataPath);
+        } else {
+            $this->dataPath = $realPath;
         }
     }
 
@@ -79,5 +80,4 @@ class Storage
     {
         $this->writer->writeData($this->getDataPath(), self::STORAGE_TYPE_SCHOOL_HOLIDAY, $data);
     }
-
 }

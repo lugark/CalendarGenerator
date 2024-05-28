@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class HolidaysRepositoryTest extends TestCase
 {
-    protected Storage $storage;
+    protected ?Storage $storageMock;
 
     public function setUp(): void
     {

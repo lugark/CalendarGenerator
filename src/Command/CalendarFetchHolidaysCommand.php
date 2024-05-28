@@ -6,7 +6,6 @@ use App\ApiDataLoader\Loader\ApiFeiertage;
 use App\ApiDataLoader\Loader\MehrSchulferienApi;
 use App\Repository\HolidaysRepository;
 use App\ApiDataLoader\ApiDataLoader;
-use App\ApiDataLoader\Loader\DeutscheFeiertageApi;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
