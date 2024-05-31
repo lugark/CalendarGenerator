@@ -24,7 +24,7 @@
         "symfony/yaml": "5.4.*"
     },
     "require-dev": {
-        "symfony/phpunit-bridge": "^6.1"
+        "symfony/phpunit-bridge": "^7.1"
     },
     "config": {
         "preferred-install": {
