@@ -6,7 +6,7 @@ use MessagePack\MessagePack;
 
 class MsgPackWriter implements WriterInterface
 {
-    const FILE_ENDING = '.mpack';
+    public const FILE_ENDING = '.mpack';
 
     public function writeData(string $path, string $type, $data): bool
     {

@@ -2,12 +2,12 @@
 
 namespace App\Command;
 
-use App\Calendar\Events;
-use App\Renderer\EventRenderer;
-use App\Renderer\LandscapeYear;
-use App\Renderer\RenderRequest;
-use App\Renderer\RenderRequest\RequestTypes;
 use App\Repository\HolidaysRepository;
+use Calendar\Pdf\Renderer\Event\Events;
+use Calendar\Pdf\Renderer\Renderer\CalendarRenderer;
+use Calendar\Pdf\Renderer\Renderer\LandscapeYear;
+use Calendar\Pdf\Renderer\Renderer\PdfRenderer;
+use Calendar\Pdf\Renderer\Renderer\RenderRequest;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,12 +19,8 @@ class CalendarGenerateCommand extends Command
 {
     protected static $defaultName = 'calendar:generate';
 
-    /** @var HolidaysRepository */
-    protected $holidayRepo;
-
-    public function __construct(HolidaysRepository $holidaysRepository)
+    public function __construct(protected HolidaysRepository $holidaysRepository)
     {
-        $this->holidayRepo = $holidaysRepository;
         parent::__construct();
     }
 
@@ -44,30 +40,32 @@ class CalendarGenerateCommand extends Command
 
         $io = new SymfonyStyle($input, $output);
         $arg1 = $input->getArgument('startdate');
-        $publicHolidaysFor = strtoupper($input->getOption('publicholidays'));
-        $schoolHolidaysFor = strtoupper($input->getOption('schoolholidays'));
+        $publicHolidaysFor = strtoupper((string) $input->getOption('publicholidays'));
+        $schoolHolidaysFor = strtoupper((string) $input->getOption('schoolholidays'));
 
         $startDate = new \DateTime($arg1);
-        $renderRequest = new RenderRequest(RequestTypes::LANDSCAPE_YEAR, $startDate);
         $io->title('Starting calender generation with startdate ' . $startDate->format('Y-m-d'));
 
         $events = new Events();
         if (!empty($publicHolidaysFor)) {
             $io->text('* loading holidays for ' . $publicHolidaysFor);
-            $holidays = $this->holidayRepo->getPublicHolidays($publicHolidaysFor);
+            $holidays = $this->holidaysRepository->getPublicHolidays($publicHolidaysFor);
             $events->addEvents($holidays);
         }
 
         if (!empty($schoolHolidaysFor)) {
             $io->text('* loading school vacations for ' . $schoolHolidaysFor);
-            $vacations = $this->holidayRepo->getSchoolHolidays($schoolHolidaysFor);
+            $vacations = $this->holidaysRepository->getSchoolHolidays($schoolHolidaysFor);
             $events->addEvents($vacations);
         }
 
         $io->text('* rendering calendar');
         $io->newLine();
-        $renderer = new LandscapeYear(new EventRenderer());
-        $renderer->setCalendarEvents($events);
+
+        $renderRequest = new RenderRequest(LandscapeYear::class, $startDate);
+        $renderRequest->setEvents($events);
+
+        $renderer = new CalendarRenderer(new PdfRenderer());
         $renderer->renderCalendar($renderRequest);
 
         return 0;

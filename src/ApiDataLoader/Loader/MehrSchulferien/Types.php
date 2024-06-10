@@ -4,7 +4,7 @@ namespace App\ApiDataLoader\Loader\MehrSchulferien;
 
 class Types extends AbstractApi
 {
-    const TYPES_PATH = 'holiday_or_vacation_types';
+    public const TYPES_PATH = 'holiday_or_vacation_types';
 
     protected array $types = [];
 
@@ -15,7 +15,7 @@ class Types extends AbstractApi
 
     protected function loadTypes()
     {
-        $response =  $this->executeCurl(
+        $response =  $this->curlRequest->execute(
             $this->getApiUrl(),
             [
                 CURLOPT_RETURNTRANSFER => true,

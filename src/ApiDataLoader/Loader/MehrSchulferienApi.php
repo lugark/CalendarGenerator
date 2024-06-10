@@ -5,23 +5,18 @@ namespace App\ApiDataLoader\Loader;
 use App\ApiDataLoader\Loader\MehrSchulferien\Locations;
 use App\ApiDataLoader\Loader\MehrSchulferien\Periods;
 use App\ApiDataLoader\Loader\MehrSchulferien\Types;
+use App\ApiDataLoader\Transformer\MehrSchulferien;
+use App\ApiDataLoader\Transformer\TransformerInterface;
 
 class MehrSchulferienApi implements LoaderInterface
 {
-    const LOADER_TYPE = 'mehr_schulferien';
+    public const LOADER_TYPE = 'mehr_schulferien';
 
-    protected Periods $periodsApi;
-    protected Locations $locationsApi;
-    protected Types $typesApi;
-
-    public function __construct(Periods $periods, Locations $locations, Types $types)
+    public function __construct(protected Periods $periodsApi, protected Locations $locationsApi, protected Types $typesApi)
     {
-        $this->locationsApi = $locations;
-        $this->periodsApi = $periods;
-        $this->typesApi = $types;
     }
 
-    public function fetch(string $year): Response
+    public function fetchData(string $year): Response
     {
         $response = $this->periodsApi->getAllPeriods();
         if (!$response->isSuccess()) {
@@ -30,9 +25,7 @@ class MehrSchulferienApi implements LoaderInterface
 
         $data = array_filter(
             $response->getData()['data'],
-            function($period) use ($year) {
-                return (strpos($period['starts_on'], $year) !== false) || (strpos($period['ends_on'], $year) !== false);
-            }
+            fn($period) => (str_contains((string) $period['starts_on'], $year)) || (str_contains((string) $period['ends_on'], $year))
         );
 
         foreach ($data as $key => $period) {
@@ -47,4 +40,11 @@ class MehrSchulferienApi implements LoaderInterface
     {
         return self::LOADER_TYPE;
     }
+
+    public function getTransformer(): ?TransformerInterface
+    {
+        return new MehrSchulferien();
+    }
+
+
 }

@@ -8,8 +8,8 @@ use MessagePack\MessagePack;
 
 class Storage
 {
-    const STORAGE_TYPE_PUBLIC_HOLIDAY = 'publicHolidays';
-    const STORAGE_TYPE_SCHOOL_HOLIDAY = 'schoolHolidays';
+    public const STORAGE_TYPE_PUBLIC_HOLIDAY = 'publicHolidays';
+    public const STORAGE_TYPE_SCHOOL_HOLIDAY = 'schoolHolidays';
 
     protected $dataPath;
 
@@ -30,7 +30,7 @@ class Storage
         return $this->dataPath;
     }
 
-    public function setDataPath(string $dataPath)
+    public function setDataPath(string $dataPath): void
     {
         $this->dataPath = realpath($dataPath);
         if ($this->dataPath === false) {
@@ -42,9 +42,7 @@ class Storage
     {
         return array_filter(
             $this->reader->readData($this->getDataPath(), self::STORAGE_TYPE_PUBLIC_HOLIDAY),
-            function($holiday) use ($federal) {
-                return in_array($federal, $holiday['holiday']['regions']);
-            }
+            fn($holiday) => in_array($federal, $holiday['holiday']['regions'])
         );
     }
 
@@ -52,19 +50,15 @@ class Storage
     {
         $filteredData = array_filter(
             $this->reader->readData($this->getDataPath(), self::STORAGE_TYPE_SCHOOL_HOLIDAY),
-            function($vacation) use ($federal) {
-                return array_key_exists($federal, $vacation) && !empty($vacation[$federal]);
-            }
+            fn($vacation) => array_key_exists($federal, $vacation) && !empty($vacation[$federal])
         );
 
         return array_map(
-            function($vacation) use ($federal) {
-                return [
-                    'name' => $vacation['name'],
-                    'start' => $vacation[$federal]['start'],
-                    'end' => $vacation[$federal]['end'],
-                ];
-            },
+            fn($vacation) => [
+                'name' => $vacation['name'],
+                'start' => $vacation[$federal]['start'],
+                'end' => $vacation[$federal]['end'],
+            ],
             $filteredData
         );
     }

@@ -21,7 +21,7 @@ class FederalServiceTest extends TestCase
     /**
      * @dataProvider getFederalNames
      */
-    public function testGetAbbrevationByFullName($longname, $abbrevation)
+    public function testGetAbbrevationByFullName($longname, $abbrevation): void
     {
         $federalService = new FederalService();
         $this->assertEquals($abbrevation, $federalService->getAbbrevationByFullName($longname));

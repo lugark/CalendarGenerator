@@ -20,14 +20,23 @@
     "doctrine/lexer": {
         "version": "1.2.0"
     },
+    "lugark/calendar-pdf-renderer": {
+        "version": "dev-renderer"
+    },
+    "lugark/calendar-pdf-renderer-bundle": {
+        "version": "dev-renderer"
+    },
     "mpdf/mpdf": {
-        "version": "v8.0.4"
+        "version": "v8.1.1"
     },
     "myclabs/deep-copy": {
-        "version": "1.9.4"
+        "version": "1.x-dev"
     },
     "php": {
         "version": "7.4"
+    },
+    "php-http/message-factory": {
+        "version": "1.0-dev"
     },
     "phpdocumentor/reflection-common": {
         "version": "2.0.0"
@@ -38,6 +47,9 @@
     "phpdocumentor/type-resolver": {
         "version": "1.0.1"
     },
+    "phpstan/phpstan": {
+        "version": "1.8.x-dev"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },
@@ -46,6 +58,9 @@
     },
     "psr/event-dispatcher": {
         "version": "1.0.0"
+    },
+    "psr/http-message": {
+        "version": "1.0.x-dev"
     },
     "psr/log": {
         "version": "1.1.2"
@@ -57,7 +72,7 @@
         "version": "1.8.2"
     },
     "setasign/fpdi": {
-        "version": "v2.2.0"
+        "version": "v2.3.6"
     },
     "symfony/cache": {
         "version": "v5.0.2"
@@ -159,18 +174,18 @@
         }
     },
     "symfony/phpunit-bridge": {
-        "version": "4.3",
+        "version": "6.2",
         "recipe": {
             "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "4.3",
-            "ref": "6d0e35f749d5f4bfe1f011762875275cd3f9874f"
+            "branch": "main",
+            "version": "5.3",
+            "ref": "819d3d2ffa4590eba0b8f4f3e5e89415ee4e45c3"
         },
         "files": [
-            ".env.test",
-            "bin/phpunit",
-            "phpunit.xml.dist",
-            "tests/bootstrap.php"
+            "./.env.test",
+            "./bin/phpunit",
+            "./phpunit.xml.dist",
+            "./tests/bootstrap.php"
         ]
     },
     "symfony/polyfill-intl-grapheme": {

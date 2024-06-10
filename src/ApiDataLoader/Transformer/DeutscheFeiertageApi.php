@@ -17,7 +17,7 @@ class DeutscheFeiertageApi implements TransformerInterface
         foreach ($data['holidays'] as $key => $holiday) {
             $regions = [];
             foreach ($holiday['holiday']['regions'] as $region => $hasHoliday) {
-                $region = $region === 'bay' ? 'BY' : strtoupper($region);
+                $region = $region === 'bay' ? 'BY' : strtoupper((string) $region);
                 if ($hasHoliday) {
                     $regions[] = $region;
                 }
