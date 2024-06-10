@@ -13,9 +13,7 @@ class HolidaysRepositoryTest extends TestCase
 
     public function setUp(): void
     {
-        $this->storageMock = $this->getMockBuilder(Storage::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->storageMock = $this->createMock(Storage::class);
     }
 
     public function tearDown(): void

@@ -10,21 +10,9 @@ use Symfony\Component\Serializer\Serializer;
 
 class HolidaysRepository
 {
-    /**
-     * @var Serializer
-     */
-    private $serializer;
-
     public function __construct(
         private readonly Storage $storage
-    )
-    {
-        $this->serializer = new Serializer(
-            [
-                new EventNormalizer(),
-            ]
-        );
-    }
+    ) {}
 
     /**
      * @return array<mixed>
@@ -34,14 +22,7 @@ class HolidaysRepository
         $filteredHolidays = $this->storage->readPublicHolidays($federal);
         $holidays = [];
         foreach ($filteredHolidays as $data) {
-            $holidays[] = $this->serializer->denormalize(
-                $data['holiday'],
-                Event::class,
-                null,
-                [
-                    'eventType' => Types::EVENT_TYPE_PUBLIC_HOLIDAY,
-                ]
-            );
+            $holidays[] = Event::fromArray($data['holiday'], Types::EVENT_TYPE_PUBLIC_HOLIDAY);
         }
         return $holidays;
     }
@@ -54,14 +35,7 @@ class HolidaysRepository
         $filteredHolidays = $this->storage->readSchoolHolidays($federal);
         $holidays = [];
         foreach ($filteredHolidays as $data) {
-            $holidays[] = $this->serializer->denormalize(
-                $data,
-                Event::class,
-                null,
-                [
-                    'eventType' => Types::EVENT_TYPE_SCHOOL_HOLIDAY,
-                ]
-            );
+            $holidays[] = Event::fromArray($data, Types::EVENT_TYPE_SCHOOL_HOLIDAY);
         }
         return $holidays;
     }
