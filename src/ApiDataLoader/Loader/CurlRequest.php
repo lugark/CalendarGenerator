@@ -2,9 +2,12 @@
 
 namespace App\ApiDataLoader\Loader;
 
+/**
+ * @codeCoverageIgnore
+ */
 class CurlRequest implements RequestInterface
 {
-    private $ch;
+    private \CurlHandle $ch;
 
     private function init(string $url): CurlRequest
     {
@@ -12,13 +15,16 @@ class CurlRequest implements RequestInterface
         return $this;
     }
 
+    /**
+     * @param array<mixed> $options
+     */
     public function setOptions(array $options): CurlRequest
     {
         curl_setopt_array($this->ch, $options);
         return $this;
     }
 
-    public function setOption($option, $value): CurlRequest
+    public function setOption(int $option, mixed $value): CurlRequest
     {
         curl_setopt($this->ch, $option, $value);
         return $this;
@@ -30,7 +36,7 @@ class CurlRequest implements RequestInterface
         return $this;
     }
 
-    private function getInfo(int $curlInfoType)
+    private function getInfo(int $curlInfoType): mixed
     {
         return curl_getinfo($this->ch, $curlInfoType);
     }
@@ -45,7 +51,7 @@ class CurlRequest implements RequestInterface
         return curl_error($this->ch);
     }
 
-    private function call()
+    private function call(): bool|string
     {
         return curl_exec($this->ch);
     }

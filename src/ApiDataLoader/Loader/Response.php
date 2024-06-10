@@ -7,18 +7,21 @@ namespace App\ApiDataLoader\Loader;
  */
 class Response
 {
+    /**
+     * @param array<mixed> $data
+     */
     public function __construct(
-        private readonly bool $success, 
-        private readonly int $responseCode, 
+        private readonly bool $success,
+        private readonly int $responseCode,
         private readonly string $response,
-         private readonly array $data
+        private readonly array $data
     ) {
     }
 
     /**
      * Get the value of data
      */ 
-    public function getData(): array
+    public function getData(): mixed
     {
         return $this->data;
     }
@@ -42,7 +45,7 @@ class Response
     /**
      * Get the value of success
      */ 
-    public function isSuccess()
+    public function isSuccess(): bool
     {
         return $this->success;
     }

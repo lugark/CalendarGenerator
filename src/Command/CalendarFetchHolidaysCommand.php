@@ -2,11 +2,10 @@
 
 namespace App\Command;
 
+use App\ApiDataLoader\ApiDataLoader;
 use App\ApiDataLoader\Loader\ApiFeiertage;
 use App\ApiDataLoader\Loader\MehrSchulferienApi;
 use App\Repository\HolidaysRepository;
-use App\ApiDataLoader\ApiDataLoader;
-use App\ApiDataLoader\Loader\DeutscheFeiertageApi;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,18 +17,18 @@ class CalendarFetchHolidaysCommand extends Command
     protected static $defaultName = 'calendar:fetch:holidays';
 
     public function __construct(
-        private readonly HolidaysRepository $holidayRepo, 
+        private readonly HolidaysRepository $holidayRepo,
         private readonly ApiDataLoader $apiCrawler
     ) {
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Fetches holidays/vacations from different API\'s to store in local file')
             ->addArgument('holidayTypes', InputArgument::REQUIRED, 'Which type to fetch - [public, school]')
-            ->addOption('year', 'y',InputArgument::OPTIONAL,'The year to be fetched - default "this" year');
+            ->addOption('year', 'y', InputArgument::OPTIONAL, 'The year to be fetched - default "this" year');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -41,7 +40,7 @@ class CalendarFetchHolidaysCommand extends Command
             $holidayTypes = explode(',', (string) $input->getArgument('holidayTypes'));
         }
 
-        $years = !empty($input->getOption('year')) ?
+        $years = ! empty($input->getOption('year')) ?
             explode(',', (string) $input->getOption('year')) :
             [date('Y')];
 

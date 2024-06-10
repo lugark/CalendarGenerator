@@ -3,30 +3,31 @@
 namespace App\ApiDataLoader;
 
 use App\ApiDataLoader\Loader\LoaderInterface;
-use App\ApiDataLoader\Loader\RequestInterface;
 use App\ApiDataLoader\Loader\Response;
-use Exception;
 
 class ApiDataLoader
 {
     public function __construct(
         /** @var LoaderInterface[] */
         private readonly iterable $loader
-    ) {        
+    ) {
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function fetchData(string $type, string $year): array
     {
         $loader = $this->getMatchingLoader($type);
 
         /** @var Response */
         $response = $loader->fetchData($year);
-        if (!$response->isSuccess()) {
+        if (! $response->isSuccess()) {
             throw new DataLoaderException('Error loading data: ' . $response->getResponse());
         }
 
         $transformer = $loader->getTransformer();
-        if (!empty($transformer)) {
+        if (! empty($transformer)) {
             $data = $transformer($response);
         } else {
             $data = $response->getData();
@@ -35,7 +36,7 @@ class ApiDataLoader
         return $data;
     }
 
-    private function getMatchingLoader(string $type)
+    private function getMatchingLoader(string $type): LoaderInterface
     {
         foreach ($this->loader as $loader) {
             if ($loader->getType() == $type) {

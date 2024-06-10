@@ -8,7 +8,9 @@ abstract class AbstractApi
 {
     public const API_URL = 'https://www.mehr-schulferien.de/api/v2.0/';
 
-    public function __construct(public RequestInterface $curlRequest)
+    public function __construct(
+        public RequestInterface $curlRequest
+    )
     {
     }
 

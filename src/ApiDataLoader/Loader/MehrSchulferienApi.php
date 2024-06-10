@@ -12,14 +12,18 @@ class MehrSchulferienApi implements LoaderInterface
 {
     public const LOADER_TYPE = 'mehr_schulferien';
 
-    public function __construct(protected Periods $periodsApi, protected Locations $locationsApi, protected Types $typesApi)
+    public function __construct(
+        protected Periods $periodsApi,
+        protected Locations $locationsApi,
+        protected Types $typesApi
+    )
     {
     }
 
     public function fetchData(string $year): Response
     {
         $response = $this->periodsApi->getAllPeriods();
-        if (!$response->isSuccess()) {
+        if (! $response->isSuccess()) {
             return $response;
         }
 
@@ -45,6 +49,4 @@ class MehrSchulferienApi implements LoaderInterface
     {
         return new MehrSchulferien();
     }
-
-
 }

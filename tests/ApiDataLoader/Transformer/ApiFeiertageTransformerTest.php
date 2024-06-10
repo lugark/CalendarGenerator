@@ -11,6 +11,7 @@ use PHPUnit\Framework\TestCase;
 class ApiFeiertageTransformerTest extends TestCase
 {
     private $loaderData;
+
     private $response;
 
     public function setUp(): void
@@ -30,12 +31,14 @@ class ApiFeiertageTransformerTest extends TestCase
 
     public function getFailTransformData()
     {
-        return
-            [
-                'failNoSuccess' =>  [new Response(false, 404, '{}', [])],
-                'failNoDataKeyEmpty' => [new Response(true, 200, '{}', [])],
-                'failNoDataKey' => [new Response(true, 200, '{}', ['some' => 'data'])],
-            ];
+        return [
+            'failNoSuccess' => [new Response(false, 404, '{}', [])],
+            'failNoDataKeyEmpty' => [new Response(true, 200, '{}', [])],
+            'failNoDataKey' => [
+                new Response(true, 200, '{}', [
+                    'some' => 'data',
+                ])],
+        ];
     }
 
     public function testGetType(): void

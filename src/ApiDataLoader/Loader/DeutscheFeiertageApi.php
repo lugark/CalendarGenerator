@@ -7,9 +7,12 @@ use App\ApiDataLoader\Transformer\TransformerInterface;
 class DeutscheFeiertageApi implements LoaderInterface
 {
     public const LOADER_TYPE = 'deutsche_feiertage_api';
+
     public const DEUTSCHE_FEIERTAGE_URL = 'https://deutsche-feiertage-api.de/api/v1/';
 
-    public function __construct(private readonly RequestInterface $curlRequest)
+    public function __construct(
+        private readonly RequestInterface $curlRequest
+    )
     {
     }
 
@@ -27,7 +30,7 @@ class DeutscheFeiertageApi implements LoaderInterface
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_HTTPHEADER => [
                     'Content-Type: application/json',
-                    'X-DFA-Token: dfa']
+                    'X-DFA-Token: dfa'],
             ]
         );
     }

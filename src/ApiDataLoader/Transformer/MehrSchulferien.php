@@ -8,32 +8,34 @@ use App\ApiDataLoader\Loader\Response;
 class MehrSchulferien implements TransformerInterface
 {
     /** Expected result:
-    * array(6) {
-    *     [0] =>
-    *         array(17) {
-    *             'name' =>
-    *             string(12) "Winterferien"
-    *             'BW' =>
-    *                 array(0) {
-    *                 }
-    *             'BY' =>
-    *                 array(2) {
-    *                 'start' =>
-    *                 string(10) "24.02.2020"
-    *                 'end' =>
-    *                 string(10) "28.02.2020"
-    *                 }
-    */
-    public function __invoke(Response $response)
+     * array(6) {
+     *     [0] =>
+     *         array(17) {
+     *             'name' =>
+     *             string(12) "Winterferien"
+     *             'BW' =>
+     *                 array(0) {
+     *                 }
+     *             'BY' =>
+     *                 array(2) {
+     *                 'start' =>
+     *                 string(10) "24.02.2020"
+     *                 'end' =>
+     *                 string(10) "28.02.2020"
+     *                 }
+     */
+    public function __invoke(Response $response): mixed
     {
         $schoolVacation = [];
         foreach ($response->getData() as $period) {
-            if (!$period['is_school_vacation']) {
+            if (! $period['is_school_vacation']) {
                 continue;
             }
-            $typeId =  $period['type']['id'];
-            if (!isset($schoolVacation[$typeId])) {
-                $schoolVacation[$typeId] = ['name' => $period['type']['colloquial']];
+            $typeId = $period['type']['id'];
+            if (! isset($schoolVacation[$typeId])) {
+                $schoolVacation[$typeId] = [
+                    'name' => $period['type']['colloquial'],
+                ];
             }
             $schoolVacation[$typeId][strtoupper((string) $period['location']['code'])] = [
                 'start' => $period['starts_on'],

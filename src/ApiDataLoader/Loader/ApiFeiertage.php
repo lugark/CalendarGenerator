@@ -8,10 +8,11 @@ use App\ApiDataLoader\Transformer\TransformerInterface;
 class ApiFeiertage implements LoaderInterface
 {
     public const LOADER_TYPE = 'api_feiertage';
+
     public const DEUTSCHE_FEIERTAGE_URL = 'https://get.api-feiertage.de?years=';
 
     public function __construct(
-        private readonly RequestInterface $curlRequest, 
+        private readonly RequestInterface $curlRequest,
         private readonly ApiFeiertageTransformer $transformer
     ) {
     }
@@ -35,7 +36,7 @@ class ApiFeiertage implements LoaderInterface
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_HTTPHEADER => [
                     'Content-Type: application/json',
-                ]
+                ],
             ]
         );
     }

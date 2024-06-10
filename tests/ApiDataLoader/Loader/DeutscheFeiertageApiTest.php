@@ -2,14 +2,16 @@
 
 namespace App\Tests\ApiDataLoader\Loader;
 
-use PHPUnit\Framework\TestCase;
-use App\ApiDataLoader\Loader\DeutscheFeiertageApi;
 use App\ApiDataLoader\Loader\CurlRequest;
+use App\ApiDataLoader\Loader\DeutscheFeiertageApi;
 use App\ApiDataLoader\Loader\Response;
+use PHPUnit\Framework\TestCase;
 
 class DeutscheFeiertageApiTest extends TestCase
 {
-    /** @var DeutscheFeiertageApi */
+    /**
+     * @var DeutscheFeiertageApi
+     */
     private $sut;
 
     private $curlRequestMock;
@@ -22,7 +24,9 @@ class DeutscheFeiertageApiTest extends TestCase
 
     public function testSuccessFetch(): void
     {
-        $expectedResponse = new Response(true, 200, '{"test": true}', ['test' => true]);
+        $expectedResponse = new Response(true, 200, '{"test": true}', [
+            'test' => true,
+        ]);
         $this->curlRequestMock->method('execute')
             ->willReturn($expectedResponse);
 
