@@ -15,7 +15,7 @@
         "symfony/dom-crawler": "6.4.*",
         "symfony/dotenv": "6.4.*",
         "symfony/flex": "^1.21",
-        "symfony/framework-bundle": "6.4.*",
+        "symfony/framework-bundle": "7.1.*",
         "symfony/property-access": "6.4.*",
         "symfony/property-info": "7.1.*",
         "symfony/runtime": "6.4.*",
