@@ -26,7 +26,7 @@
         "phpstan/phpstan": "^1.11",
         "phpstan/phpstan-symfony": "^1.4",
         "rector/rector": "^1.1",
-        "symfony/phpunit-bridge": "^6.4",
+        "symfony/phpunit-bridge": "^7.1",
         "symplify/easy-coding-standard": "^12.2"
     },
     "config": {
