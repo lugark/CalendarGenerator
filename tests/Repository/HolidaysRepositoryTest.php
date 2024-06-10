@@ -2,30 +2,26 @@
 
 namespace App\Tests\Repository;
 
-use App\Calendar\Event;
 use App\Repository\HolidaysRepository;
 use App\Service\Storage\Storage;
+use Calendar\Pdf\Renderer\Event\Event;
 use PHPUnit\Framework\TestCase;
 
 class HolidaysRepositoryTest extends TestCase
 {
-    protected Storage $storage;
+    protected ?Storage $storageMock;
 
     public function setUp(): void
     {
-        parent::setUp();
-        $this->storageMock = $this->getMockBuilder(Storage::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->storageMock = $this->createMock(Storage::class);
     }
 
     public function tearDown(): void
     {
         $this->storageMock = null;
-        parent::tearDown();
     }
 
-    public function testSaveSchoolHolidays()
+    public function testSaveSchoolHolidays(): void
     {
         $this->storageMock->expects($this->once())
             ->method('writeSchoolHolidays');
@@ -33,7 +29,7 @@ class HolidaysRepositoryTest extends TestCase
         $sut->saveSchoolHolidays([]);
     }
 
-    public function testSavePublicHolidays()
+    public function testSavePublicHolidays(): void
     {
         $this->storageMock->expects($this->once())
             ->method('writePublicHolidays');
@@ -41,14 +37,39 @@ class HolidaysRepositoryTest extends TestCase
         $sut->savePublicHolidays([]);
     }
 
-    public function testGetPublicHolidaysFound()
+    public function testGetPublicHolidaysFound(): void
     {
         $this->storageMock->method('readPublicHolidays')
             ->willReturn(
                 [
-                    ["holiday" => ["date" => "2021-01-06", "name" => "Heilige Drei Könige", "regions" => [0 => "BW", 1 => "BY", 2 => "ST"], "all_states" => false]],
-                    ["holiday" => ["date" => "2021-11-01", "name" => "Allerheiligen", "regions" => [0 => "BW", 1 => "BY", 2 => "NW", 3 => "RP", 4 => "SL"], "all_states" => false]],
-                ]);
+                    [
+                        "holiday" => [
+                            "date" => "2021-01-06",
+                            "name" => "Heilige Drei Könige",
+                            "regions" => [
+                                0 => "BW",
+                                1 => "BY",
+                                2 => "ST",
+                            ],
+                            "all_states" => false,
+                        ],
+                    ],
+                    [
+                        "holiday" => [
+                            "date" => "2021-11-01",
+                            "name" => "Allerheiligen",
+                            "regions" => [
+                                0 => "BW",
+                                1 => "BY",
+                                2 => "NW",
+                                3 => "RP",
+                                4 => "SL",
+                            ],
+                            "all_states" => false,
+                        ],
+                    ],
+                ]
+            );
 
         $sut = new HolidaysRepository($this->storageMock);
         $holidays = $sut->getPublicHolidays('BY');
@@ -59,17 +80,38 @@ class HolidaysRepositoryTest extends TestCase
         $this->assertEquals('Allerheiligen', $holiday->getText());
     }
 
-    public function testGetSchoolHolidays()
+    public function testGetSchoolHolidays(): void
     {
         $this->storageMock->method('readSchoolHolidays')
             ->willReturn(
                 [
-                    ["name" => "Osterferien", "start" => "29.03.2021", "end" => "10.04.2021"],
-                    ["name" => "Pfingstferien","start" => "25.05.2021","end" => "04.06.2021"],
-                    ["name" => "Sommerferien","start" => "30.07.2021","end" => "13.09.2021"],
-                    ["name" => "Herbstferien","start" => "02.11.2021","end" => "17.11.2021"],
-                    ["name" => "Weihnachtsferien","start" => "24.12.2021","end" => "08.01.2022"]
-                ]);
+                    [
+                        "name" => "Osterferien",
+                        "start" => "29.03.2021",
+                        "end" => "10.04.2021",
+                    ],
+                    [
+                        "name" => "Pfingstferien",
+                        "start" => "25.05.2021",
+                        "end" => "04.06.2021",
+                    ],
+                    [
+                        "name" => "Sommerferien",
+                        "start" => "30.07.2021",
+                        "end" => "13.09.2021",
+                    ],
+                    [
+                        "name" => "Herbstferien",
+                        "start" => "02.11.2021",
+                        "end" => "17.11.2021",
+                    ],
+                    [
+                        "name" => "Weihnachtsferien",
+                        "start" => "24.12.2021",
+                        "end" => "08.01.2022",
+                    ],
+                ]
+            );
 
         $sut = new HolidaysRepository($this->storageMock);
         $holidays = $sut->getSchoolHolidays('BY');

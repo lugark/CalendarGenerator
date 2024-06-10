@@ -2,10 +2,10 @@
 
 namespace App\Command;
 
+use App\ApiDataLoader\ApiDataLoader;
+use App\ApiDataLoader\Loader\ApiFeiertage;
 use App\ApiDataLoader\Loader\MehrSchulferienApi;
 use App\Repository\HolidaysRepository;
-use App\ApiDataLoader\ApiDataLoader;
-use App\ApiDataLoader\Loader\DeutscheFeiertageApi;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,42 +16,38 @@ class CalendarFetchHolidaysCommand extends Command
 {
     protected static $defaultName = 'calendar:fetch:holidays';
 
-    /** @var HolidaysRepository */
-    private $holidayRepo;
-
-    /** @var ApiCrawler */
-    private $apiCrawler;
-
-    public function __construct(HolidaysRepository $holidaysRepository, ApiDataLoader $apiCrawler)
-    {
-        $this->holidayRepo = $holidaysRepository;
-        $this->apiCrawler = $apiCrawler;
+    public function __construct(
+        private readonly HolidaysRepository $holidayRepo,
+        private readonly ApiDataLoader $apiCrawler
+    ) {
+        parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Fetches holidays/vacations from different API\'s to store in local file')
             ->addArgument('holidayTypes', InputArgument::REQUIRED, 'Which type to fetch - [public, school]')
-            ->addOption('year', 'y',InputArgument::OPTIONAL,'The year to be fetched - default "this" year');
+            ->addOption('year', 'y', InputArgument::OPTIONAL, 'The year to be fetched - default "this" year');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
+        $holidayTypes = [];
         if ($input->hasArgument('holidayTypes')) {
-            $holidayTypes = explode(',', $input->getArgument('holidayTypes'));
+            $holidayTypes = explode(',', (string) $input->getArgument('holidayTypes'));
         }
 
-        $years = !empty($input->getOption('year')) ?
-            explode(',', $input->getOption('year')) :
+        $years = ! empty($input->getOption('year')) ?
+            explode(',', (string) $input->getOption('year')) :
             [date('Y')];
 
         if (in_array('public', $holidayTypes)) {
             $result = [];
             foreach ($years as $year) {
-                $result[] = array_merge($this->apiCrawler->fetchData(DeutscheFeiertageApi::LOADER_TYPE, $year), $result);
+                $result[] = array_merge($this->apiCrawler->fetchData(ApiFeiertage::LOADER_TYPE, $year), $result);
             }
             $this->holidayRepo->savePublicHolidays(array_merge(...$result));
             $io->success('Successfully loaded data from https://deutsche-feiertage-api.de');

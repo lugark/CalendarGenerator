@@ -2,23 +2,29 @@
 
 namespace App\ApiDataLoader\Loader;
 
+use App\ApiDataLoader\Transformer\ApiFeiertageTransformer;
 use App\ApiDataLoader\Transformer\TransformerInterface;
 
-class DeutscheFeiertageApi implements LoaderInterface
+class ApiFeiertage implements LoaderInterface
 {
-    public const LOADER_TYPE = 'deutsche_feiertage_api';
+    public const LOADER_TYPE = 'api_feiertage';
 
-    public const DEUTSCHE_FEIERTAGE_URL = 'https://deutsche-feiertage-api.de/api/v1/';
+    public const DEUTSCHE_FEIERTAGE_URL = 'https://get.api-feiertage.de?years=';
 
     public function __construct(
-        private readonly RequestInterface $curlRequest
-    )
+        private readonly RequestInterface $curlRequest,
+        private readonly ApiFeiertageTransformer $transformer
+    ) {
+    }
+
+    public function getType(): String
     {
+        return self::LOADER_TYPE;
     }
 
     public function getTransformer(): ?TransformerInterface
     {
-        return new \App\ApiDataLoader\Transformer\DeutscheFeiertageApi();
+        return $this->transformer;
     }
 
     public function fetchData(string $year): Response
@@ -26,17 +32,12 @@ class DeutscheFeiertageApi implements LoaderInterface
         return $this->curlRequest->execute(
             self::DEUTSCHE_FEIERTAGE_URL . $year,
             [
-                CURLOPT_CUSTOMREQUEST => "POST",
+                CURLOPT_CUSTOMREQUEST => "GET",
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_HTTPHEADER => [
                     'Content-Type: application/json',
-                    'X-DFA-Token: dfa'],
+                ],
             ]
         );
-    }
-
-    public function getType(): String
-    {
-        return self::LOADER_TYPE;
     }
 }

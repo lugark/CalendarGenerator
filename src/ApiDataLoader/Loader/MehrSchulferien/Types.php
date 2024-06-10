@@ -4,8 +4,11 @@ namespace App\ApiDataLoader\Loader\MehrSchulferien;
 
 class Types extends AbstractApi
 {
-    const TYPES_PATH = 'holiday_or_vacation_types';
+    public const TYPES_PATH = 'holiday_or_vacation_types';
 
+    /**
+     * @var array<mixed>
+     */
     protected array $types = [];
 
     public function getApiSubPath(): string
@@ -13,20 +16,24 @@ class Types extends AbstractApi
         return self::TYPES_PATH;
     }
 
-    protected function loadTypes()
+    protected function loadTypes(): void
     {
-        $response =  $this->executeCurl(
+        $response = $this->curlRequest->execute(
             $this->getApiUrl(),
             [
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_HTTPHEADER => [
                     'Content-Type: application/json',
-                ]
-            ]);
+                ],
+            ]
+        );
 
         $this->types = array_column($response->getData()['data'], null, 'id');
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function getType(int $id): array
     {
         if (empty($this->types)) {

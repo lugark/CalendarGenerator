@@ -4,79 +4,80 @@ namespace App\Service\Storage;
 
 use App\Service\Storage\Reader\ReaderInterface;
 use App\Service\Storage\Writer\WriterInterface;
-use MessagePack\MessagePack;
 
 class Storage
 {
-    const STORAGE_TYPE_PUBLIC_HOLIDAY = 'publicHolidays';
-    const STORAGE_TYPE_SCHOOL_HOLIDAY = 'schoolHolidays';
+    public const STORAGE_TYPE_PUBLIC_HOLIDAY = 'publicHolidays';
 
-    protected $dataPath;
+    public const STORAGE_TYPE_SCHOOL_HOLIDAY = 'schoolHolidays';
 
-    /** @var WriterInterface */
-    protected $writer;
+    protected string $dataPath;
 
-    /** @var ReaderInterface */
-    protected $reader;
-
-    public function __construct(WriterInterface $writer, ReaderInterface $reader)
-    {
-        $this->writer = $writer;
-        $this->reader = $reader;
+    public function __construct(
+        private readonly WriterInterface $writer,
+        private readonly ReaderInterface $reader
+    ) {
     }
 
-    protected function getDataPath()
+    protected function getDataPath(): string
     {
         return $this->dataPath;
     }
 
-    public function setDataPath(string $dataPath)
+    public function setDataPath(string $dataPath): void
     {
-        $this->dataPath = realpath($dataPath);
-        if ($this->dataPath === false) {
+        $realPath = realpath($dataPath);
+        if ($realPath === false) {
             throw new StorageException('could not read path: ' . $dataPath);
+        } else {
+            $this->dataPath = $realPath;
         }
     }
 
+    /**
+     *  @return array<mixed>
+     */
     public function readPublicHolidays(string $federal): array
     {
         return array_filter(
             $this->reader->readData($this->getDataPath(), self::STORAGE_TYPE_PUBLIC_HOLIDAY),
-            function($holiday) use ($federal) {
-                return in_array($federal, $holiday['holiday']['regions']);
-            }
+            fn($holiday) => in_array($federal, $holiday['holiday']['regions'])
         );
     }
 
+    /**
+     *  @return array<mixed>
+     */
     public function readSchoolHolidays(string $federal): array
     {
         $filteredData = array_filter(
             $this->reader->readData($this->getDataPath(), self::STORAGE_TYPE_SCHOOL_HOLIDAY),
-            function($vacation) use ($federal) {
-                return array_key_exists($federal, $vacation) && !empty($vacation[$federal]);
-            }
+            fn($vacation) => array_key_exists($federal, $vacation) && ! empty($vacation[$federal])
         );
 
         return array_map(
-            function($vacation) use ($federal) {
-                return [
-                    'name' => $vacation['name'],
-                    'start' => $vacation[$federal]['start'],
-                    'end' => $vacation[$federal]['end'],
-                ];
-            },
+            fn($vacation) => [
+                'name' => $vacation['name'],
+                'start' => $vacation[$federal]['start'],
+                'end' => $vacation[$federal]['end'],
+            ],
             $filteredData
         );
     }
 
-    public function writePublicHolidays(array $data):void
+    /**
+     *  @param array<mixed> $data
+     */
+    public function writePublicHolidays(array $data): void
     {
         $this->writer->writeData($this->getDataPath(), self::STORAGE_TYPE_PUBLIC_HOLIDAY, $data);
     }
 
-    public function writeSchoolHolidays(array $data):void
+    /**
+     *  @param array<mixed> $data
+     */
+    public function writeSchoolHolidays(array $data): void
     {
         $this->writer->writeData($this->getDataPath(), self::STORAGE_TYPE_SCHOOL_HOLIDAY, $data);
     }
-
 }
