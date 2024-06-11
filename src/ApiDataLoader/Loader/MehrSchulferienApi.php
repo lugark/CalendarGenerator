@@ -16,8 +16,7 @@ class MehrSchulferienApi implements LoaderInterface
         protected Periods $periodsApi,
         protected Locations $locationsApi,
         protected Types $typesApi
-    )
-    {
+    ) {
     }
 
     public function fetchData(string $year): Response
@@ -29,7 +28,7 @@ class MehrSchulferienApi implements LoaderInterface
 
         $data = array_filter(
             $response->getData()['data'],
-            fn($period) => (str_contains((string) $period['starts_on'], $year)) || (str_contains((string) $period['ends_on'], $year))
+            fn ($period) => (str_contains((string) $period['starts_on'], $year)) || (str_contains((string) $period['ends_on'], $year))
         );
 
         foreach ($data as $key => $period) {

@@ -10,8 +10,7 @@ abstract class AbstractApi
 
     public function __construct(
         public RequestInterface $curlRequest
-    )
-    {
+    ) {
     }
 
     public function getApiUrl(): String

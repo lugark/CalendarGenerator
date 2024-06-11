@@ -21,8 +21,7 @@ class CalendarGenerateCommand extends Command
 
     public function __construct(
         protected HolidaysRepository $holidaysRepository
-    )
-    {
+    ) {
         parent::__construct();
     }
 
