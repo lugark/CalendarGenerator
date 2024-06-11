@@ -8,6 +8,7 @@ use Calendar\Pdf\Renderer\Renderer\CalendarRenderer;
 use Calendar\Pdf\Renderer\Renderer\LandscapeYear;
 use Calendar\Pdf\Renderer\Renderer\PdfRenderer;
 use Calendar\Pdf\Renderer\Renderer\RenderRequest;
+use DateTime;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,12 +18,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class CalendarGenerateCommand extends Command
 {
-    protected static $defaultName = 'calendar:generate';
+    protected static string $defaultName = 'calendar:generate';
 
     public function __construct(
         protected HolidaysRepository $holidaysRepository
-    )
-    {
+    ) {
         parent::__construct();
     }
 
@@ -45,7 +45,7 @@ class CalendarGenerateCommand extends Command
         $publicHolidaysFor = strtoupper((string) $input->getOption('publicholidays'));
         $schoolHolidaysFor = strtoupper((string) $input->getOption('schoolholidays'));
 
-        $startDate = new \DateTime($arg1);
+        $startDate = new DateTime($arg1);
         $io->title('Starting calender generation with startdate ' . $startDate->format('Y-m-d'));
 
         $events = new Events();

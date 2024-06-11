@@ -78,7 +78,6 @@ class StorageMsgPackTest extends TestCase
     public function testReadSchoolHolidays($federal, $expected): void
     {
         $this->assertEquals($expected, $this->sut->readSchoolHolidays($federal));
-
     }
 
     public function dataProviderPublicHolidays()

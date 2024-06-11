@@ -2,17 +2,16 @@
 
 namespace App\Repository;
 
-use App\Serializer\Normalizer\EventNormalizer;
 use App\Service\Storage\Storage;
 use Calendar\Pdf\Renderer\Event\Event;
 use Calendar\Pdf\Renderer\Event\Types;
-use Symfony\Component\Serializer\Serializer;
 
 class HolidaysRepository
 {
     public function __construct(
         private readonly Storage $storage
-    ) {}
+    ) {
+    }
 
     /**
      * @return array<mixed>

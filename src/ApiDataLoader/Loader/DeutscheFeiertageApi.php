@@ -12,8 +12,7 @@ class DeutscheFeiertageApi implements LoaderInterface
 
     public function __construct(
         private readonly RequestInterface $curlRequest
-    )
-    {
+    ) {
     }
 
     public function getTransformer(): ?TransformerInterface

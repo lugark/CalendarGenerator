@@ -41,7 +41,7 @@ class Storage
     {
         return array_filter(
             $this->reader->readData($this->getDataPath(), self::STORAGE_TYPE_PUBLIC_HOLIDAY),
-            fn($holiday) => in_array($federal, $holiday['holiday']['regions'])
+            fn ($holiday) => in_array($federal, $holiday['holiday']['regions'])
         );
     }
 
@@ -52,11 +52,11 @@ class Storage
     {
         $filteredData = array_filter(
             $this->reader->readData($this->getDataPath(), self::STORAGE_TYPE_SCHOOL_HOLIDAY),
-            fn($vacation) => array_key_exists($federal, $vacation) && ! empty($vacation[$federal])
+            fn ($vacation) => array_key_exists($federal, $vacation) && ! empty($vacation[$federal])
         );
 
         return array_map(
-            fn($vacation) => [
+            fn ($vacation) => [
                 'name' => $vacation['name'],
                 'start' => $vacation[$federal]['start'],
                 'end' => $vacation[$federal]['end'],

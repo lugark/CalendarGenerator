@@ -28,7 +28,7 @@ class FederalService
 
     public function getAbbrevationByFullName(string $name): string
     {
-        $result = array_filter($this->federalMapping, fn($row) => $name === $row[1]);
+        $result = array_filter($this->federalMapping, fn ($row) => $name === $row[1]);
         $result = array_shift($result);
 
         return ! empty($result) ? $result[0] : '';

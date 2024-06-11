@@ -20,7 +20,7 @@ class Response
 
     /**
      * Get the value of data
-     */ 
+     */
     public function getData(): mixed
     {
         return $this->data;
@@ -28,7 +28,7 @@ class Response
 
     /**
      * Get the value of response
-     */ 
+     */
     public function getResponse(): string
     {
         return $this->response;
@@ -36,7 +36,7 @@ class Response
 
     /**
      * Get the value of responseCode
-     */ 
+     */
     public function getResponseCode(): int
     {
         return $this->responseCode;
@@ -44,7 +44,7 @@ class Response
 
     /**
      * Get the value of success
-     */ 
+     */
     public function isSuccess(): bool
     {
         return $this->success;
