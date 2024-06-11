@@ -10,7 +10,7 @@ on:
 
 jobs:
   tests:
-    uses: lugark/CalendarGenerator/.github/workflows/symfony.yml@feature/231_update-to-symfony-71
+    uses: lugark/CalendarGenerator/.github/workflows/symfony.yml@master
 
   codecov:
     needs: tests
