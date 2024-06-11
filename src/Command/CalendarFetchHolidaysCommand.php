@@ -14,7 +14,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class CalendarFetchHolidaysCommand extends Command
 {
-    protected static $defaultName = 'calendar:fetch:holidays';
+    protected static string $defaultName = 'calendar:fetch:holidays';
 
     public function __construct(
         private readonly HolidaysRepository $holidayRepo,

@@ -69,6 +69,7 @@
         "phpunit": "vendor/bin/simple-phpunit  --coverage-clover reports/coverage.xml --log-junit reports/phpunit_report.xml",
         "phpstan": "vendor/bin/phpstan analyze src -c phpstan.neon",
         "test": [
+            "@check-cs",
             "@phpstan",
             "@phpunit"
         ],
