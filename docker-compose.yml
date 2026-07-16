@@ -2,8 +2,8 @@ version: '3.3'
 services:
   nginx-php-fpm:
     image: richarvey/nginx-php-fpm
-    ports:
-      - '80:80'
+    # ports:
+    #   - '80:80'
     volumes:
       - '.:/var/www/html'
     environment:

@@ -12,7 +12,7 @@ The goal is to have a printable PDF with customized calendar including german sc
 - Symfony 7.1
 - "Feiertage" can be fetched from https://deutsche-feiertage-api.de/
 - "Schulferien" can be fetched from [mehr-schulferien.de](https://www.mehr-schulferien.de/)
-- [lugark/calendar-pdf-generator](https://github.com/lugark/calendar-pdf-renderer) to render the calendar
+- [lugark/calendar-pdf-renderer](https://github.com/lugark/calendar-pdf-renderer) to render the calendar
 ## Installaion
 ```
 composer install
